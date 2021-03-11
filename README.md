@@ -1,8 +1,8 @@
-# Tehnologii_Web
-Repo pentru TW
+# Tehnologii_Web 
+Repo pentru proiectul UnSt (Universal Storage Tool)
 ---------------------------------------------------------------------------
 
-Requirements:
+Requirements for UnSt (Universal Storage Tool)
 `````````````````````````````````````````````````````
 Pe baza unui API REST ori GraphQL propriu, să se realizeze un instrument care abstractizează operațiile uzuale cu fișiere de mari dimensiuni, stocându-le – eventual,
 fragmentat și/sau redundant – via servicii disponibile “în nori” precum Box, Dropbox, Google Drive, Microsoft OneDrive și altele. 
