@@ -14,8 +14,8 @@ html, body
 form
 {
     
-  height: 35%;
-  width: 35%;
+
+  width:35%;
   color: #4b4c2c;
 }
 
@@ -30,6 +30,7 @@ form > fieldset
 
 .form_content
 {
+  
   width: 100%;
 }
 
@@ -46,7 +47,7 @@ form input
   border-width: 2px;
   border-color: #4b4c2c;
   border-radius: 4px;
-  margin-top: 15px;
+  margin-bottom: 15px;
   width: 80%;
   height: auto;
   
@@ -61,15 +62,10 @@ form input:focus
 }
 
 
-form input[id=login]
-{
-  margin-top: 15px;
-}
-
 .btn
 {
   background-color: white;
-  margin-top: 10px;
+  
   margin-bottom: 10px;
   width: 80%;
 
@@ -89,6 +85,7 @@ form input[id=login]
 a
 {
   text-decoration: none;
+  
 }
 
 
