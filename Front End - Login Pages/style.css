@@ -101,6 +101,7 @@ form input::placeholder
   outline: none;
   border-radius: 5px;
   transition: background-color 0.2s;
+  margin-bottom: 20px;
 }
 
 .btn:hover
@@ -108,10 +109,7 @@ form input::placeholder
   background-color: #560027;
 }
 
-.btn:focus
-{
-  background: #560027;
-}
+
 
 .btn:active
 {
@@ -200,7 +198,9 @@ a:active
   .btn
   {
     height: 50px;
-        
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 20px;
   }
 
 }
