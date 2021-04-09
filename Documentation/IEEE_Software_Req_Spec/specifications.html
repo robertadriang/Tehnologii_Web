@@ -2,8 +2,10 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>UNST Specifications</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="logo5.png" icon="image/png">
     </head>
     <body>
         <header>
@@ -226,11 +228,12 @@
                 <p>
                     This document is intended for any person interested about UNST application. Some categories of users that can be
                      distinguished are:
+                </p>
                     <ul>
                         <li>Typical Users, who want to use UNST for distributing files into multiple storing clouds.</li>
                         <li>Programmers who are interested in further developing the software.</li>
                     </ul>
-                </p>
+    
             </section>
             <section id="scope">
                 <h3>
@@ -265,7 +268,7 @@
                 </p>
             </section>
         </section>
-        <section role="doc-introduction" id="description">
+        <section role="doc-part" id="description">
             <h2>
                 <span>2. </span>
                 Overall Description
@@ -298,7 +301,7 @@
                 </ul>
                 Account settings:
                 <ul>
-                    <li>Edit informations related to the account (name/password/email etc)</li>
+                    <li>Edit information related to the account (name/password/email etc)</li>
                 </ul>
                 File manager:
                 <ul>
@@ -312,6 +315,7 @@
                 <ul>
                     <li>Connect environment: Link a new storing cloud to the UNST (Drive/Dropbox/OneDrive)</li>
                     <li>Remove environment: Remove a storing environment from the UNST account</li>
+                    <li>Remove files with environment checkbox</li>
                     <li>Splitting method: Choose how a file is distributed (Equal-sized, Percentage of available space, Fixed number of shards/size</li>
                     <li>Upload/Download speed: Set a maximum uploade/download speed</li>
                 </ul>
@@ -329,6 +333,155 @@
                     <li>Redirect to Register</li>
                     <li>Redirect to Login</li>
                 </ul>
+            </section>
+            <section id="users">
+                <h3>
+                    <span>2.3 </span>
+                    User Classes and Characteristics
+                </h3>
+                    <ul>
+                        <li>Typical Users, who want to use UNST for distributing files into multiple storing clouds.</li>
+                        <li>Programmers who are interested in further developing the software.</li>
+                    </ul>
+            </section>
+            <section id="environment">
+                <h3>
+                    <span>2.4 </span>
+                    Operating Environment
+                </h3>
+                <ul>
+                    <li>Desktop web browser</li>
+                    <li>Mobile web browser</li>
+                </ul>
+            </section>
+            <section id="design">
+                <h3>
+                    <span>2.5 </span>
+                    Design and Implementation Constraints
+                </h3>
+                <p>
+                    UNST is developed in Javascript using Node.js for the server back-end side and uses HTML5 and CSS3 in order to provide a responsive front-end interface.
+                </p>
+            </section>
+            <section id="documentation">
+                <h3>
+                    <span>2.6 </span>
+                    User Documentation
+                </h3>
+                <p>This section will be included when the final solution is available. The documentation will include:</p>
+                <ul>
+                    <li>Presentation page of the application</li>
+                    <li>Presentation video  of the application</li>
+                    <li>User manual</li>
+                </ul>
+            </section>
+            <section id="dependencies">
+                <h3>
+                    <span>2.7 </span>
+                    Assumptions and Dependencies
+                </h3>
+                UNST is developed using Javascript and therefore a web browser is sufficient in order to access the application.
+                However, in order to upload files, storing environments need to be linked to your account.
+            </section>    
+        </section>
+        <section role="doc-part" id="interface">
+            <h2>
+                <span>3. </span>
+                External Interface Requirements
+            </h2>
+            <section id="user_interface">
+                <h3>
+                    <span>3.1 </span>
+                    User Interfaces
+                </h3>
+              <ol>
+                 <li>1. UNST Welcome Screen</li>
+                 <li>2. UNST Login Screen</li>
+                 <li>3. UNST Register Screen</li> 
+                 <li>4. UNST File Listing Screen</li> 
+                 <li>5. UNST Settings Page</li>
+              </ol>
+            </section>
+            <section id="hard_interface">
+                <h3>
+                    <span>3.2 </span>
+                    Hardware Interfaces
+                </h3>
+                <p>The minimum hardware requirements in order to run UNST are the minimum hardware requirements 
+                    of the preferred web browser.
+                </p>
+            </section>
+            <section id="soft_interface">
+                <h3>
+                    <span>3.3 </span>
+                    Software Interfaces
+                </h3>
+                <p>
+                    UNST requires a browser that support and has Javascript enabled.
+                </p>
+                <p>UNST can be connected with a Google Drive, OneDrive or Dropbox account as a storage environment.</p>
+            </section>
+            <section id="communication_interface">
+                <h3>
+                    <span>3.4 </span>
+                    Communications Interfaces
+                </h3>
+                <p>
+                    UNST requires a constant internet connection in order to use all the services available on the platform. Note that the download/upload speed set in the account settings can only be met if your internet speed is at least equal to the value set. 
+                </p>
+            </section>
+        </section>
+        <section role="doc-part" id="features">
+            <h2>
+                <span>4. </span>
+                System Features
+            </h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
+                labore et dolore magna aliqua. Nibh cras pulvinar mattis nunc sed blandit libero volutpat sed. 
+                Diam sollicitudin tempor id eu nisl nunc mi. Auctor eu augue ut lectus arcu bibendum at.
+                 Morbi tempus iaculis urna id. Tellus rutrum tellus pellentesque eu. Suscipit tellus mauris a 
+                 diam maecenas sed enim. Volutpat diam ut venenatis tellus in metus. Magna eget est lorem ipsum dolor. 
+                 Aliquet porttitor lacus luctus accumsan tortor posuere ac ut consequat. Sodales ut eu sem integer vitae
+                  justo eget. Massa vitae tortor condimentum lacinia quis vel eros donec ac. Erat velit scelerisque in 
+                  dictum non consectetur a. Duis convallis convallis tellus id interdum velit laoreet id. 
+            </p>
+        </section>
+        <section role="doc-part" id="requirements">
+            <h2>
+                <span>5. </span>
+                Other Nonfunctional Requirements
+            </h2>
+            <section id="performance_req">
+                <h3>
+                    <span>5.1 </span>
+                    Performance Requirements
+                </h3>
+                <p>
+                    UNST requires a system with a web browser supporting Javascript, HTML5 and CSS3. You can check
+                    if your preferred browser supports UNST  <a href="https://caniuse.com/">here</a>.
+                </p>
+            </section>
+            <section id="safety_req">
+                <h3>
+                    <span>5.2 </span>
+                    Safety Requirements
+                </h3>
+                <p>
+                    To ensure that the UNST's users will not experience any data loses the developer team will push updates
+                    regularly only after all the tests have passed. The deployment process is designed such that big impact bugs should
+                    not appear in production. Any bugs can be reported by the users on the github project page so that the developers can fix it as soon as possible.
+                </p>
+            </section>
+            <section id="security_req">
+                <h3>
+                    <span>5.3 </span>
+                    Security Requirements
+                </h3>
+                <p>
+                    UNST uses the OAuth authentication REST API of the storage environments available so no personal data regarding these environments
+                    is stored by the UNST team. Your account password is stored in a hashed version so your information are not exposed to potential threats.
+                </p>
             </section>
         </section>
     </body>
