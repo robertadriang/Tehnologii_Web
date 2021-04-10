@@ -32,21 +32,26 @@
     max-width: 75%;
 }
 
+
 .headerBar {
     background-image: linear-gradient(to right, #9fa659, white);
     margin: 0;
-    padding: 0.5rem;
     position: fixed;
     top:0px;
     width: 100%;
     z-index: 2;
     align-items: center;
+    box-sizing: border-box;
+    height: 3em;
 }
 .headerBar .headerLogo {
-    height: 3em;
+    height: 100%;
     margin-left: 1em;
     filter: invert(96%) sepia(12%) saturate(865%) hue-rotate(4deg) brightness(104%) contrast(87%);
 
+}
+.dropdownContainer {
+    display: none;
 }
 .sidebarDownArrow {
     height: 1em;
@@ -59,7 +64,7 @@
     background-image: linear-gradient(#efeeb6, white);
     width: 25%;
     position: fixed;
-    height: 73.5vh;
+    max-height: 75vh;
     overflow-y: scroll;
 }
 .sideBar::-webkit-scrollbar {
@@ -70,12 +75,14 @@
     background-color: white;
     width: 75%;
     margin-left: 25%;
+    padding-left: 15px;
     overflow-y: scroll;
-    height: 93.5vh;
+    max-height: calc(100vh - 3.5em);
+    overflow-x: hidden;
     display:flex;
     flex-wrap: wrap;
     overflow-x: hidden;
-    margin-top: 0.5rem;
+    padding-top: 0.5rem;
 }
 html, body {
     margin: 0;
@@ -87,7 +94,7 @@ html, body {
     height: 100%;
 }
 .displayedContent {
-    margin-top: 4em;
+    margin-top: 3em;
     margin-left: 0;
     margin-right: 0;
 }
@@ -98,6 +105,7 @@ html, body {
 .folderContainer {
     margin-top: 1em;
 }
+
 .folderName {
     font-weight: bold;
     font-size: 1.1em;
@@ -118,32 +126,36 @@ html, body {
 
 .searchInput {
     width: 100%;
-    padding-left: 1.5em;
-    border-radius: 1em;
+    padding-left: 1.9em;
+    border-radius: 2em;
     border: none;
     outline: none;
-    padding-bottom: 0.3rem;
     padding-right: 0.3rem;
+    padding-bottom: 0.4em;
+    padding-top: 0.4em;
+    height: 2em;
 }
 
 .contentImageContainer {
-    width: 9em;
+    width: 8em;
     height: 9em;
     margin-right: auto;
     margin-left: auto;
+    display: flex;
+    justify-content: center;
 }
 .contentImage {
-    width: 100%;
+    width: 90%;
 }
 .contentTitle {
     text-align: center;
 }
 .contentContainer {
-    width: 12.5%;
+    width: 7em;
 }
 
 .searchBox {
-    width: 30%;
+    width: 50%;
     display: flex;
     align-items: center;
     margin-left: 1em;
@@ -153,7 +165,7 @@ html, body {
 .searchIcon {
     height: 1em;
     position: relative;
-    right: -1.5em;
+    left: 1.3em;
     filter: invert(81%) sepia(11%) saturate(1156%) hue-rotate(25deg) brightness(85%) contrast(87%);
 
 }
@@ -167,7 +179,9 @@ html, body {
     transition: all 0.8s ease;
     position: absolute;
     top: 0;
-    width: 100%;
+    width: 90%;
+    display: flex;
+    justify-content: center;
 
 }
 .backCardImage {
@@ -197,11 +211,13 @@ html, body {
     }
 }
 
-.fileCard:hover .frontRotate {
-    transform: rotateY(180deg);
-}
-.fileCard:hover .backRotate {
-    transform: rotateY(0deg);
+@media(min-width: 1080px){
+    .fileCard:hover .frontRotate {
+        transform: rotateY(180deg);
+    }
+    .fileCard:hover .backRotate {
+        transform: rotateY(0deg);
+    }
 }
 
 .statisticsSideBar {
@@ -235,8 +251,11 @@ html, body {
 .statProviderContainer {
     display: flex;
     
-    margin-top: 1em;
-    margin-left: 1em;
+    height: 30%;
+    align-items: center;
+}
+.firstStatContainer {
+    margin-top: 5%;
 }
 
 .progressLabel {
@@ -248,12 +267,30 @@ html, body {
 }
 
 
+.navContainer {
+    margin-left: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-image: linear-gradient(to left, #9fa659, #e3e5ce);
+}
 .navButton {
-    margin-left: 1em;
+    height:100%;
+    display: flex;
+    width: 6em;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid #9d9d73;
+    text-decoration: none;
+    color: black;
+    
+    
 }
 
 
-@media (max-width: 1160px) {
+
+@media (max-width: 1080px) {
     .sideBar, .statisticsSideBar {
         display: none;
         width: 0%;
@@ -262,10 +299,81 @@ html, body {
         margin-left: 0px;
         width: 100%;
         overflow-x: hidden;
+        margin-top: 7em;
+        padding-top: 1em;
+        max-height: calc(100vh - 10em);
     }
     .contentContainer {
-        width: 25%;
+        width: 10em;
         height: 15em;
     }
+    .contentImageContainer {
+    }
+    .contentTitle {
+        font-size: 1.5em;
+    }
+    .headerBar {
+        height: 10em;
+    }
+    .searchBox {
+        height: 6em;
+        position: relative;
+        width: calc(100% - 24em);
+        border-radius: 3em;
+
+    }
+    .searchIcon {
+        height: 4rem;
+        position: absolute;
+        left: 1em;
+    }
+    .searchInput {
+        font-size: 3em;
+        height: 100%;
+    }
+    .navContainer {
+        display: none;
+    }
+    .dropdownContainer {
+        display: block;
+        position: relative;
+        width: 10em;
+        margin-left: auto;
+    }
+    .dropdownItems {
+        display: none;
+        position: absolute;
+        
+    }
+    .dropdownContainer:hover .dropdownItems {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .dropdownItems {
+        position:fixed;
+        top: 10em;
+        left: 0;
+        height: calc(100% - 10em);
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        background-image: linear-gradient(#c9d272, #ece8ad);
+
+
+    }
+    .dropdownNavButton {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 6em;
+        color: black;
+        text-decoration: none;
+        border-bottom: 1px solid gray;
+    }
+    .headerLogo {
+        height: 50%;
+    }
+    
 }
 

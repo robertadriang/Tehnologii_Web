@@ -20,18 +20,39 @@
                 <input type="text" class="searchInput">
             </span>
 
-            <a href="#" class="navButton">
-                Home
-            </a>
-            <a href="#" class="navButton">
-                Settings
-            </a>
-            <a href="#" class="navButton">
-                Statistics
-            </a>
-            <a href="#" class="navButton">
-                Log out
-            </a>
+            <div class="navContainer">
+                <a href="#" class="navButton selectedNav">
+                    Home
+                </a>
+                <a href="#" class="navButton">
+                    Settings
+                </a>
+                <a href="#" class="navButton">
+                    Statistics
+                </a>
+                <a href="#" class="navButton">
+                    Log out
+                </a>
+            </div>
+            <div class="dropdownContainer">
+                <div class="dropdownIconContainer">
+                    <img class="dropdownIcon" src="assets/images/ham.svg">
+                </div>
+                <div class="dropdownItems">
+                <a href="#" class="dropdownNavButton">
+                    Home
+                </a>
+                <a href="#" class="dropdownNavButton">
+                    Settings
+                </a>
+                <a href="#" class="dropdownNavButton">
+                    Statistics
+                </a>
+                <a href="#" class="dropdownNavButton">
+                    Log out
+                </a>
+                </div>
+            </div>
         </div>
         <div class="row displayedContent">
             <div class="sideBar">
@@ -212,7 +233,7 @@
 
             </div>
             <div class="statisticsSideBar">
-                <div class="statProviderContainer">
+                <div class="statProviderContainer firstStatContainer">
                     <img class="progressImage" src="assets/images/drive.svg">
                     <div class="progressBarWrapper">
                         <span class="progressLabel">
@@ -266,7 +287,7 @@
                 <div class="contentContainer">
                     <div class="contentImageContainer fileCard">
                         <div class="frontRotate rotatedCard">
-                            <img class="contentImage" src="assets/images/file.svg">
+                            <img class="contentImage" src="assets/images/fileTypes/txt.svg">
                         </div>
                         <div class="backRotate rotatedCard">
                             <ul>
@@ -275,9 +296,6 @@
                                 </li>
                                 <li>
                                     Extension: txt 
-                                </li>
-                                <li>
-                                    Stored on:
                                 </li>
                                 <li>
                                     <img class="backCardImage" src="assets/images/drive.svg">
@@ -295,227 +313,1487 @@
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/zip.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: txt 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.txt
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/javascript.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: js 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.js
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/iso.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: iso 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.iso
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/excel.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: xlsx 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.xlsx
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/doc.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: doc 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.doc
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/css.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: css 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.css
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/apk.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: apk 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        android.apk
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/javascript.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: js 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.js
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/iso.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: iso 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.iso
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/excel.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: xlsx 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.xlsx
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/doc.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: doc 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.doc
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/css.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: css 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.css
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/apk.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: apk 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        android.apk
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/javascript.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: js 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.js
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/iso.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: iso 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.iso
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/excel.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: xlsx 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.xlsx
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/doc.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: doc 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.doc
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/css.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: css 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.css
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/apk.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: apk 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        android.apk
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/javascript.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: js 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.js
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/iso.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: iso 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.iso
                     </div>
                 </div>
                 <div class="contentContainer">
-                    <div class="row contentImageContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/excel.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: xlsx 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
                     </div>
                     <div class="contentTitle">
-                        Title
+                        test.xlsx
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/doc.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: doc 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.doc
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/css.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: css 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.css
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/apk.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: apk 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        android.apk
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/javascript.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: js 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.js
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/iso.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: iso 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.iso
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/excel.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: xlsx 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.xlsx
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/doc.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: doc 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.doc
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/css.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: css 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.css
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/apk.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: apk 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        android.apk
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/javascript.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: js 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.js
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/iso.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: iso 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.iso
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/excel.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: xlsx 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.xlsx
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/doc.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: doc 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.doc
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/css.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: css 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.css
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/apk.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: apk 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        android.apk
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/javascript.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: js 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.js
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/iso.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: iso 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.iso
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/excel.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: xlsx 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.xlsx
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/doc.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: doc 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.doc
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/css.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: css 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        test.css
+                    </div>
+                </div>
+                <div class="contentContainer">
+                    <div class="contentImageContainer fileCard">
+                        <div class="frontRotate rotatedCard">
+                            <img class="contentImage" src="assets/images/fileTypes/apk.svg">
+                        </div>
+                        <div class="backRotate rotatedCard">
+                            <ul>
+                                <li>
+                                    Size: 92Kb
+                                </li>
+                                <li>
+                                    Extension: apk 
+                                </li>
+                                <li>
+                                    <img class="backCardImage" src="assets/images/drive.svg">
+                                    <img class="backCardImage" src="assets/images/oneDrive.svg">
+                                    <img class="backCardImage" src="assets/images/dropbox.svg">
+                                </li>
+                                <button class="backCardDownloadButton">
+                                    Download
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="contentTitle">
+                        android.apk
                     </div>
                 </div>
 
