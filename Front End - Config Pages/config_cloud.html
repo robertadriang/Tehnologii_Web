@@ -20,7 +20,66 @@
                 
             </div>
             <div class = "cloud_page">
+                <div class = "cloud_page_header">
+                    <img class="avatar" src="cloud-computing.svg" alt="">
+                </div>
+                <div class = "cloud_page_content">
+                    <div class="Google_Drive_section">
+                        <img class="icon" src="Google_Drive_icon.svg" alt="">
+                        <button class="disconnectbtn" type="button" formaction="config_cloud.html">Disconnect</button>
+                    </div>
+                    <div class="DropBox_section">
+                        <img id="DropBox_icon" src="Dropbox_icon.svg" alt="">
+                        <button class="connectbtn" type="button" formaction="config_cloud.html">Connect</button>
+                    </div>
+                    <div class="OneDrive_section">
+                        <img class="icon" src="OneDrive_icon.svg" alt="">
+                        <button class="disconnectbtn" type="button" formaction="config_cloud.html">Disconnect</button>
+                    </div>
+                    
+                    <div class="cloud_page_settings">
+                        <form>
+                            <input type="checkbox" id="remove_files" value="remove">
+                            <label for="remove_files">When disconnecting a storage service, files (or file fragments) saved there will be deleted as well.</label><br><br>
 
+                            Upload file splitting method:<br>
+                            <div class="radio_option">
+                                <input class="radio" type="radio" id="opt1" name="upload_method" value="opt1">
+                                <label for="opt1">Equal fragments</label><br>                                    
+                            </div>
+
+                            <div class="radio_option">
+                                <input class="radio" type="radio" id="opt2" name="upload_method" value="opt2">
+                                <label for="opt2">Fragment sizes based on remaining space on each storage service</label><br>
+                            </div>
+
+                            <div class="radio_option">
+                                <input  type="radio" id="opt3" name="upload_method" value="opt3">
+                                <label for="opt3">Custom fragment percentages:</label>
+                                <input type="text" class="frag_percentage_input_active" id="GoogleDrive_frag_percentage_input" placeholder="Google Drive upload %"/>
+                                <input type="text" class="frag_percentage_input_inactive" id="DropBox_frag_percentage_input" placeholder="DropBox upload %"/>
+                                <input type="text" class="frag_percentage_input_active" id="OneDrive_frag_percentage_input" placeholder="OneDrive upload %"/>
+                            </div>
+                            <br>
+
+                            Maximum upload speed (KB/s):
+                            <input type="text" class="speed_input" id="upload_speed_input" value="1024"/>
+                            <br>
+
+                            Maximum download speed (KB/s):
+                            <input type="text" class="speed_input" id="download_speed_input" value="1024"/>
+                            <br>
+
+                            <div class = "cloud_page_submit">
+                                <button id="cloud_page_submit_button" class="submit_button" type="submit" formaction="config_cloud.html">Save changes</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                </div>
             </div>
         </div>
 

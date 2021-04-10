@@ -95,6 +95,32 @@ body
     font-weight: bold;
 }
 
+.submit_button
+{
+    padding: 10px;
+    color: #ffffff;
+    background: #880e4f;
+    width: 30%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    
+}
+
+.submit_button:hover
+{
+  background-color: #560027;
+}
+
+
+
+.submit_button:active
+{
+  background-color: #360018;
+}
+
+
 /* -------------------------------------------------------------- ACCOUNT PAGE -------------------------------------------------------------- */
 
 .account_page
@@ -109,7 +135,7 @@ body
 {
     padding-top: 10px;
     height: 25%;
-    
+    margin-bottom: 3%;
 }
 
 .avatar
@@ -125,7 +151,8 @@ body
     padding: 20px;
     padding-top: 0;
     padding-bottom: 0;
-    height: 60%;
+    margin-bottom: 5%;
+    height: 50%;
     display: grid;
     grid-template-columns: 25% 25% 50%;
 }
@@ -237,13 +264,194 @@ body
     color: #8a8a8a;
     text-align: center;
     background-color: rgb(243, 243, 243);
+    height: 99%;
+}
+
+.cloud_page_content
+{
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 45% 55%;
+    padding: 20px;
+    width: 93%;
+    height: 60%;
 }
 
 
 
+.connectbtn
+{
+    
+    width: 75%;
+    padding: 10px;
+    color: #ffffff;
+    background: #880e4f;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    
+}
 
 
-/* -------------------------------------------------------------- STATS PAGE -------------------------------------------------------------- */
+.connectbtn:hover
+{
+  background-color: #560027;
+}
+
+
+
+.connectbtn:active
+{
+  background-color: #360018;
+}
+
+.disconnectbtn
+{
+    
+    width: 75%;
+    padding: 10px;
+    color: #ffffff;
+    background: #8a8a8a;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    
+}
+
+
+.disconnectbtn:hover
+{
+  background-color: #560027;
+}
+
+
+
+.disconnectbtn:active
+{
+  background-color: #360018;
+}
+
+.Google_Drive_section
+{
+    
+    margin:0;
+    padding:20px;
+    padding-top: 20px;
+    width: 100%;
+    height: 200px;
+}
+
+.DropBox_section
+{
+    margin:0;
+    padding:20px;
+    padding-top: 0;
+    width: 100%;
+    height: 200px;
+}
+
+.OneDrive_section
+{
+    margin:0;
+    padding:20px;
+    width: 100%;
+    height: 200px;
+}
+
+.icon
+{
+    
+    height:100px;
+    margin-bottom: 25px;
+}
+
+#DropBox_icon
+{
+    height: 140px;
+    margin-bottom: 5px;
+}
+
+.cloud_page_settings
+{
+    text-align: left;
+    padding: 20px;
+    width: 100%;
+    grid-row-start: 2;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+.frag_percentage_input_active
+{
+    padding: 8px;
+    border-radius: 5px;
+    border: 2px solid #dddddd;
+    width: 20%;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.5s, backround-color 0.5s;
+    margin-left: 10px;
+}
+
+
+.frag_percentage_input_active:focus
+{
+  border-color: #880e4f;
+  border-radius: 5px;
+  background-color: #d4d4d4; 
+}
+
+.frag_percentage_input_active::placeholder
+{
+  color: #aaaaaa;
+}
+
+.frag_percentage_input_inactive
+{
+    display: none;
+}
+
+.radio_option
+{
+    margin-top: 10px;
+}
+
+.speed_input
+{
+    padding: 8px;
+    border-radius: 5px;
+    border: 2px solid #dddddd;
+    width: 10%;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.5s, backround-color 0.5s;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.speed_input:focus
+{
+  border-color: #880e4f;
+  border-radius: 5px;
+  background-color: #d4d4d4; 
+}
+
+.speed_input::placeholder
+{
+  color: #aaaaaa;
+}
+
+.cloud_page_submit
+{
+    margin-top: 30px;
+    text-align: center;
+    width: 100%;
+}
+
+/* -------------------------------------------------------------- CLOUD PAGE -------------------------------------------------------------- */
 
 .stats_page
 {
