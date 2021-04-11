@@ -82,7 +82,7 @@
     max-height: calc(100vh - 3.5em);
     overflow-x: hidden;
     display:flex;
-    justify-content: space-between;
+    justify-content: left;
     flex-wrap: wrap;
     overflow-x: hidden;
     padding-top: 0.5rem;
