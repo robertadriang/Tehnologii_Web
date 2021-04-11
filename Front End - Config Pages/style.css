@@ -1046,6 +1046,25 @@ td{
     color:green;
 }
 
+::-webkit-scrollbar {
+    width: 0.5vw;
+    border-radius:15px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #880e4f;
+    border-radius:15px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #dd2788c0;
+  }
+
 @media(max-width:1100px)
 {
     .stats_page
@@ -1075,7 +1094,6 @@ td{
         left:49%;
     }
     
-
     .chrome_bar:before{
         content: attr(data-label);
         font-size: 1.1vw;
