@@ -8,8 +8,20 @@
 
     <body>
         <div class ="settings_window">
-            <div class = "sidebar">
-                <img class="logo" src="logo4.jpg">
+            <div id="sidebar" class = "sidebar">
+                <span class="sidebar_button" style="font-size:30px;cursor:pointer " onclick="closeNav()">&#9776;</span>
+                <script>
+                    function closeNav() 
+                    {
+                        document.getElementById("sidebar").style.width = "0";
+                        document.getElementById("sidebar").style.height = "0";
+                        document.getElementById("sidebar").style.display = "none";
+                        document.getElementById("stats_page").style.display = "block";
+                        document.getElementById("stats_page").style.width = "100%";
+                        document.getElementById("stats_page").style.height = "100%";
+                    } 
+                </script>
+                <img class="logo" src="logo4.jpg" alt="">
                 <div class="sidebar_header">
                     <h1>Settings</h1>
                 </div>
@@ -19,7 +31,20 @@
                     <button id="Stats" class="activebtn" type="submit" formaction="config_stats.html">Stats</button>
                 </form>                
             </div>
-            <div class = "stats_page">
+            <div id="stats_page" class = "stats_page">
+                <span class="sidebar_button" style="font-size:30px;cursor:pointer " onclick="openNav()">&#9776;</span>
+                <script>
+                    function openNav() 
+                    {
+                        document.getElementById("sidebar").style.display = "block";
+                        document.getElementById("sidebar").style.width = "100%";
+                        document.getElementById("sidebar").style.height = "100%";
+                        document.getElementById("stats_page").style.display = "none";
+                        document.getElementById("stats_page").style.width = "0";
+                        document.getElementById("stats_page").style.height = "0";
+                        
+                    }
+                </script>
                 <div class = "stats_page_header">
                     <img class="chart" src="chart.svg" alt="">
                 </div>
