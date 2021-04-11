@@ -15,11 +15,13 @@ body
     background-color: #880e4f;
 }
 
+.sidebar_button
+{
+    display:none;
+}
 
 .settings_window
 {
-    
-    overflow: none;
     
     display: grid;
     grid-template-columns: 25% 75%;
@@ -52,11 +54,12 @@ body
 
 .btn
 {
+    
   padding: 10px;
   color: #8a8a8a;
-  font-size: 16px;
+   
   width: 100%;
-  height: 60px;
+  height: 100px;
   border: none;
   outline: none;
   transition: background-color 0.2s;
@@ -67,11 +70,10 @@ body
 .activebtn
 {
     padding: 10px;
-    color: #8a8a8a;
-    font-size: 16px;
-    width: 100%;
-    height: 60px;
-    border: none;
+    color: #8a8a8a;  
+     width: 100%;
+     height: 100px;
+     border: none;
     outline: none;
     background-color:  rgb(255, 255, 255);
     margin:0;
@@ -97,6 +99,7 @@ body
 
 .submit_button
 {
+    
     padding: 10px;
     color: #ffffff;
     background: #880e4f;
@@ -121,19 +124,39 @@ body
 }
 
 
+@media screen and (max-width: 1100px) 
+{
+    .settings_window
+    {
+        display: block;
+    }
+
+    .sidebar_button
+    {
+        padding-left: 25px;
+        text-align: left;
+        display:block;
+    }
+    .btn, .activebtn
+    {
+        font-size: 120%;
+    }
+}
+
 /* -------------------------------------------------------------- ACCOUNT PAGE -------------------------------------------------------------- */
 
 .account_page
 {
     padding-top: 10px;
     color: #8a8a8a;
+    width: 100%;
     text-align: center;
     background-color: rgb(243, 243, 243);
 }
 
 .account_page_header
 {
-    padding-top: 10px;
+    padding-top: 0;
     height: 25%;
     margin-bottom: 3%;
 }
@@ -145,6 +168,7 @@ body
   height: 90%;
   width: 90%;
 }
+
 
 .account_page_content
 {  
@@ -247,13 +271,165 @@ body
 
 .account_page_pswd_input
 {
+    padding: 10px;
     grid-row-start: 3;
     grid-row-end: 3;
     grid-column-start: 3;
     grid-column-end: 3;
 }
 
+.account_page_submit
+{
+    margin-top: 50px;
+    width:100%;
+    grid-row-start: 4;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
 
+@media screen and (max-width: 1100px) 
+{
+    .account_page
+    {
+        display: block;
+        
+        overflow-y:scroll;
+    }
+
+
+    .account_page_content
+    {
+        overflow-y:scroll;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        row-gap: 5px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-size: 120%;
+        height: 100%;
+    }
+
+    .account_page_header
+    {
+        height: 20%;
+        margin-bottom: 30px;
+    }
+
+    .account_page_username_label, .account_page_username
+    {
+        width: 100%;
+        height: 10%;
+        padding: 10px;
+        
+    }
+
+    .account_page_username
+    {
+        text-align: left;
+    }
+
+    .account_page_username_input
+    {
+        width: 100%;
+        grid-row-start: 3;
+        grid-row-end: 3;
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    .account_page_email_label
+    {
+        width: 100%;
+        height: 10%;
+        padding: 10px;
+        grid-row-start: 2;
+        grid-row-end: 2;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+    .account_page_email
+    {
+        width: 100%;
+        height: 10%;
+        padding: 10px;
+        grid-row-start: 2;
+        grid-row-end: 2;
+        grid-column-start: 2;
+        grid-column-end: 3;
+        text-align: left;
+    }
+
+    .account_page_username_input
+    {
+        width: 95%;
+        grid-row-start: 3;
+        grid-row-end: 3;
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    .account_page_email_input
+    {
+        width: 95%;
+        grid-row-start: 4;
+        grid-row-end: 4;
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    .account_page_pswd_input
+    {
+        width: 95%;
+        grid-row-start: 5;
+        grid-row-end: 5;
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    .account_page_pswd_label
+    {
+        display: none;
+    }
+
+
+    .account_page_input
+    {
+        width: 70%;
+        height: 25px;
+
+    }
+
+    .account_page_submit
+    {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        height: 20%;
+        grid-row-start: 6;
+        grid-row-end: 6;
+        grid-column-start: 1;
+        grid-column-end: 3;
+
+    }
+
+    .submit_button
+    {
+        
+        font-size: 90%;
+        width: 70%;
+        
+    }
+
+    .sidebar
+    {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+    
+}
 
 
 /* -------------------------------------------------------------- CLOUD PAGE -------------------------------------------------------------- */
@@ -283,6 +459,7 @@ body
 {
     
     width: 75%;
+    height: 20%;
     padding: 10px;
     color: #ffffff;
     background: #880e4f;
@@ -310,6 +487,7 @@ body
 {
     
     width: 75%;
+    height: 20%;
     padding: 10px;
     color: #ffffff;
     background: #8a8a8a;
@@ -335,7 +513,10 @@ body
 
 .Google_Drive_section
 {
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin:0;
     padding:20px;
     padding-top: 20px;
@@ -345,15 +526,23 @@ body
 
 .DropBox_section
 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin:0;
     padding:20px;
-    padding-top: 0;
+    padding-top: 10px;
     width: 100%;
     height: 200px;
 }
 
 .OneDrive_section
 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin:0;
     padding:20px;
     width: 100%;
@@ -363,13 +552,13 @@ body
 .icon
 {
     
-    height:100px;
+    height:50%;
     margin-bottom: 25px;
 }
 
 #DropBox_icon
 {
-    height: 140px;
+    height: 70%;
     margin-bottom: 5px;
 }
 
@@ -446,12 +635,103 @@ body
 
 .cloud_page_submit
 {
-    margin-top: 30px;
+    margin-top: 50px;
     text-align: center;
     width: 100%;
 }
 
-/* -------------------------------------------------------------- CLOUD PAGE -------------------------------------------------------------- */
+@media screen and (max-width: 1100px) 
+{
+    .cloud_page
+    {
+        overflow-y: scroll;
+        overflow-x: none;
+        font-size: 120%;
+    }
+    .cloud_page_content
+    {
+        margin: 0;
+        padding: 10px;
+        width: 95%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cloud_page_settings
+    {
+        width: 95%;
+
+    }
+
+
+    .cloud_page_header
+    {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .Google_Drive_section, .OneDrive_section
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        height: 21%;
+        
+    }
+
+    .DropBox_section
+    {
+        height: 20%;
+        padding: 0;
+        margin-bottom: 25px;
+    }
+
+    .icon
+    {
+        height: 50%;
+        margin-bottom: 20px;
+    }
+
+    .connectbtn
+    {
+        font-size: 80%;
+        height: 25%;
+    }
+
+    .disconnectbtn
+    {
+        font-size: 80%;
+        height: 25%;
+    }
+    
+    .frag_percentage_input_active
+    {
+        width: 50%;
+        margin-top: 10px;
+        font-size: 80%;
+    }
+
+    .speed_input
+    {
+        width: 50%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 80%;
+    }
+
+    .sidebar
+    {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+}
+
+/* -------------------------------------------------------------- STATS PAGE -------------------------------------------------------------- */
 
 .stats_page
 {

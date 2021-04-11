@@ -8,7 +8,20 @@
 
     <body>
         <div class ="settings_window">
-            <div class = "sidebar">
+            
+            <div id="sidebar" class = "sidebar">
+                <span class="sidebar_button" style="font-size:30px;cursor:pointer " onclick="closeNav()">&#9776;</span>
+                <script>
+                    function closeNav() 
+                    {
+                        document.getElementById("sidebar").style.width = "0";
+                        document.getElementById("sidebar").style.height = "0";
+                        document.getElementById("sidebar").style.display = "none";
+                        document.getElementById("account_page").style.display = "block";
+                        document.getElementById("account_page").style.width = "100%";
+                        document.getElementById("account_page").style.height = "100%";
+                    } 
+                </script>
                 <div class="sidebar_header">
                     <h1>Settings</h1>
                 </div>
@@ -19,12 +32,26 @@
                 </form>
                 
             </div>
-            <div class = "account_page">
+            
+            <div id="account_page" class = "account_page">
+                <span class="sidebar_button" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+                <script>
+                    function openNav() 
+                    {
+                        document.getElementById("sidebar").style.display = "block";
+                        document.getElementById("sidebar").style.width = "100%";
+                        document.getElementById("sidebar").style.height = "100%";
+                        document.getElementById("account_page").style.display = "none";
+                        document.getElementById("account_page").style.width = "0";
+                        document.getElementById("account_page").style.height = "0";
+                    }
+
+                </script>
                 <div class = "account_page_header">
                     <img class="avatar" src="avatar.svg" alt="">
                 </div>
                 <form>
-                    <div class = "account_page_content">
+                    <div  class = "account_page_content">
                         <div class="account_page_username_label">
                             Username:
                         </div>
@@ -62,10 +89,12 @@
                             <input type="text" class="account_page_input" id="account_page_pswd_input_field" placeholder="New password"/>
                             <input type="text" class="account_page_input" id="account_page_pswd_input_field" placeholder="Confirm new password"/>
                         </div>
+
+                        <div class = "account_page_submit">
+                            <button id="account_page_submit_button" class="submit_button" type="submit" formaction="config_account.html">Save changes</button>
+                        </div>
                     </div>
-                    <div classs = "account_page_submit">
-                        <button id="account_page_submit_button" class="submit_button" type="submit" formaction="config_account.html">Save changes</button>
-                    </div>
+
                 </form>
             </div>
         </div>

@@ -8,7 +8,16 @@
 
     <body>
         <div class ="settings_window">
-            <div class = "sidebar">
+            <div id="sidebar" class = "sidebar">
+                <span class="sidebar_button" style="font-size:30px;cursor:pointer " onclick="closeNav()">&#9776;</span>
+                <script>
+                    function closeNav() 
+                    {
+                        document.getElementById("sidebar").style.width = "0";
+                        document.getElementById("sidebar").style.height = "0";
+                        document.getElementById("sidebar").style.display = "none";
+                    } 
+                </script>
                 <div class="sidebar_header">
                     <h1>Settings</h1>
                 </div>
@@ -20,6 +29,16 @@
                 
             </div>
             <div class = "cloud_page">
+                <span class="sidebar_button" style="font-size:30px;cursor:pointer " onclick="openNav()">&#9776;</span>
+                <script>
+                    function openNav() 
+                    {
+                        document.getElementById("sidebar").style.display = "block";
+                        document.getElementById("sidebar").style.width = "100%";
+                        document.getElementById("sidebar").style.height = "100%";
+                        
+                    }
+                </script>
                 <div class = "cloud_page_header">
                     <img class="avatar" src="cloud-computing.svg" alt="">
                 </div>
