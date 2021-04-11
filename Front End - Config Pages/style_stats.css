@@ -334,9 +334,19 @@ td{
 
 @media(max-width:1100px)
 {
-    .stats_page
-    {
-        overflow-y: scroll;
+    .distributed_space{
+        margin-top: 1vw;
+        margin-left: 2%;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 1vw;
+        width:95%;
+        display:flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius:1vw;
+        background-color: rgba(230, 230, 230, 0.61);
+    
     }
 
     .prgress:before {
@@ -380,6 +390,37 @@ td{
         position:absolute;
         left:45%;
     }
+    
+    .dotted-line{
+        margin-left:0%;
+        width:20%;
+    }
+
+    .dotted-line2{
+        margin-left:0%;
+        width:15%;
+    }
+
+    .dotted-line3{
+        margin-left:0%;
+        width:15%;
+    }
+
+    .stat_name_long{
+        margin-left: 1vw;
+        width:56%;
+        color: rgba(88, 84, 84, 0.877);
+        font-size:110%;
+        text-align:justify;
+        font-weight: bold;
+      }
+
+    .stat_value{
+        width:25%; 
+        font-size:105%;
+        text-align:justify;
+        color:rgba(88, 84, 84, 0.877);
+      }
     
     .chrome_bar,.one_bar,.dropbox_bar{
         -webkit-appearance: none;
