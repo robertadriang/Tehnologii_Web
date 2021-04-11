@@ -34,7 +34,7 @@
 
 
 .headerBar {
-    background-image: linear-gradient(to right, #880e4f, white);
+    background-color: #880e4f;
     margin: 0;
     position: fixed;
     top:0px;
@@ -61,8 +61,8 @@
 
 .sideBar {
     padding-left: 15px;
-    background-image: linear-gradient(#880e4f, white);
-    width: 24%;
+    background-color: rgb(243, 243, 243);
+    width: 25%;
     position: fixed;
     max-height: 75vh;
     overflow-y: scroll;
@@ -76,10 +76,13 @@
     width: 75%;
     margin-left: 25%;
     padding-left: 15px;
+    padding-right: 25px;
+    padding-top: 15px;
     overflow-y: scroll;
     max-height: calc(100vh - 3.5em);
     overflow-x: hidden;
     display:flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     overflow-x: hidden;
     padding-top: 0.5rem;
@@ -101,6 +104,7 @@ html, body {
 
 .sidebarFolder {
     height: 2em;
+    color: #8a8a8a;
 }
 .folderContainer {
     margin-top: 1em;
@@ -109,13 +113,13 @@ html, body {
 .folderName {
     font-weight: bold;
     font-size: 1.1em;
-    color: black;
+    color: #8a8a8a;
 }
 .sidebarFile {
     margin-left: 1.5rem;
     font-size: 1.2em;
     font-weight: bold;
-    color: black;
+    color: #8a8a8a;
 }
 .folderHeader {
     align-items: center; 
@@ -146,6 +150,7 @@ html, body {
 }
 .contentImage {
     width: 90%;
+    
 }
 .contentTitle {
     text-align: center;
@@ -180,18 +185,29 @@ html, body {
     top: 0;
     width: 90%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    justify-content: left;
 
+}
+
+li
+{
+    margin-left: -10px;
 }
 .backCardImage {
     width: 1em;
 }
 .backCardDownloadButton {
-    background-color: green;
+    background-color: #880e4f;
     color: white;
     border-radius: 1em;
     margin-top: 1em;
     outline: none;
+    border-width: 0;
+    padding: 5px;
+    width: 100%;
+    margin-left: -25px;
 }
 
 
@@ -220,18 +236,19 @@ html, body {
 }
 
 .statisticsSideBar {
+    padding-left: 15px;
+    padding-bottom: 15px;
     position:fixed;
     bottom: 0px;
     height: 20vh;
-    background-image: linear-gradient(to top, #880e4f, white);
+    background-color: rgb(243, 243, 243);
     width: 25%;
 }
 
 .progressBarWrapper {
     width: 80%;
     height: 2em;
-    border-radius: 2em;
-    border: 1px solid black;
+    
     text-align: center;
     position: relative;
 }
@@ -240,7 +257,7 @@ html, body {
     margin-right: 1em;
 }
 .progressBarFill {
-    background-color: green;
+    background-color: #880e4f;
     width: 40%;
     height:100%;
     border-radius: 2em;
@@ -258,6 +275,7 @@ html, body {
 }
 
 .progressLabel {
+    
     position: absolute;
     left: 0;
     right: 0;
@@ -272,8 +290,9 @@ html, body {
     display: flex;
     justify-content: center;
     align-content: center;
-    background-image: linear-gradient(to left, #880e4f,#dcb9cc);
+    background-color: #880e4f;
 }
+
 .navButton {
     height:100%;
     display: flex;
@@ -282,7 +301,7 @@ html, body {
     align-items: center;
     border-left: 1px solid #551040;
     text-decoration: none;
-    color: black;
+    color: rgb(243, 243, 243);
     
     
 }
@@ -291,8 +310,10 @@ html, body {
 
 @media (max-width: 1080px) {
     .sideBar, .statisticsSideBar {
+
         display: none;
         width: 0%;
+        
     }
     .mainContent {
         margin-left: 0px;
