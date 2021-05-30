@@ -5,10 +5,11 @@
         <title>Sign Up Page</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="signup.js" type = "application/javascript"></script>
     </head>
 
     <body class="center">
-        <form>
+        <form id="reg-form">
             <fieldset class="center">
                 <div class = "form_content">
 
@@ -22,8 +23,8 @@
                     <input type="text" id="email" placeholder="Email":/>
                     <input type="text" id="username" placeholder="Username":/>
                     <input type="password" id="psswd" placeholder="Password"/>
-                    <input type="password" id="psswd" placeholder="Confirm Password"/>
-                    <button class="btn" id="signupbtn" type="button">Create Account</button>
+                    <input type="password" id="psswd-confirm" placeholder="Confirm Password"/>
+                    <button class="btn" id="signupbtn" type="button" onclick="registerUser()">Create Account</button>
 
                     <div class="links">
                         <div class="link">
