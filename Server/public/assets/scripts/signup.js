@@ -1,3 +1,4 @@
+
 async function registerUser(){
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
@@ -18,10 +19,12 @@ async function registerUser(){
         alert("Invalid email address!");
     else if (!usernameFilter.test(username))
         alert("Invalid username. A valid username may contain: \n - lower-case or upper-case letters, \n - digits, \n - \'\_\' but not at the beginning or at the end of the username.")
-
-    
-
-        const result = await fetch('/api/login', {
+    else if(password.length < 5)
+        alert("Password is too short!");
+    else if(password != passwordConfirm)
+        alert("The confirmed password is different than the given password!");
+    else{
+        const response = await fetch('http://localhost:4200/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,10 +32,12 @@ async function registerUser(){
             body: JSON.stringify({
                 email,
                 username,
-                password,
-                passwordConfirm
+                password
             })
-        }).then((res) => res.json())
+        });
 
-    console.log(result);
+        if(response.status == 200)
+            console.log("Bravo frate");
+    }
+    
 }
