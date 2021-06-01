@@ -18,7 +18,8 @@ async function getToken(object){
         redirect_uri: 'http://localhost:4200/config/config_cloud.html'    
     });
     let data="";
-    var access_token="";
+    let access_token="";
+    let refresh_token="";
 
     return new Promise((resolve,reject)=>{
         request=https.request(
@@ -27,13 +28,13 @@ async function getToken(object){
                 resp.on('data', d => data += d);
                 resp.on('end',async () => {
                         let result=JSON.parse(data);
+                        refresh_token+=result.refresh_token;
                         access_token+=result.access_token;
-            
                         if(this.res.statusCode!==200){                           
                             reject(result);
                         }else{
-                            let addTokenResult=await database.addDropboxToken({idUser:object.idUser,sessionToken:access_token});
-                            console.log(addTokenResult);
+                            let addTokenResult=await database.addBothDropboxTokens({idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
+                            console.log("Token by login:",addTokenResult[0].session_token);
                             resolve(access_token);
                         }
                     });
@@ -46,8 +47,52 @@ async function getToken(object){
     }); 
 }
 
+async function getTokenByRefresh(object){
+    let options={
+        method: 'POST',
+        hostname:"api.dropboxapi.com",
+        path:"/oauth2/token",
+        headers:{
+            "Content-Type": "application/x-www-form-urlencoded",
+            'Authorization': 'Basic bWk2cGdrZjFpeTltYWdhOmRqd2M1bG15dzZ5aHFmNQ=='
+        }
+    };
+    let body=queryString.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: await database.getRefreshToken(object)
+    });
+
+    let data="";
+    let access_token="";
+
+    return new Promise((resolve,reject)=>{
+        request=https.request(
+            options,
+             function(resp) {
+                resp.on('data', d => data += d);
+                resp.on('end',async () => {
+                        let result=JSON.parse(data);
+                        access_token+=result.access_token;
+                        if(this.res.statusCode!==200){                           
+                            reject(result);
+                        }else{
+                            let addTokenResult=await database.addDropboxSessionToken({idUser:object.idUser,sessionToken:access_token});
+                            console.log("Token by refresh:",addTokenResult[0].session_token);
+                            resolve(access_token);
+                        }
+                    });
+                resp.on('error',()=>{
+                    reject("Something is not right");
+                })
+          });
+           request.write(body);
+           request.end();
+    }); 
+
+}
 
 module.exports = {
-    getToken: getToken
+    getToken: getToken,
+    getTokenByRefresh:getTokenByRefresh
 }
 

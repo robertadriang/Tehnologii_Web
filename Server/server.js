@@ -51,10 +51,7 @@ router.handle('/config/config_cloud', 'POST', async (req, res) => {
 router.handle('/home/index', 'get', async (req, res) => { 
     try{
         let aux=await database.createPoll();
-        for(let i=0;i<10;++i){
-            let queryResult=await database.cevaQuery(Math.floor(Math.random()*3+1));
-            console.log(queryResult)
-        }
+        console.log("Connection pool created!");
     }
     catch (error){
         console.log("Hmmmm... ",error)
