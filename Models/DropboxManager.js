@@ -2,7 +2,7 @@ const queryString = require('querystring');
 var https = require('https');
 var database=require('../Models/DBHandler');
 
-async function getToken(object){
+async function createSessionToken(object){
     let options={
         method: 'POST',
         hostname:"api.dropboxapi.com",
@@ -33,9 +33,13 @@ async function getToken(object){
                         if(this.res.statusCode!==200){                           
                             reject(result);
                         }else{
-                            let addTokenResult=await database.addBothDropboxTokens({idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
-                            console.log("Token by login:",addTokenResult[0].session_token);
-                            resolve(access_token);
+                            try{
+                                await database.addBothDropboxTokens({idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
+                                resolve(access_token);
+                            }catch(error){
+                                reject(error);
+                            }
+                            
                         }
                     });
                 resp.on('error',()=>{
@@ -47,7 +51,7 @@ async function getToken(object){
     }); 
 }
 
-async function getTokenByRefresh(object){
+async function refreshSesssionToken(object){
     let options={
         method: 'POST',
         hostname:"api.dropboxapi.com",
@@ -76,9 +80,13 @@ async function getTokenByRefresh(object){
                         if(this.res.statusCode!==200){                           
                             reject(result);
                         }else{
-                            let addTokenResult=await database.addDropboxSessionToken({idUser:object.idUser,sessionToken:access_token});
-                            console.log("Token by refresh:",addTokenResult[0].session_token);
-                            resolve(access_token);
+                            try{
+                                let addTokenResult=await database.addDropboxSessionToken({idUser:object.idUser,sessionToken:access_token});
+                                resolve(access_token);
+                            }catch(error){
+                                reject(error);
+                            }
+                            
                         }
                     });
                 resp.on('error',()=>{
@@ -92,7 +100,7 @@ async function getTokenByRefresh(object){
 }
 
 module.exports = {
-    getToken: getToken,
-    getTokenByRefresh:getTokenByRefresh
+    createSessionToken: createSessionToken,
+    refreshSesssionToken:refreshSesssionToken
 }
 

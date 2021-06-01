@@ -27,10 +27,23 @@ async function getRefreshToken(object){
     });
 }
 
+async function getSessionToken(object){
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT session_token from dropbox_session_tokens WHERE user_id=?',[object.idUser],function(error,results,fields){
+            if(error) {
+                reject(error);
+            }else{
+                let resObjs=JSON.parse(JSON.stringify(results));
+                resolve(resObjs[0].session_token);
+            }   
+        });
+    });
+}
+
 /* Dropbox flow allows for sessionTokens that last ~45 minutes. But you can request a refresh token that can be used to generate a new sessionToken without asking for the login again */
 async function addBothDropboxTokens(object){
     return new Promise((resolve,reject)=>{
-        connection.query('SELECT * from dropbox_session_tokens WHERE user_id=?',[object.idUser],function(error,results,fields){
+        connection.query('SELECT * from dropbox_session_tokens WHERE user_id=?',[object.idUser], function(error,results,fields){
             if(error) {
                 reject(error);
             }else{
@@ -42,19 +55,18 @@ async function addBothDropboxTokens(object){
                             reject(error);
                         }else{
                             console.log("I added BOTH tokens for the user:",results);
-                            resolve(resObjs);
                         }
                     });
                 }else{
-                   connection.query('UPDATE dropbox_session_tokens SET session_token=?, refresh_token=? WHERE user_id=?',[object.sessionToken,object['refresh_token'],object.idUser],function(error,results,fields){
+                   connection.query('UPDATE dropbox_session_tokens SET session_token=?, refresh_token=? WHERE user_id=?',[object.sessionToken,object['refresh_token'],object.idUser], function(error,results,fields){
                     if(error){
                         reject(error);
                     }else{
                         console.log("I updated the tokens for the user!");
-                        resolve(resObjs);
                     }
                    });
                 }
+                resolve("OK");
             }   
         });
     });
@@ -74,7 +86,6 @@ async function addDropboxSessionToken(object){
                             reject(error);
                         }else{
                             console.log("I added a token for the user!");
-                            resolve(resObjs);
                         }
                     });
                 }else{
@@ -83,10 +94,10 @@ async function addDropboxSessionToken(object){
                         reject(error);
                     }else{
                         console.log("I updated the token for the user!");
-                        resolve(resObjs);
                     }
                    });
                 }
+                resolve("OK");
             }   
         });
     });
@@ -96,5 +107,6 @@ module.exports = {
     createPoll: createPoll,
     addBothDropboxTokens: addBothDropboxTokens,
     addDropboxSessionToken:addDropboxSessionToken,
-    getRefreshToken:getRefreshToken
+    getRefreshToken:getRefreshToken,
+    getSessionToken:getSessionToken
 };

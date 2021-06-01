@@ -1,17 +1,13 @@
-let db=require('./DropboxManager');
-
+let dropbox=require('./DropboxManager');
+var database=require('../Models/DBHandler');
 
 async function setCloud(request){
     if(request.cloud=='db'){
         ///Dropbox
-
         /* TODO: REMOVE THIS WE ARE ONLY TESTING THE TOKEN GENERATION BY REFRESH */
-        await db.getToken(request);
-        return await db.getTokenByRefresh(request);
-
-
-        //return db.getToken(request);      
-        
+       // console.log("token in CM: ",await dropbox.createSessionToken(request));
+        //console.log("token in CM refreshed",await dropbox.refreshSesssionToken(request));
+        return await dropbox.createSessionToken(request); 
     }else if(request.cloud='g'){
         //google drive
     }else{
