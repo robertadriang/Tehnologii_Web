@@ -1,5 +1,4 @@
 const APP_KEY = "mi6pgkf1iy9maga";
-
 const currentURL=window.location.href;
 
 if (currentURL.indexOf("code") !== -1) {
@@ -17,7 +16,6 @@ if (currentURL.indexOf("code") !== -1) {
 } else {
     console.log("Unde-i tokenu nu e tokenu");
 }
-
 
 window.onload = function () {
     document.getElementById("dropbox_connect").onclick = () => {

@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var app = require('./routes.js');
 var cm=require('../Models/CloudManager')
-
+var database=require('../Models/DBHandler')
 // initialize router
 var router = app.Router();
 
@@ -39,13 +39,22 @@ router.handle('/config/config_cloud', 'POST', async (req, res) => {
         let sessionToken=await cm.setCloud(aux);
         return res.end(sessionToken);
     }catch (error){
-        console.log("salutmaomor");
+       // console.log("salutmaomor");
         return res.end(JSON.stringify(error));
       
     }
     //else
       //  return res.end(JSON.stringify(sessionToken));
 });
+
+
+router.handle('/home/index', 'get', (req, res) => {
+    console.log("alo");
+    let aux=database.test();
+    console.log(aux);
+    return res.end('salut');
+});
+
 //setup router and routing to local files
 app.Use(router);
 // folder name inside server to publish to web
