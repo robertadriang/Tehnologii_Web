@@ -48,10 +48,18 @@ router.handle('/config/config_cloud', 'POST', async (req, res) => {
 });
 
 
-router.handle('/home/index', 'get', (req, res) => {
-    console.log("alo");
-    let aux=database.test();
-    console.log(aux);
+router.handle('/home/index', 'get', async (req, res) => { 
+    try{
+        let aux=await database.createPoll();
+        for(let i=0;i<10;++i){
+            let queryResult=await database.cevaQuery(Math.floor(Math.random()*3+1));
+            console.log(queryResult)
+        }
+    }
+    catch (error){
+        console.log("Hmmmm... ",error)
+    }
+   // console.log("in router:",aux);
     return res.end('salut');
 });
 

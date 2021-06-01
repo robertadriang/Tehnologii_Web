@@ -1,23 +1,35 @@
+const mysql = require('mysql');
+var connection;
 
-function test(){
-    
-    console.log("Alo")
-    const mysql = require('mysql');
-    const connection = mysql.createConnection({
-      host: 'localhost',
-      user: 'user',
-      password: 'password',
-      database: 'database name',
-      socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock'
-    });
-    connection.connect((err) => {
-      if (err) throw err;
-      console.log('Connected!');
-    });
+async function createPoll(){
+    return new Promise((resolve,reject)=>{
+        const mysql = require('mysql');
+        connection = mysql.createPool({
+          connectionLimit: 3,
+          host: 'localhost',
+          user: 'root',
+          password: 'student',
+          database: 'unst'
+        });
+        resolve(connection);
+    })
+}
 
-    return "merge";
+async function cevaQuery(givenID){
+    console.log(givenID);
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT * FROM test WHERE idtest<=?',[givenID], function(error, results, fields){
+            if(error) {
+                reject(error);
+            }else{
+                let resObjs=JSON.parse(JSON.stringify(results));
+                resolve(resObjs);
+            }   
+        });
+    });
 }
 
 module.exports = {
-    test: test
+    createPoll: createPoll,
+    cevaQuery: cevaQuery
 }
