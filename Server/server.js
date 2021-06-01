@@ -1,7 +1,10 @@
 var http = require('http');
+var https = require('https');
 var fs = require('fs');
 var path = require('path');
 var app = require('./routes.js');
+var cm=require('../Models/CloudManager')
+var database=require('../Models/DBHandler')
 // initialize router
 var router = app.Router();
 var crypto = require('crypto');
@@ -28,6 +31,7 @@ router.handle('/', 'get', (req, res) => {
     res.end();
 });
 
+
 router.handle('/register','post',(req,res)=>{
     console.log("register received");
     res.statusCode = 200;
@@ -45,6 +49,39 @@ router.handle('/register','post',(req,res)=>{
         res.end();
     })
     
+
+router.handle('/config/config_cloud', 'POST', async (req, res) => {
+    let token=req.headers['storage-code'];
+    console.log("Token1:",token);
+    let aux={cloud:'db',token:token};
+
+    try{
+        let sessionToken=await cm.setCloud(aux);
+        return res.end(sessionToken);
+    }catch (error){
+       // console.log("salutmaomor");
+        return res.end(JSON.stringify(error));
+      
+    }
+    //else
+      //  return res.end(JSON.stringify(sessionToken));
+});
+
+
+router.handle('/home/index', 'get', async (req, res) => { 
+    try{
+        let aux=await database.createPoll();
+        for(let i=0;i<10;++i){
+            let queryResult=await database.cevaQuery(Math.floor(Math.random()*3+1));
+            console.log(queryResult)
+        }
+    }
+    catch (error){
+        console.log("Hmmmm... ",error)
+    }
+   // console.log("in router:",aux);
+    return res.end('salut');
+
 });
 
 //setup router and routing to local files
