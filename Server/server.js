@@ -52,7 +52,3 @@ app.Use(router);
 app.Use(app.Local('public'));
 //connect router as middleware
 const server = http.createServer(app.Serve).listen(4200);
-
-let a=undefined; 
-console.log(a===undefined); ///false
-comsole.log(undefined===undefined); ///true
