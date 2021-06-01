@@ -1,5 +1,5 @@
 
-async function registerUser(){
+async function registerRequest(){
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("psswd").value;
