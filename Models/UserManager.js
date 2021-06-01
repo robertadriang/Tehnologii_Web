@@ -21,8 +21,15 @@ async function registerUser(userData)
         }
     }
     catch(error){
-        message = 'Error';
-        console.log("Query error: ",error);
+        if(error.sqlMessage.includes("Duplicate entry"))
+        {
+            if(error.sqlMessage.includes('email')){
+                message="Email \"" + userData.email + "\" is already taken!";
+            }
+            else if(error.sqlMessage.includes('username')){
+                message="Username \"" + userData.username + "\" is already taken!";
+            }
+        }
     }
     return(message);
 }

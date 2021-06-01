@@ -79,7 +79,7 @@ router.handle('/register','post', (req,res)=>{
         let dataObj = JSON.parse(data);             //data contains the body of the request that came from the client; therefore, we create the object 'dataObj' using JSON.parse();
         let message = await userManager.registerUser(dataObj);
         console.log("Server: ", message);
-        res.end();
+        res.end(message);
     })
 });
 
