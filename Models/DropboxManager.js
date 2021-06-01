@@ -1,7 +1,8 @@
 const queryString = require('querystring');
 var https = require('https');
+var database=require('../Models/DBHandler');
 
-async function getToken(token){
+async function getToken(object){
     let options={
         method: 'POST',
         hostname:"api.dropboxapi.com",
@@ -12,7 +13,7 @@ async function getToken(token){
         }
     };
     let body=queryString.stringify({
-        code: token,
+        code: object.token,
         grant_type: 'authorization_code',
         redirect_uri: 'http://localhost:4200/config/config_cloud.html'    
     });
@@ -22,16 +23,17 @@ async function getToken(token){
     return new Promise((resolve,reject)=>{
         request=https.request(
             options,
-            function(resp) {
+             function(resp) {
                 resp.on('data', d => data += d);
-                resp.on('end', () => {
+                resp.on('end',async () => {
                         let result=JSON.parse(data);
                         access_token+=result.access_token;
-                        
-                        //console.log("Access_token:",access_token);
+            
                         if(this.res.statusCode!==200){                           
                             reject(result);
                         }else{
+                            let addTokenResult=await database.addDropboxToken({idUser:object.idUser,sessionToken:access_token});
+                            console.log(addTokenResult);
                             resolve(access_token);
                         }
                     });

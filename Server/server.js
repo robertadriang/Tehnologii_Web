@@ -33,10 +33,10 @@ router.handle('/', 'get', (req, res) => {
 router.handle('/config/config_cloud', 'POST', async (req, res) => {
     let token=req.headers['storage-code'];
     console.log("Token1:",token);
-    let aux={cloud:'db',token:token};
+    let object={cloud:'db',token:token,idUser:1};
 
     try{
-        let sessionToken=await cm.setCloud(aux);
+        let sessionToken=await cm.setCloud(object);
         return res.end(sessionToken);
     }catch (error){
        // console.log("salutmaomor");

@@ -12,7 +12,7 @@ if (currentURL.indexOf("code") !== -1) {
             'Accept': 'application/json',
             'storage-code':token
         }
-    }).then(response=>response.text()).then(data=>console.log(data));
+    }).then(response=>response.text()).then(data=>console.log(data)).then(window.location='http://localhost:4200/config/config_cloud.html');
 } else {
     console.log("Unde-i tokenu nu e tokenu");
 }
