@@ -5,7 +5,7 @@ async function registerUser(){
     const password = document.getElementById("psswd").value;
     const passwordConfirm = document.getElementById("psswd-confirm").value;
     var emailFilter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;     //email address regex filter
-    var usernameFilter = /^[a-zA-Z0-9]+([a-zA-Z0-9_]*[a-zA-Z0-9]+)*$/;     //username regex filter
+    var usernameFilter = /^[a-zA-Z0-9]+([a-zA-Z0-9_]*[a-zA-Z0-9]+)*$/;                       //username regex filter
 
     if (email == "" || email == null)
         alert("Email address is empty!");
@@ -34,10 +34,13 @@ async function registerUser(){
                 username,
                 password
             })
-        });
+        }).then((response)=>{
+            if(response.status == 200)
+                console.log("Bravo frate");
+        })
+            
 
-        if(response.status == 200)
-            console.log("Bravo frate");
+
     }
     
 }

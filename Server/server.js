@@ -37,6 +37,7 @@ router.handle('/register','post',(req,res)=>{
         data += chunk;
     })
     req.on('end', () => {
+        
         let dataObj = JSON.parse(data);             //data contains the body of the request that came from the client; therefore, we create the object 'dataObj' using JSON.parse();
         var passwordPlain = dataObj.password;       //we extract the plain text password that came from the client
         dataObj.password = crypto.createHash("sha256").update(passwordPlain).digest("hex");     //we update the password field in the 'dataObj' with an encrypted value;
