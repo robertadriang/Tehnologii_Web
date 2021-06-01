@@ -7,6 +7,7 @@ var cm=require('../Models/CloudManager')
 var database=require('../Models/DBHandler')
 // initialize router
 var router = app.Router();
+var crypto = require('crypto');
 
 //add routes
 // http://localhost:4200/test
@@ -29,6 +30,25 @@ router.handle('/', 'get', (req, res) => {
     res.setHeader('Location', '/home/index.html');
     res.end();
 });
+
+
+router.handle('/register','post',(req,res)=>{
+    console.log("register received");
+    res.statusCode = 200;
+
+    let data = '';
+    req.on('data', chunk => {
+        data += chunk;
+    })
+    req.on('end', () => {
+        
+        let dataObj = JSON.parse(data);             //data contains the body of the request that came from the client; therefore, we create the object 'dataObj' using JSON.parse();
+        var passwordPlain = dataObj.password;       //we extract the plain text password that came from the client
+        dataObj.password = crypto.createHash("sha256").update(passwordPlain).digest("hex");     //we update the password field in the 'dataObj' with an encrypted value;
+        console.log(dataObj);
+        res.end();
+    })
+    
 
 router.handle('/config/config_cloud', 'POST', async (req, res) => {
     let token=req.headers['storage-code'];
@@ -61,6 +81,7 @@ router.handle('/home/index', 'get', async (req, res) => {
     }
    // console.log("in router:",aux);
     return res.end('salut');
+
 });
 
 //setup router and routing to local files
