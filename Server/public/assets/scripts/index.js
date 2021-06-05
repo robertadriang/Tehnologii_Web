@@ -1,15 +1,23 @@
-const APP_KEY = "mi6pgkf1iy9maga";
+const DROPBOX_APP_KEY = "mi6pgkf1iy9maga";
+const GOOGLE_APP_KEY = "564941956565-tfkfdegc2folbb34pp1g76votgd0ppek.apps.googleusercontent.com";
 const currentURL=window.location.href;
 
 if (currentURL.indexOf("code") !== -1) {
-    const token=currentURL.substring(currentURL.lastIndexOf("code=")+"code=".length);
-    console.log(token);
+    let token=currentURL.substring(currentURL.lastIndexOf("code=")+"code=".length);
+    let token_type="";
+    if(currentURL.indexOf("google")!==-1){
+        token=token.substring(0,token.lastIndexOf("&scope"));
+        token_type="gd";
+    }else{
+        token_type="db";
+    }
     fetch('http://localhost:4200/config/config_cloud',{
         method: 'POST',
         headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'storage-code':token
+            'storage-code':token,
+            'token-type':token_type
         }
     }).then(response=>response.text()).then(data=>console.log(data)).then(window.location='http://localhost:4200/config/config_cloud.html');
 } else {
@@ -18,8 +26,11 @@ if (currentURL.indexOf("code") !== -1) {
 
 window.onload = function () {
     document.getElementById("dropbox_connect").onclick = () => {
-        console.log("salut");
-        window.location.replace(`https://www.dropbox.com/oauth2/authorize?client_id=${APP_KEY}&response_type=code&redirect_uri=${currentURL}&token_access_type=offline`,
-            "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=0,left=0,width=1920,height=1080");
+        console.log("Dropbox");
+        window.location.replace(`https://www.dropbox.com/oauth2/authorize?client_id=${DROPBOX_APP_KEY}&response_type=code&redirect_uri=${currentURL}&token_access_type=offline`);
+    }
+    document.getElementById("google_drive_connect").onclick=()=>{
+        console.log("Google Drive");
+        window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_APP_KEY}&redirect_uri=${currentURL}&scope=https://www.googleapis.com/auth/drive&response_type=code&access_type=offline`);
     }
 };

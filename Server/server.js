@@ -32,16 +32,14 @@ router.handle('/', 'get', (req, res) => {
 
 router.handle('/config/config_cloud', 'POST', async (req, res) => {
     let token=req.headers['storage-code'];
-    console.log("Token1:",token);
-    let object={cloud:'db',token:token,idUser:1};
-
+    let token_type=req.headers['token-type'];
+    console.log("Token1:",token," from drive: ",token_type);
+    let object={cloud: token_type,token:token,idUser:1};
     try{
         let sessionToken=await cm.setCloud(object);
         return res.end(sessionToken);
     }catch (error){
-       // console.log("salutmaomor");
-        return res.end(JSON.stringify(error));
-      
+        return res.end(JSON.stringify(error));     
     }
     //else
       //  return res.end(JSON.stringify(sessionToken));
