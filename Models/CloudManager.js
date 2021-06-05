@@ -1,5 +1,6 @@
 let dropbox=require('./DropboxManager');
 let google=require('./GoogleDriveManager');
+let onedrive=require('./OneDriveManager');
 var database=require('../Models/DBHandler');
 
 async function setCloud(request){
@@ -14,6 +15,10 @@ async function setCloud(request){
         return await google.createSessionToken(request);
         //return await google.refreshSesssionToken(request);
     }else{
+        //return await onedrive.createSessionToken(request);
+        console.log("ALO ALO");
+        console.log("Token in CM:",await onedrive.createSessionToken(request));
+        console.log("token in CM refreshed:",await onedrive.refreshSesssionToken(request));
         //onedrive
     }
 }

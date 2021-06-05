@@ -2,27 +2,27 @@ const queryString = require('querystring');
 var https = require('https');
 var database=require('../Models/DBHandler');
 
-const clientId='564941956565-tfkfdegc2folbb34pp1g76votgd0ppek.apps.googleusercontent.com';
-const clientSecret='_xFivHE_lDah-8H6eOlup__w';
+const clientId='f796a5b8-6338-4394-86bd-1745e7a3942f';
+const clientSecret='zhRU7nkD8_mA~8tH.Ub9JU.2GlPekx~PgK';
 
 async function createSessionToken(object){
-
-    let options={
-        method: 'POST', 
-        hostname:"oauth2.googleapis.com",
-        path:"/token",
-        headers:{
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    };
-
     let body=queryString.stringify({
         client_id: clientId,
         client_secret: clientSecret,
-        code: decodeURIComponent(object.token),   // <- Without the decoding the URL is marked as malformed
+        code: object.token,   // <- Without the decoding the URL is marked as malformed
         grant_type: 'authorization_code',
         redirect_uri: 'http://localhost:4200/config/config_cloud.html'
     });
+
+    let options={
+        method: 'POST', 
+        hostname:"login.live.com",
+        path:"/oauth20_token.srf",
+        headers:{
+            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Length': Buffer.byteLength(body) /// <-- Bill Geits e prea smecher si nu accepta chunked fara content-length
+        }
+    };
 
     let data="";
     let access_token="";
@@ -33,17 +33,16 @@ async function createSessionToken(object){
             options,
              function(resp) {
                 resp.on('data', d => data += d);
-                resp.on('end',async () => {
-                        let result=JSON.parse(data);
-                        console.log("Am cerut tokenul :",result);
-                        //resolve(result);
+                resp.on('end',async () => {            
+                       let result=JSON.parse(data);
                         refresh_token+=result.refresh_token;
                         access_token+=result.access_token;
                         if(this.res.statusCode!==200){                           
                             reject(result);
                         }else{
                             try{
-                                let dbresult=await database.addBothGoogleTokens({idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
+                                let dbresult=await database.addBothOnedriveTokens({idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
+                                console.log(dbresult);
                                 resolve(access_token);
                             }catch(error){
                                 reject(error);
@@ -54,7 +53,6 @@ async function createSessionToken(object){
                     reject("Something is not right");
                 })
           });
-          console.log("Asta e un body:",body);
            request.write(body);
            request.end();
     }); 
@@ -62,20 +60,23 @@ async function createSessionToken(object){
 
 async function refreshSesssionToken(object){
     console.log("I am refreshing the token");
-    let options={
-        method: 'POST',
-        hostname:"oauth2.googleapis.com",
-        path:"/token",
-        headers:{
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    };
+
     let body=queryString.stringify({
         client_id: clientId,
         client_secret: clientSecret,
         grant_type: 'refresh_token',
-        refresh_token: await database.getGoogleRefreshToken(object)
+        refresh_token: await database.getOnedriveRefreshToken(object)
     });
+
+    let options={
+        method: 'POST',
+        hostname:"login.live.com",
+        path:"/oauth20_token.srf",
+        headers:{
+            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Length': Buffer.byteLength(body) 
+        }
+    };
 
     let data="";
     let access_token="";
@@ -93,7 +94,7 @@ async function refreshSesssionToken(object){
                             reject(result);
                         }else{
                             try{
-                                let addTokenResult=await database.addGoogleSessionToken({idUser:object.idUser,sessionToken:access_token});
+                                let addTokenResult=await database.addOnedriveSessionToken({idUser:object.idUser,sessionToken:access_token});
                                 resolve(access_token);
                             }catch(error){
                                 reject(error);
@@ -110,7 +111,6 @@ async function refreshSesssionToken(object){
     }); 
 
 }
-
 
 module.exports = {
     createSessionToken: createSessionToken,

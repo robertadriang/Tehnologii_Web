@@ -192,6 +192,81 @@ async function getGoogleSessionToken(object){
     });
 }
 
+async function addBothOnedriveTokens(object){
+    console.log("Salut din db onedrive");
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT * from onedrive_session_tokens WHERE user_id=?',[object.idUser], function(error,results,fields){
+            if(error) {
+                reject(error);
+            }else{
+                let resObjs=JSON.parse(JSON.stringify(results));
+                if(resObjs.length===0){
+                    connection.query('INSERT INTO onedrive_session_tokens (user_id,session_token,refresh_token) VALUES (?,?,?)',[object.idUser,object.sessionToken,object['refresh_token']],function(error,results, fields){
+                        if(error){
+                            console.log("Onedrive Tokens insertion error: ",error);
+                            reject(error);
+                        }else{
+                            console.log("I added BOTH tokens for the user:",results);
+                        }
+                    });
+                }else{
+                   connection.query('UPDATE onedrive_session_tokens SET session_token=?, refresh_token=? WHERE user_id=?',[object.sessionToken,object['refresh_token'],object.idUser], function(error,results,fields){
+                    if(error){
+                        reject(error);
+                    }else{
+                        console.log("I updated the tokens for the user!");
+                    }
+                   });
+                }
+                resolve("OK");
+            }   
+        });
+    });
+}
+
+async function addOnedriveSessionToken(object){
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT * from onedrive_session_tokens WHERE user_id=?',[object.idUser],function(error,results,fields){
+            if(error) {
+                reject(error);
+            }else{
+                let resObjs=JSON.parse(JSON.stringify(results));
+                if(resObjs.length===0){
+                    connection.query('INSERT INTO onedrive_session_tokens (user_id,session_token,refresh_token) VALUES (?,?)',[object.idUser,object.sessionToken],function(error,results, fields){
+                        if(error){
+                            console.log("Dropbox Token insertion error:",error);
+                            reject(error);
+                        }else{
+                            console.log("I added a token for the user!");
+                        }
+                    });
+                }else{
+                   connection.query('UPDATE onedrive_session_tokens SET session_token=? WHERE user_id=?',[object.sessionToken,object.idUser],function(error,results,fields){
+                    if(error){
+                        reject(error);
+                    }else{
+                        console.log("I updated the token for the user!");
+                    }
+                   });
+                }
+                resolve("OK");
+            }   
+        });
+    });
+}
+
+async function getOnedriveRefreshToken(object){
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT refresh_token from onedrive_session_tokens WHERE user_id=?',[object.idUser],function(error,results,fields){
+            if(error) {
+                reject(error);
+            }else{
+                let resObjs=JSON.parse(JSON.stringify(results));
+                resolve(resObjs[0].refresh_token);
+            }   
+        });
+    });
+}
 
 module.exports = {
     createPoll: createPoll,
@@ -205,4 +280,8 @@ module.exports = {
     addGoogleSessionToken:addGoogleSessionToken,
     getGoogleRefreshToken:getGoogleRefreshToken,
     getGoogleSessionToken:getGoogleSessionToken,
+
+    addBothOnedriveTokens:addBothOnedriveTokens,
+    getOnedriveRefreshToken:getOnedriveRefreshToken,
+    addOnedriveSessionToken:addOnedriveSessionToken
 };
