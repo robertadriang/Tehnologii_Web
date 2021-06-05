@@ -34,7 +34,7 @@ async function createSessionToken(object){
                             reject(result);
                         }else{
                             try{
-                                await database.addBothDropboxTokens({idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
+                                await database.addBothTokens({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
                                 resolve(access_token);
                             }catch(error){
                                 reject(error);
@@ -63,7 +63,7 @@ async function refreshSesssionToken(object){
     };
     let body=queryString.stringify({
         grant_type: 'refresh_token',
-        refresh_token: await database.getDropboxRefreshToken(object)
+        refresh_token: await database.getRefreshToken(object)
     });
 
     let data="";
@@ -81,7 +81,7 @@ async function refreshSesssionToken(object){
                             reject(result);
                         }else{
                             try{
-                                let addTokenResult=await database.addDropboxSessionToken({idUser:object.idUser,sessionToken:access_token});
+                                let addTokenResult=await database.addSessionToken({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token});
                                 resolve(access_token);
                             }catch(error){
                                 reject(error);

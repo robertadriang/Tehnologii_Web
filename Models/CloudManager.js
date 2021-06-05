@@ -5,21 +5,20 @@ var database=require('../Models/DBHandler');
 
 async function setCloud(request){
     if(request.cloud=='db'){
-        ///Dropbox
-        /* TODO: REMOVE THIS WE ARE ONLY TESTING THE TOKEN GENERATION BY REFRESH */
-       // console.log("token in CM: ",await dropbox.createSessionToken(request));
-        //console.log("token in CM refreshed",await dropbox.refreshSesssionToken(request));
-        return await dropbox.createSessionToken(request); 
+        /// Dropbox
+        // console.log("Token in CM:",await dropbox.createSessionToken(request));
+        // console.log("token in CM refreshed:",await dropbox.refreshSesssionToken(request));   //<--- Uncomment these to check the create/refresh oAuth flow. 
+        return dropbox.createSessionToken(request);
     }else if(request.cloud=='gd'){
-        //google drive
+        // Google Drive
+        // console.log("Token in CM:",await google.createSessionToken(request));
+        // console.log("token in CM refreshed:",await google.refreshSesssionToken(request)); //<--- Uncomment these to check the create/refresh oAuth flow. 
         return await google.createSessionToken(request);
-        //return await google.refreshSesssionToken(request);
     }else{
-        //return await onedrive.createSessionToken(request);
-        console.log("ALO ALO");
-        console.log("Token in CM:",await onedrive.createSessionToken(request));
-        console.log("token in CM refreshed:",await onedrive.refreshSesssionToken(request));
-        //onedrive
+        // OneDrive
+        // console.log("Token in CM:",await onedrive.createSessionToken(request));
+        // console.log("token in CM refreshed:",await onedrive.refreshSesssionToken(request)); //<--- Uncomment these to check the create/refresh oAuth flow. 
+        return await onedrive.createSessionToken(request);
     }
 }
 

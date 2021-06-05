@@ -35,15 +35,13 @@ async function createSessionToken(object){
                 resp.on('data', d => data += d);
                 resp.on('end',async () => {
                         let result=JSON.parse(data);
-                        console.log("Am cerut tokenul :",result);
-                        //resolve(result);
                         refresh_token+=result.refresh_token;
                         access_token+=result.access_token;
                         if(this.res.statusCode!==200){                           
                             reject(result);
                         }else{
                             try{
-                                let dbresult=await database.addBothGoogleTokens({idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
+                                await database.addBothTokens({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
                                 resolve(access_token);
                             }catch(error){
                                 reject(error);
@@ -54,7 +52,6 @@ async function createSessionToken(object){
                     reject("Something is not right");
                 })
           });
-          console.log("Asta e un body:",body);
            request.write(body);
            request.end();
     }); 
@@ -74,7 +71,7 @@ async function refreshSesssionToken(object){
         client_id: clientId,
         client_secret: clientSecret,
         grant_type: 'refresh_token',
-        refresh_token: await database.getGoogleRefreshToken(object)
+        refresh_token: await database.getRefreshToken(object)
     });
 
     let data="";
@@ -93,7 +90,7 @@ async function refreshSesssionToken(object){
                             reject(result);
                         }else{
                             try{
-                                let addTokenResult=await database.addGoogleSessionToken({idUser:object.idUser,sessionToken:access_token});
+                                let addTokenResult=await database.addSessionToken({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token});
                                 resolve(access_token);
                             }catch(error){
                                 reject(error);

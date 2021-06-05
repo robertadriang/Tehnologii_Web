@@ -41,8 +41,7 @@ async function createSessionToken(object){
                             reject(result);
                         }else{
                             try{
-                                let dbresult=await database.addBothOnedriveTokens({idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
-                                console.log(dbresult);
+                                await database.addBothTokens({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
                                 resolve(access_token);
                             }catch(error){
                                 reject(error);
@@ -65,7 +64,7 @@ async function refreshSesssionToken(object){
         client_id: clientId,
         client_secret: clientSecret,
         grant_type: 'refresh_token',
-        refresh_token: await database.getOnedriveRefreshToken(object)
+        refresh_token: await database.getRefreshToken(object)
     });
 
     let options={
@@ -94,7 +93,7 @@ async function refreshSesssionToken(object){
                             reject(result);
                         }else{
                             try{
-                                let addTokenResult=await database.addOnedriveSessionToken({idUser:object.idUser,sessionToken:access_token});
+                                let addTokenResult=await database.addSessionToken({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token});
                                 resolve(access_token);
                             }catch(error){
                                 reject(error);
