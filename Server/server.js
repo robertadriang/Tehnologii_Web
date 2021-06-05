@@ -67,7 +67,7 @@ router.handle('/home/index', 'get', async (req, res) => {
 });
 
 router.handle('/register','post', (req,res)=>{
-    console.log("register received");
+    console.log("Register request received!");
     res.statusCode = 200;
 
     let data = '';
@@ -78,6 +78,23 @@ router.handle('/register','post', (req,res)=>{
 
         let dataObj = JSON.parse(data);             //data contains the body of the request that came from the client; therefore, we create the object 'dataObj' using JSON.parse();
         let message = await userManager.registerUser(dataObj);
+        console.log("Server: ", message);
+        res.end(message);
+    })
+});
+
+router.handle('/login','post', (req,res)=>{
+    console.log("Login request received!");
+    res.statusCode = 200;
+
+    let data = '';
+    req.on('data', chunk => {
+        data += chunk;
+    })
+    req.on('end', async () => {
+
+        let dataObj = JSON.parse(data);             //data contains the body of the request that came from the client; therefore, we create the object 'dataObj' using JSON.parse();
+        let message = await userManager.loginUser(dataObj);
         console.log("Server: ", message);
         res.end(message);
     })

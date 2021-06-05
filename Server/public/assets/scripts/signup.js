@@ -35,18 +35,19 @@ async function registerRequest(){
                 password
             })
         }).then(response=>response.text()).then(data=>{
-            if(data.includes("already taken")){
-                alert(data);
-                // if(data.includes("Username")){
-                //     document.getElementById("username").style.borderColor = "#880E4F";
-                //     document.getElementById("username").onclick.style.borderColor = "white";
-                // }
-                // else if(data.includes("Email")){
-                //     document.getElementById("email").style.borderColor = "#880E4F";
-                //     document.getElementById("email").onclick.style.borderColor = "white";
-                // }
+            // if(data.includes("already taken")){
+            //     alert(data);
+            //     // if(data.includes("Username")){
+            //     //     document.getElementById("username").style.borderColor = "#880E4F";
+            //     //     document.getElementById("username").onclick.style.borderColor = "white";
+            //     // }
+            //     // else if(data.includes("Email")){
+            //     //     document.getElementById("email").style.borderColor = "#880E4F";
+            //     //     document.getElementById("email").onclick.style.borderColor = "white";
+            //     // }
 
-            }
+            // }
+            alert(data);
 
         });
             

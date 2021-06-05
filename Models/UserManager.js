@@ -34,6 +34,33 @@ async function registerUser(userData)
     return(message);
 }
 
+async function loginUser(userData)
+{
+    var message = '';
+    var passwordPlain = userData.password;
+    userData.password = crypto.createHash("sha256").update(passwordPlain).digest("hex");
+    try{
+        let aux = await database.createPoll();
+        let foundUsers = await database.findUserInDBLogin(userData);
+        if(foundUsers.length == 1){
+            const foundUsername = foundUsers[0].username;
+            const foundPassword = foundUsers[0].password;
+            if(userData.password == foundPassword) 
+                message = 'Login successful. Welcome \"' + foundUsername + '\"!';
+            else
+                message = 'Incorrect password...'
+        }
+        else if(foundUsers.length == 0){
+            message = 'User \"' + userData.id + '\" not found! You should signup first.' 
+        }
+    }
+    catch(error){
+        message = 'loginUser Error: ' + error;
+    }
+    return(message);
+}
+
 module.exports = {
     registerUser: registerUser,
+    loginUser: loginUser
 }
