@@ -110,6 +110,7 @@ router.handle('/login','post', (req,res)=>{
             res.statusCode = 200;
             const foundUsername = message.substring(message.indexOf("\"")+1,message.lastIndexOf("\""));
             const accessToken = jwt.sign(foundUsername, ACCES_TOKEN_SECRET);
+            ///TODO: need to find a way to save JWT on client side;
             res.end(accessToken);
         }
 
