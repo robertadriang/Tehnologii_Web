@@ -29,12 +29,24 @@ router.handle('/', 'get', (req, res) => {
     res.end();
 });
 
+router.handle('/config/config_cloud', 'GET', async (req, res) => {
+    console.log("salut ai cerut setarile user-ului");
+    try{
+        let connectedDrives=await cm.getClouds(1);/// TODO: Replace 1 with actual user ID or change it to send the jwt
+        console.log("Am trimis la client:",connectedDrives);
+        return res.end(JSON.stringify(connectedDrives)); 
+    }catch (error){
+     return res.end(JSON.stringify(error));     
+     }
+ });
+
+ /// TODO: ROUTERUL NU ACCEPTA GET/POST/DELETE PENTRU ACELASI LINK!!!!!!!!!!!!!!!!
 router.handle('/config/config_clouds', 'POST', async (req, res) => {
     console.log("SALUT DIN POST");
     let token=req.headers['storage-code'];
     let token_type=req.headers['token-type'];
     console.log("Access token:",token,"for the drive:",token_type);
-    let object={cloud: token_type,token:token,idUser:1};
+    let object={cloud: token_type,token:token,idUser:1};/// TODO: Replace 1 with actual user ID or change it to send the jwt
     try{
         let sessionToken=await cm.setCloud(object);
         console.log( "Session token for",token_type,":",sessionToken);
@@ -47,27 +59,17 @@ router.handle('/config/config_clouds', 'POST', async (req, res) => {
     }
 });
 
+ /// TODO: ROUTERUL NU ACCEPTA GET/POST/DELETE PENTRU ACELASI LINK!!!!!!!!!!!!!!!!
 router.handle('/config/config_cloudss', 'DELETE', async (req, res) => {
     console.log("SALUT DIN DELETE");
     let token_type=req.headers['token-type'];
     console.log("Token should be deleted for the drive:",token_type);
-    let object={cloud: token_type,idUser:1};
+    let object={cloud: token_type,idUser:1};/// TODO: Replace 1 with actual user ID or change it to send the jwt
     try{
         let dboperation=await cm.deleteCloud(object);
         return res.end(dboperation);
     }catch (error){
         return res.end(JSON.stringify(error));     
-    }
-});
-
-router.handle('/config/config_cloud', 'GET', async (req, res) => {
-   console.log("salut ai cerut setarile user-ului");
-   try{
-       let connectedDrives=await cm.getClouds(1);/// TODO: Replace 1 with actual user ID or change it to send the jwt
-       console.log("Am trimis la client:",connectedDrives);
-       return res.end(JSON.stringify(connectedDrives)); 
-   }catch (error){
-    return res.end(JSON.stringify(error));     
     }
 });
 

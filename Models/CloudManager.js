@@ -4,13 +4,13 @@ let onedrive=require('./OneDriveManager');
 var database=require('../Models/DBHandler');
 
 async function setCloud(request){
-    if(request.cloud=='db'){
+    if(request.cloud==='db'){
         /// Dropbox
         // console.log("Token in CM:",await dropbox.createSessionToken(request));
         // console.log("token in CM refreshed:",await dropbox.refreshSesssionToken(request));   //<--- Uncomment these to check the create/refresh oAuth flow. 
          await dropbox.createSessionToken(request);
          return await database.getSessionToken(request);
-    }else if(request.cloud=='gd'){
+    }else if(request.cloud==='gd'){
         // Google Drive
         // console.log("Token in CM:",await google.createSessionToken(request));
         // console.log("token in CM refreshed:",await google.refreshSesssionToken(request)); //<--- Uncomment these to check the create/refresh oAuth flow. 
@@ -27,6 +27,11 @@ async function setCloud(request){
 }
 
 async function deleteCloud(request){
+    if(request.cloud==='db'){
+        await dropbox.revokeSessionToken(request);
+    }else if(request.cloud==='gd'){
+        await google.revokeSessionToken(request);
+    }
     return await database.deleteBothTokens(request);
 }
 

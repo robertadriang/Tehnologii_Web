@@ -5,13 +5,13 @@ const ONEDRIVE_APP_KEY = "f796a5b8-6338-4394-86bd-1745e7a3942f";
 const currentURL = window.location.href;
 
 window.onload = async function () {
-    if (currentURL.indexOf("code") !== -1) {
+    if (currentURL.indexOf("code") !== -1) { /// Here we handle the oAuth login steps
         let token = currentURL.substring(currentURL.lastIndexOf("code=") + "code=".length);
         let token_type = "";
         if (currentURL.indexOf("google") !== -1) {
             token = token.substring(0, token.lastIndexOf("&scope"));
             token_type = "gd";
-        } else if (currentURL.indexOf("M.R3") !== -1) {
+        } else if (currentURL.indexOf("M.R3") !== -1) {   ///TODO Check token start because we can't distinguish OD from DB. Look for a better method
             token_type = "od";
         } else {
             token_type = "db";
@@ -28,12 +28,7 @@ window.onload = async function () {
         let sessionToken=await response.text();
         await console.log("Session token:",sessionToken);
         await window.location.replace('http://localhost:4200/config/config_cloud.html');
-
-        // .then(response => response.text())
-        // .then(data => console.log("Session token:",data))
-        // .then(window.location = 'http://localhost:4200/config/config_cloud.html');
     } else {
-        console.log("Unde-i tokenu nu e tokenu");
         fetch('http://localhost:4200/config/config_cloud', {
             method: 'GET',
             headers: {
@@ -44,6 +39,10 @@ window.onload = async function () {
             console.log(data);
             generateButtons(data);
         });
+    }
+
+    if(currentURL.indexOf("?lc")!==-1){   //// Onedrive revoking is made from the frontEnd and returns this lc param that we don't need
+        window.location.replace('http://localhost:4200/config/config_cloud.html');
     }
 };
 
@@ -79,7 +78,6 @@ function generateButton(object){
          button.classList.add('disconnectbtn');
          button.id=idtype+'_disconnect';
          button.onclick=async()=>{
-             console.log("Vrei sa te deconectezi a?");
              let response=await fetch('http://localhost:4200/config/config_cloudss', {
                 method: 'DELETE',
                 headers: {
@@ -90,7 +88,12 @@ function generateButton(object){
             })
             let sessionToken=await response.text();
             await console.log("Session token:",sessionToken);
-            await window.location.replace('http://localhost:4200/config/config_cloud.html');
+            if(token_type==='od'){
+                await window.location.replace(`https://login.live.com/oauth20_logout.srf?client_id=${ONEDRIVE_APP_KEY}&redirect_uri=${currentURL}`);
+            }else{
+                await window.location.replace('http://localhost:4200/config/config_cloud.html');
+            }
+            
          }
      }else{
         button.innerHTML='Connect';

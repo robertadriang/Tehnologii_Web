@@ -99,7 +99,34 @@ async function refreshSesssionToken(object){
 
 }
 
+async function revokeSessionToken(object){
+    let options={
+        method: 'POST',
+        hostname:"api.dropboxapi.com",
+        path:"/oauth2/token/revoke",
+        headers:{
+            'Authorization': `Bearer `+ await database.getRefreshToken(object)
+        }
+    };
+    let data="";
+    return new Promise((resolve,reject)=>{
+        request=https.request(
+            options,
+             function(resp) {
+                resp.on('data', d => data += d);
+                resp.on('end',async () => {
+                        resolve("OK");
+                    });
+                resp.on('error',()=>{
+                    reject("Something is not right");
+                })
+          });
+           request.end();
+    }); 
+}
+
 module.exports = {
     createSessionToken: createSessionToken,
-    refreshSesssionToken:refreshSesssionToken
+    refreshSesssionToken:refreshSesssionToken,
+    revokeSessionToken:revokeSessionToken
 }

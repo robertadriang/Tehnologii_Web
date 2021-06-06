@@ -108,8 +108,46 @@ async function refreshSesssionToken(object){
 
 }
 
+async function revokeSessionToken(object){
+    let body=queryString.stringify({
+        token:await database.getSessionToken(object)
+    });
+    let options={
+        method: 'POST', 
+        hostname:"oauth2.googleapis.com",
+        path:"/revoke?"+body,
+        headers:{
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    };
+
+    let data="";
+    let access_token="";
+    let refresh_token="";
+
+    return new Promise((resolve,reject)=>{
+        request=https.request(
+            options,
+             function(resp) {
+                resp.on('data', d => data += d);
+                resp.on('end',async () => {
+                        console.log("Am revocat tokenul cu mesajul:",data);
+                        if(this.res.statusCode!==200){                           
+                            reject(data);
+                        }else{
+                           resolve("OK");
+                        }
+                    });
+                resp.on('error',()=>{
+                    reject("Something is not right");
+                })
+          });
+           request.end();
+    }); 
+}
 
 module.exports = {
     createSessionToken: createSessionToken,
-    refreshSesssionToken:refreshSesssionToken
+    refreshSesssionToken:refreshSesssionToken,
+    revokeSessionToken:revokeSessionToken
 }
