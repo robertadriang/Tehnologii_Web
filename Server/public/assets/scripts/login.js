@@ -11,7 +11,7 @@ async function loginRequest()
     else if (!emailFilter.test(id) && !usernameFilter.test(id))
         alert("Invalid username or email adress!")
     else{
-        const response = await fetch('http://localhost:4200/login',{
+        let response = await fetch('http://localhost:4200/login',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -20,10 +20,29 @@ async function loginRequest()
                 id,
                 password
             })
-        }).then(response=>response.text()).then(data=>{
-            // if(data.includes("successful"))
-            alert(data);
         })
+
+        if(response.status == 200)
+        {
+            
+            response = response.text().then(token=>{
+                
+                let responseGET = fetch('http://localhost:4200/home/index',{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                }).then(responseGET=>{
+                    alert(responseGET.status);
+                })
+    
+                
+            });
+        
+
+        }     
+
     }
 
         
