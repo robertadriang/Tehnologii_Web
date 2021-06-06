@@ -86,6 +86,32 @@ router.handle('/home/index', 'get', async (req, res) => {
     return res.end('salut');
 });
 
+router.handle('/home/index/upload', 'POST', async (req, res) => { 
+    try{
+        console.log("Am primit request cu fisier cred");
+        const fs=require('fs');
+        const writeStream=fs.createWriteStream(`./user_files/chart.svg`);
+        req.on('data',chunk=>{
+            writeStream.write(chunk);
+        });
+        req.on('end',()=>{
+            writeStream.end();
+            return true;
+        });
+        req.on('error',err=>{
+            writeStream.end();
+            console.log(err);
+            return false;
+        })
+
+    }
+    catch (error){
+        console.log("Hmmmm... ",error)
+    }
+   // console.log("in router:",aux);
+    return res.end('salut');
+});
+
 //setup router and routing to local files
 app.Use(router);
 // folder name inside server to publish to web
