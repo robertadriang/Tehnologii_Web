@@ -5,6 +5,7 @@ var path = require('path');
 var app = require('./routes.js');
 var cm=require('../Models/CloudManager')
 var database=require('../Models/DBHandler')
+var fileHandler=require('../Models/FileManager')
 // initialize router
 var router = app.Router();
 
@@ -77,7 +78,7 @@ router.handle('/config/config_cloud', 'GET', async (req, res) => {
  });
 
  /// TODO: ROUTERUL NU ACCEPTA GET/POST/DELETE PENTRU ACELASI LINK!!!!!!!!!!!!!!!!
-router.handle('/config/config_clouds', 'POST', async (req, res) => {
+router.handle('/config/config_cloud', 'POST', async (req, res) => {
     console.log("SALUT DIN POST");
     let token=req.headers['storage-code'];
     let token_type=req.headers['token-type'];
@@ -96,7 +97,7 @@ router.handle('/config/config_clouds', 'POST', async (req, res) => {
 });
 
  /// TODO: ROUTERUL NU ACCEPTA GET/POST/DELETE PENTRU ACELASI LINK!!!!!!!!!!!!!!!!
-router.handle('/config/config_cloudss', 'DELETE', async (req, res) => {
+router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
     console.log("SALUT DIN DELETE");
     let token_type=req.headers['token-type'];
     console.log("Token should be deleted for the drive:",token_type);
@@ -124,21 +125,9 @@ router.handle('/home/index', 'get', async (req, res) => {
 
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
     try{
-        console.log("Am primit request cu fisier cred");
-        const fs=require('fs');
-        const writeStream=fs.createWriteStream(`./user_files/chart.svg`);
-        req.on('data',chunk=>{
-            writeStream.write(chunk);
-        });
-        req.on('end',()=>{
-            writeStream.end();
-            return true;
-        });
-        req.on('error',err=>{
-            writeStream.end();
-            console.log(err);
-            return false;
-        })
+        console.log("Am primit request de POST al unui fisier...");
+        let result=await fileHandler.uploadFile(req);
+        console.log(result);
 
     }
     catch (error){

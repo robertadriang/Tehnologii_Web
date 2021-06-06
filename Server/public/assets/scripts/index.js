@@ -16,7 +16,7 @@ window.onload = async function () {
         } else {
             token_type = "db";
         }
-        let response=await fetch('http://localhost:4200/config/config_clouds', {
+        let response=await fetch('http://localhost:4200/config/config_cloud', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ function generateButton(object){
          button.classList.add('disconnectbtn');
          button.id=idtype+'_disconnect';
          button.onclick=async()=>{
-             let response=await fetch('http://localhost:4200/config/config_cloudss', {
+             let response=await fetch('http://localhost:4200/config/config_cloud', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

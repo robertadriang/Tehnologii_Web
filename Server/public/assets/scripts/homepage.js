@@ -22,17 +22,16 @@ window.onload = function () {
     fileupload.onchange = async function () {
         let formData=new FormData();
         //formData.append("file",fileupload.files[0]);
+        var fileName = fileupload.value.split('\\')[fileupload.value.split('\\').length - 1];
+        filePath.innerHTML = "<b>Selected File: </b>" + fileName;
         console.log(formData);
         await fetch('http://localhost:4200/home/index/upload',{
             method:"POST",
+            headers:{
+                'x-filename':fileName
+            },
             body:fileupload.files[0]
         });
         alert('The file has been uploaded successfully.');
-
-        var fileName = fileupload.value.split('\\')[fileupload.value.split('\\').length - 1];
-        filePath.innerHTML = "<b>Selected File: </b>" + fileName;
-        console.log(fileupload);
-        console.log(filePath);
-        console.log(image);
     };
 };
