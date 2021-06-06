@@ -74,7 +74,9 @@ function Local(folder) {
 function Router() {
     return {
         handle: function(path, method, handler) {
-            this.handlers[path] = {
+            if(!this.handlers[path])
+                this.handlers[path] = {};
+            this.handlers[path][method.toLowerCase()] = {
                 path: path,
                 handler: handler,
                 method: method.toLowerCase(),
@@ -102,41 +104,44 @@ function Serve(req, res) {
 
     var pathname = url.parse(req.url).pathname;
     // normal path handlers
-    if(trueHandlers[pathname]) {
-        if(req.method.toLowerCase() == trueHandlers[pathname].method) {
-            return trueHandlers[pathname].handler(req, res);
+    if(trueHandlers[pathname] && trueHandlers[pathname][req.method.toLowerCase()]) {
+        if(req.method.toLowerCase() == trueHandlers[pathname][req.method.toLowerCase()].method) {
+            return trueHandlers[pathname][req.method.toLowerCase()].handler(req, res);
         }
     }
     // path with parameters
     for(let path in trueHandlers) {
-        if(pathHasParameters(path)) {
-            var pathParts = removeBlanks(path.split('/'));
-            var urlParts = removeBlanks(pathname.split('/'));
-            var partsDifferent = false;
+        if(trueHandlers[path][req.method.toLowerCase()])
+        {
+            if(pathHasParameters(path)) {
+                var pathParts = removeBlanks(path.split('/'));
+                var urlParts = removeBlanks(pathname.split('/'));
+                var partsDifferent = false;
 
-            if(pathParts.length != urlParts.length) {
-                continue;
-            }
-
-            for(let part in pathParts) {
-                if(pathParts[part].indexOf(':') == 0) {
-                    req.params[pathParts[part].slice(1,)] = urlParts[part];
+                if(pathParts.length != urlParts.length) {
                     continue;
                 }
 
-                if(pathParts[part] != urlParts[part]) {
-                    partsDifferent = true;
-                    break;
-                }
-            }
-            if(!partsDifferent) {
-                return trueHandlers[path].handler(req, res);
-            }
+                for(let part in pathParts) {
+                    if(pathParts[part].indexOf(':') == 0) {
+                        req.params[pathParts[part].slice(1,)] = urlParts[part];
+                        continue;
+                    }
 
-        }
-        if(trueHandlers[path].type == 'regexp') {
-            if(trueHandlers[path].path.test(pathname.slice(1,)) == true) {
-                return trueHandlers[path].handler(req, res);
+                    if(pathParts[part] != urlParts[part]) {
+                        partsDifferent = true;
+                        break;
+                    }
+                }
+                if(!partsDifferent) {
+                    return trueHandlers[path][req.method.toLowerCase()].handler(req, res);
+                }
+
+            }
+            if(trueHandlers[path].type == 'regexp') {
+                if(trueHandlers[path].path.test(pathname.slice(1,)) == true) {
+                    return trueHandlers[path].handler(req, res);
+                }
             }
         }
     }
