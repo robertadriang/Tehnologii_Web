@@ -66,7 +66,8 @@ async function addBothTokens(object){
                             console.log("Tokens insertion error: ",error);
                             reject(error);
                         }else{
-                            console.log("I added BOTH tokens for the user:",results);
+                            console.log("I added BOTH tokens for the user");
+                            resolve("OK");
                         }
                     });
                 }else{
@@ -75,10 +76,10 @@ async function addBothTokens(object){
                         reject(error);
                     }else{
                         console.log("I updated the tokens for the user!");
+                        resolve("OK");
                     }
                    });
                 }
-                resolve("OK");
             }   
         });
     });
@@ -116,10 +117,44 @@ async function addSessionToken(object){
     });
 }
 
+async function isConnected(object){
+    return new Promise((resolve,reject)=>{
+        let tableName=getTableName(object);
+        connection.query('SELECT * from ?? WHERE user_id=?',[tableName,object.idUser], function(error,results,fields){
+            if(error) {
+                reject(error);
+            }else{
+                let resObjs=JSON.parse(JSON.stringify(results));
+                if(resObjs.length===0){
+                    resolve("NO");
+                }else{
+                    resolve("OK");
+                }
+                
+            }   
+        });
+    });
+}
+
+async function deleteBothTokens(object){
+    return new Promise((resolve,reject)=>{
+        let tableName=getTableName(object);
+        connection.query('DELETE FROM ?? WHERE user_id=?',[tableName,object.idUser],function(error,results,fields){
+            if(error) {
+                reject(error);
+            }else{
+                resolve("OK");
+            }
+        })
+    })
+}
+
 module.exports = {
     createPoll: createPoll,
     getRefreshToken:getRefreshToken,
     getSessionToken:getSessionToken,
     addBothTokens:addBothTokens,
-    addSessionToken:addSessionToken
+    addSessionToken:addSessionToken,
+    isConnected:isConnected,
+    deleteBothTokens:deleteBothTokens
 };

@@ -42,7 +42,7 @@ async function createSessionToken(object){
                         }else{
                             try{
                                 await database.addBothTokens({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
-                                resolve(access_token);
+                                resolve(await access_token);
                             }catch(error){
                                 reject(error);
                             }     
@@ -94,7 +94,7 @@ async function refreshSesssionToken(object){
                         }else{
                             try{
                                 let addTokenResult=await database.addSessionToken({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token});
-                                resolve(access_token);
+                                resolve(await access_token);
                             }catch(error){
                                 reject(error);
                             }

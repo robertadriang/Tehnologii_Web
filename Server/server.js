@@ -21,7 +21,6 @@ router.handle('/test/:testId', 'get', (req, res) => {
 // format for querystring
 // http://localhost:4200/test?q=100&a=1000
 router.handle('/test/query', 'get', (req, res) => {
-
     return res.end(`test something ${JSON.stringify(req.query)}`);
 });
 router.handle('/', 'get', (req, res) => {
@@ -30,20 +29,46 @@ router.handle('/', 'get', (req, res) => {
     res.end();
 });
 
-router.handle('/config/config_cloud', 'POST', async (req, res) => {
+router.handle('/config/config_clouds', 'POST', async (req, res) => {
+    console.log("SALUT DIN POST");
     let token=req.headers['storage-code'];
     let token_type=req.headers['token-type'];
     console.log("Access token:",token,"for the drive:",token_type);
     let object={cloud: token_type,token:token,idUser:1};
     try{
         let sessionToken=await cm.setCloud(object);
-        console.log("Session token for ",token_type,":",sessionToken);
-        return res.end(sessionToken);
+        console.log( "Session token for",token_type,":",sessionToken);
+        res.end(sessionToken);
+        console.log("Am returnat la client:",sessionToken);
+        return;
+        // return res.end( await cm.setCloud(object));
     }catch (error){
         return res.end(JSON.stringify(error));     
     }
-    //else
-      //  return res.end(JSON.stringify(sessionToken));
+});
+
+router.handle('/config/config_cloudss', 'DELETE', async (req, res) => {
+    console.log("SALUT DIN DELETE");
+    let token_type=req.headers['token-type'];
+    console.log("Token should be deleted for the drive:",token_type);
+    let object={cloud: token_type,idUser:1};
+    try{
+        let dboperation=await cm.deleteCloud(object);
+        return res.end(dboperation);
+    }catch (error){
+        return res.end(JSON.stringify(error));     
+    }
+});
+
+router.handle('/config/config_cloud', 'GET', async (req, res) => {
+   console.log("salut ai cerut setarile user-ului");
+   try{
+       let connectedDrives=await cm.getClouds(1);/// TODO: Replace 1 with actual user ID or change it to send the jwt
+       console.log("Am trimis la client:",connectedDrives);
+       return res.end(JSON.stringify(connectedDrives)); 
+   }catch (error){
+    return res.end(JSON.stringify(error));     
+    }
 });
 
 

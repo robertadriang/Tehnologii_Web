@@ -1,44 +1,110 @@
 const DROPBOX_APP_KEY = "mi6pgkf1iy9maga";
 const GOOGLE_APP_KEY = "564941956565-tfkfdegc2folbb34pp1g76votgd0ppek.apps.googleusercontent.com";
-const ONEDRIVE_APP_KEY="f796a5b8-6338-4394-86bd-1745e7a3942f";
+const ONEDRIVE_APP_KEY = "f796a5b8-6338-4394-86bd-1745e7a3942f";
 
-const currentURL=window.location.href;
+const currentURL = window.location.href;
 
-if (currentURL.indexOf("code") !== -1) {
-    let token=currentURL.substring(currentURL.lastIndexOf("code=")+"code=".length);
-    let token_type="";
-    if(currentURL.indexOf("google")!==-1){
-        token=token.substring(0,token.lastIndexOf("&scope"));
-        token_type="gd";
-    }else if(currentURL.indexOf("M.R3")!==-1){
-        token_type="od";
-    }else{
-        token_type="db";
-    }
-    fetch('http://localhost:4200/config/config_cloud',{
-        method: 'POST',
-        headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'storage-code':token,
-            'token-type':token_type
+window.onload = async function () {
+    if (currentURL.indexOf("code") !== -1) {
+        let token = currentURL.substring(currentURL.lastIndexOf("code=") + "code=".length);
+        let token_type = "";
+        if (currentURL.indexOf("google") !== -1) {
+            token = token.substring(0, token.lastIndexOf("&scope"));
+            token_type = "gd";
+        } else if (currentURL.indexOf("M.R3") !== -1) {
+            token_type = "od";
+        } else {
+            token_type = "db";
         }
-    }).then(response=>response.text()).then(data=>console.log(data)).then(window.location='http://localhost:4200/config/config_cloud.html');
-} else {
-    console.log("Unde-i tokenu nu e tokenu");
-}
+        let response=await fetch('http://localhost:4200/config/config_clouds', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'storage-code': token,
+                'token-type': token_type
+            }
+        })
+        let sessionToken=await response.text();
+        await console.log("Session token:",sessionToken);
+        await window.location.replace('http://localhost:4200/config/config_cloud.html');
 
-window.onload = function () {
-    document.getElementById("dropbox_connect").onclick = () => {
-        console.log("Dropbox");
-        window.location.replace(`https://www.dropbox.com/oauth2/authorize?client_id=${DROPBOX_APP_KEY}&response_type=code&redirect_uri=${currentURL}&token_access_type=offline`);
-    }
-    document.getElementById("google_drive_connect").onclick=()=>{
-        console.log("Google Drive");
-        window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_APP_KEY}&redirect_uri=${currentURL}&scope=https://www.googleapis.com/auth/drive&response_type=code&access_type=offline`);
-    }
-    document.getElementById("one_drive_connect").onclick=()=>{
-        console.log("One Drive");
-        window.location.replace(`https://login.live.com/oauth20_authorize.srf?client_id=${ONEDRIVE_APP_KEY}&scope=files.readwrite.all offline_access&response_type=code&redirect_uri=${currentURL}`); /// we will search that the token starts with M.R3_BAY. Need a better solution
+        // .then(response => response.text())
+        // .then(data => console.log("Session token:",data))
+        // .then(window.location = 'http://localhost:4200/config/config_cloud.html');
+    } else {
+        console.log("Unde-i tokenu nu e tokenu");
+        fetch('http://localhost:4200/config/config_cloud', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            }
+        }).then(response => response.json()).then(data => {
+            console.log(data);
+            generateButtons(data);
+        });
     }
 };
+
+function generateButton(object){
+     let div=undefined;
+     let button = document.createElement("button");
+     let idtype="";
+     let token_type="";
+
+     let connectURLs={
+         google_drive:`https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_APP_KEY}&redirect_uri=${currentURL}&scope=https://www.googleapis.com/auth/drive&response_type=code&access_type=offline`,
+         dropbox:`https://www.dropbox.com/oauth2/authorize?client_id=${DROPBOX_APP_KEY}&response_type=code&redirect_uri=${currentURL}&token_access_type=offline`,
+         one_drive:`https://login.live.com/oauth20_authorize.srf?client_id=${ONEDRIVE_APP_KEY}&scope=files.readwrite.all offline_access&response_type=code&redirect_uri=${currentURL}`
+     };
+
+     button.type='button';
+     if(object.type==='google'){
+        div = document.getElementById("GoogleDrive_div");
+        idtype="google_drive";
+        token_type="gd";
+     }else if(object.type==='dropbox'){
+        div=document.getElementById("Dropbox_div");
+        idtype="dropbox";
+        token_type="db";
+     }else{
+        div=document.getElementById("OneDrive_div");
+        idtype="one_drive";
+        token_type="od";
+     }
+     
+     if(object.status==='Connected'){
+         button.innerHTML='Disconnect';
+         button.classList.add('disconnectbtn');
+         button.id=idtype+'_disconnect';
+         button.onclick=async()=>{
+             console.log("Vrei sa te deconectezi a?");
+             let response=await fetch('http://localhost:4200/config/config_cloudss', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'token-type': token_type
+                }
+            })
+            let sessionToken=await response.text();
+            await console.log("Session token:",sessionToken);
+            await window.location.replace('http://localhost:4200/config/config_cloud.html');
+         }
+     }else{
+        button.innerHTML='Connect';
+        button.classList.add('connectbtn');
+        button.id=idtype+'_connect';
+        button.onclick=()=>{
+            window.location.replace(connectURLs[`${idtype}`]);
+        }
+     }
+     div.appendChild(button);
+}
+
+function generateButtons(data) {
+    generateButton({type:'google',status:data.google});
+    generateButton({type:'dropbox',status:data.dropbox});
+    generateButton({type:'onedrive',status:data.onedrive});
+}
