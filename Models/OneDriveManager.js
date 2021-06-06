@@ -13,7 +13,6 @@ async function createSessionToken(object){
         grant_type: 'authorization_code',
         redirect_uri: 'http://localhost:4200/config/config_cloud.html'
     });
-
     let options={
         method: 'POST', 
         hostname:"login.live.com",
@@ -23,11 +22,9 @@ async function createSessionToken(object){
             'Content-Length': Buffer.byteLength(body) /// <-- Bill Geits e prea smecher si nu accepta chunked fara content-length
         }
     };
-
     let data="";
     let access_token="";
     let refresh_token="";
-
     return new Promise((resolve,reject)=>{
         request=https.request(
             options,
@@ -42,7 +39,7 @@ async function createSessionToken(object){
                         }else{
                             try{
                                 await database.addBothTokens({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
-                                resolve(await access_token);
+                                resolve(access_token);
                             }catch(error){
                                 reject(error);
                             }     
@@ -59,14 +56,12 @@ async function createSessionToken(object){
 
 async function refreshSesssionToken(object){
     console.log("I am refreshing the token");
-
     let body=queryString.stringify({
         client_id: clientId,
         client_secret: clientSecret,
         grant_type: 'refresh_token',
         refresh_token: await database.getRefreshToken(object)
     });
-
     let options={
         method: 'POST',
         hostname:"login.live.com",
@@ -76,10 +71,8 @@ async function refreshSesssionToken(object){
             'Content-Length': Buffer.byteLength(body) 
         }
     };
-
     let data="";
     let access_token="";
-
     return new Promise((resolve,reject)=>{
         request=https.request(
             options,
@@ -97,8 +90,7 @@ async function refreshSesssionToken(object){
                                 resolve(await access_token);
                             }catch(error){
                                 reject(error);
-                            }
-                            
+                            }   
                         }
                     });
                 resp.on('error',()=>{
@@ -107,8 +99,7 @@ async function refreshSesssionToken(object){
           });
            request.write(body);
            request.end();
-    }); 
-
+    });
 }
 
 module.exports = {

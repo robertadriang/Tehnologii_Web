@@ -16,6 +16,7 @@ window.onload = async function () {
         } else {
             token_type = "db";
         }
+        /* Create the sessionToken based on the accessToken provided by the oAuth services*/
         let response=await fetch('http://localhost:4200/config/config_cloud', {
             method: 'POST',
             headers: {
@@ -25,10 +26,10 @@ window.onload = async function () {
                 'token-type': token_type
             }
         })
-        let sessionToken=await response.text();
-        await console.log("Session token:",sessionToken);
-        await window.location.replace('http://localhost:4200/config/config_cloud.html');
+        await response.text();
+        window.location.replace('http://localhost:4200/config/config_cloud.html');
     } else {
+        /* Generate the connection buttons based on the JSON from the server */
         fetch('http://localhost:4200/config/config_cloud', {
             method: 'GET',
             headers: {
@@ -36,11 +37,9 @@ window.onload = async function () {
                 'Accept': 'application/json',
             }
         }).then(response => response.json()).then(data => {
-            console.log(data);
             generateButtons(data);
         });
     }
-
     if(currentURL.indexOf("?lc")!==-1){   //// Onedrive revoking is made from the frontEnd and returns this lc param that we don't need
         window.location.replace('http://localhost:4200/config/config_cloud.html');
     }
@@ -78,6 +77,7 @@ function generateButton(object){
          button.classList.add('disconnectbtn');
          button.id=idtype+'_disconnect';
          button.onclick=async()=>{
+             /* Delete the oAuth tokens from the database AND notify the services to invalidate them */
              let response=await fetch('http://localhost:4200/config/config_cloud', {
                 method: 'DELETE',
                 headers: {
@@ -87,11 +87,11 @@ function generateButton(object){
                 }
             })
             let sessionToken=await response.text();
-            await console.log("Session token:",sessionToken);
-            if(token_type==='od'){
-                await window.location.replace(`https://login.live.com/oauth20_logout.srf?client_id=${ONEDRIVE_APP_KEY}&redirect_uri=${currentURL}`);
+            console.log("Session token:",sessionToken);
+            if(token_type==='od'){ /* OneDrive can't be invalidated from the backend it needs user permission. However an error can't be thrown so it is ok to delete it from the database first and then send the request to OneDrive */
+                window.location.replace(`https://login.live.com/oauth20_logout.srf?client_id=${ONEDRIVE_APP_KEY}&redirect_uri=${currentURL}`);
             }else{
-                await window.location.replace('http://localhost:4200/config/config_cloud.html');
+                window.location.replace('http://localhost:4200/config/config_cloud.html');
             }
             
          }

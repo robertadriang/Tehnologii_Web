@@ -6,7 +6,6 @@ const clientId='564941956565-tfkfdegc2folbb34pp1g76votgd0ppek.apps.googleusercon
 const clientSecret='_xFivHE_lDah-8H6eOlup__w';
 
 async function createSessionToken(object){
-
     let options={
         method: 'POST', 
         hostname:"oauth2.googleapis.com",
@@ -15,7 +14,6 @@ async function createSessionToken(object){
             "Content-Type": "application/x-www-form-urlencoded"
         }
     };
-
     let body=queryString.stringify({
         client_id: clientId,
         client_secret: clientSecret,
@@ -23,11 +21,9 @@ async function createSessionToken(object){
         grant_type: 'authorization_code',
         redirect_uri: 'http://localhost:4200/config/config_cloud.html'
     });
-
     let data="";
     let access_token="";
     let refresh_token="";
-
     return new Promise((resolve,reject)=>{
         request=https.request(
             options,
@@ -73,10 +69,8 @@ async function refreshSesssionToken(object){
         grant_type: 'refresh_token',
         refresh_token: await database.getRefreshToken(object)
     });
-
     let data="";
     let access_token="";
-
     return new Promise((resolve,reject)=>{
         request=https.request(
             options,
@@ -90,12 +84,11 @@ async function refreshSesssionToken(object){
                             reject(result);
                         }else{
                             try{
-                                let addTokenResult=await database.addSessionToken({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token});
-                                resolve(await access_token);
+                                await database.addSessionToken({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token});
+                                resolve(access_token);
                             }catch(error){
                                 reject(error);
-                            }
-                            
+                            }     
                         }
                     });
                 resp.on('error',()=>{
@@ -105,7 +98,6 @@ async function refreshSesssionToken(object){
            request.write(body);
            request.end();
     }); 
-
 }
 
 async function revokeSessionToken(object){
@@ -120,11 +112,7 @@ async function revokeSessionToken(object){
             "Content-Type": "application/x-www-form-urlencoded"
         }
     };
-
     let data="";
-    let access_token="";
-    let refresh_token="";
-
     return new Promise((resolve,reject)=>{
         request=https.request(
             options,

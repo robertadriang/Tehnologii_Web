@@ -20,7 +20,6 @@ async function createSessionToken(object){
     let data="";
     let access_token="";
     let refresh_token="";
-
     return new Promise((resolve,reject)=>{
         request=https.request(
             options,
@@ -35,11 +34,10 @@ async function createSessionToken(object){
                         }else{
                             try{
                                 await database.addBothTokens({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token,refresh_token:refresh_token});
-                                resolve(await access_token);
+                                resolve(access_token);
                             }catch(error){
                                 reject(error);
-                            }
-                            
+                            }       
                         }
                     });
                 resp.on('error',()=>{
@@ -65,10 +63,8 @@ async function refreshSesssionToken(object){
         grant_type: 'refresh_token',
         refresh_token: await database.getRefreshToken(object)
     });
-
     let data="";
     let access_token="";
-
     return new Promise((resolve,reject)=>{
         request=https.request(
             options,
@@ -81,12 +77,11 @@ async function refreshSesssionToken(object){
                             reject(result);
                         }else{
                             try{
-                                let addTokenResult=await database.addSessionToken({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token});
-                                resolve(await access_token);
+                                await database.addSessionToken({cloud:object.cloud,idUser:object.idUser,sessionToken:access_token});
+                                resolve(access_token);
                             }catch(error){
                                 reject(error);
                             }
-                            
                         }
                     });
                 resp.on('error',()=>{
@@ -96,7 +91,6 @@ async function refreshSesssionToken(object){
            request.write(body);
            request.end();
     }); 
-
 }
 
 async function revokeSessionToken(object){

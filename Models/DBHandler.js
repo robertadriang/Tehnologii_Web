@@ -1,10 +1,11 @@
 const mysql = require('mysql');
 var connection;
 
+/* This can't throw an error because the connection is marked as failed only when we accually make a query */
 async function createPoll(){
     return new Promise((resolve,reject)=>{
         connection = mysql.createPool({
-          connectionLimit: 3,
+          connectionLimit: 5,
           host: 'localhost',
           user: 'root',
           password: 'student',
@@ -63,10 +64,8 @@ async function addBothTokens(object){
                 if(resObjs.length===0){
                     connection.query('INSERT INTO ?? (user_id,session_token,refresh_token) VALUES (?,?,?)',[tableName,object.idUser,object.sessionToken,object['refresh_token']],function(error,results, fields){
                         if(error){
-                            console.log("Tokens insertion error: ",error);
                             reject(error);
                         }else{
-                            console.log("I added BOTH tokens for the user");
                             resolve("OK");
                         }
                     });
@@ -75,7 +74,6 @@ async function addBothTokens(object){
                     if(error){
                         reject(error);
                     }else{
-                        console.log("I updated the tokens for the user!");
                         resolve("OK");
                     }
                    });
@@ -96,18 +94,13 @@ async function addSessionToken(object){
                 if(resObjs.length===0){
                     connection.query('INSERT INTO ?? (user_id,session_token,refresh_token) VALUES (?,?)',[tableName,object.idUser,object.sessionToken],function(error,results, fields){
                         if(error){
-                            console.log("Dropbox Token insertion error:",error);
                             reject(error);
-                        }else{
-                            console.log("I added a token for the user!");
                         }
                     });
                 }else{
                    connection.query('UPDATE ?? SET session_token=? WHERE user_id=?',[tableName,object.sessionToken,object.idUser],function(error,results,fields){
                     if(error){
                         reject(error);
-                    }else{
-                        console.log("I updated the token for the user!");
                     }
                    });
                 }
@@ -129,8 +122,7 @@ async function isConnected(object){
                     resolve("NO");
                 }else{
                     resolve("OK");
-                }
-                
+                }    
             }   
         });
     });
@@ -152,26 +144,21 @@ async function deleteBothTokens(object){
 async function uploadFile(object){
     return new Promise((resolve,reject)=>{
         console.log("Incercam sa inseram:",object.filename);
-        // console.log("UserId:",object.user_id);
-        // console.log("Scope:",object.scope);
-
         /// TODO: SOLVE SIZE IS 0 
         connection.query('INSERT INTO files (user_id,filename,scope,extension,size) VALUES (?,?,?,?,?)',[object.user_id,object.filename,object.scope,object.extension,object.size],function(error,results,fields){
             if(error) {
-                console.log("Erorare la insert de file");
                 reject(error);
             }else{
                 resolve("OK");
             }
         })
-    })
+    });
 }
 
 async function getUserFiles(object){
     return new Promise((resolve,reject)=>{
         connection.query('SELECT * FROM files WHERE user_id=? AND scope=?',[object.user_id,object.scope],function(error,results,fields){
             if(error) {
-                console.log("Eroare la get user files");
                 reject(error);
             }else{
                 let resObj=JSON.parse(JSON.stringify(results));;
@@ -182,17 +169,16 @@ async function getUserFiles(object){
 }
 
 module.exports = {
+    /* Connection Related */
     createPoll: createPoll,
-
+    /* oAuth tokens related */
     getRefreshToken:getRefreshToken,
     getSessionToken:getSessionToken,
     addBothTokens:addBothTokens,
     addSessionToken:addSessionToken,
-
-    isConnected:isConnected,
-
     deleteBothTokens:deleteBothTokens,
-
+    isConnected:isConnected,
+    /* File Related */
     uploadFile:uploadFile,
     getUserFiles:getUserFiles
 };

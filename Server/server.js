@@ -66,8 +66,9 @@ router.handle('/', 'get', (req, res) => {
     res.end();
 });
 
+/*Request connected drives*/
 router.handle('/config/config_cloud', 'GET', async (req, res) => {
-    console.log("salut ai cerut setarile user-ului");
+    console.log("User-ul a cerut setarile pentru drive-uri");
     try{
         let connectedDrives=await cm.getClouds(1);/// TODO: Replace 1 with actual user ID or change it to send the jwt
         console.log("Am trimis la client:",connectedDrives);
@@ -77,7 +78,7 @@ router.handle('/config/config_cloud', 'GET', async (req, res) => {
      }
  });
 
- /// TODO: ROUTERUL NU ACCEPTA GET/POST/DELETE PENTRU ACELASI LINK!!!!!!!!!!!!!!!!
+ /*Connect a drive to your account*/
 router.handle('/config/config_cloud', 'POST', async (req, res) => {
     let token=req.headers['storage-code'];
     let token_type=req.headers['token-type'];
@@ -85,21 +86,17 @@ router.handle('/config/config_cloud', 'POST', async (req, res) => {
     let object={cloud: token_type,token:token,idUser:1};/// TODO: Replace 1 with actual user ID or change it to send the jwt
     try{
         let sessionToken=await cm.setCloud(object);
-        console.log( "Session token for",token_type,":",sessionToken);
         res.end(sessionToken);
-        console.log("Am returnat la client:",sessionToken);
+        console.log("Am returnat la client:",sessionToken,"pentru drive-ul:",token_type);
         return;
-        // return res.end( await cm.setCloud(object));
     }catch (error){
         return res.end(JSON.stringify(error));     
     }
 });
 
- /// TODO: ROUTERUL NU ACCEPTA GET/POST/DELETE PENTRU ACELASI LINK!!!!!!!!!!!!!!!!
+/*Delete a drive from your account */
 router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
-    console.log("SALUT DIN DELETE");
     let token_type=req.headers['token-type'];
-    console.log("Token should be deleted for the drive:",token_type);
     let object={cloud: token_type,idUser:1};/// TODO: Replace 1 with actual user ID or change it to send the jwt
     try{
         let dboperation=await cm.deleteCloud(object);
@@ -109,7 +106,7 @@ router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
     }
 });
 
-
+/*Create the connection pool*/   /// TODO: Move this to a better place? 
 router.handle('/home/index', 'get', async (req, res) => { 
     try{
         let aux=await database.createPoll();
@@ -118,13 +115,12 @@ router.handle('/home/index', 'get', async (req, res) => {
     catch (error){
         console.log("Hmmmm... ",error)
     }
-   // console.log("in router:",aux);
-    return res.end('salut');
+    return res.end('Connection pool created!');
 });
 
+/*Upload a file*/
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
     try{
-        console.log("Am primit request de POST al unui fisier...");
         await fileHandler.uploadFile(req);
         let result=await fileHandler.getUserFiles(req);
         res.statusCode=200;
@@ -137,10 +133,9 @@ router.handle('/home/index/upload', 'POST', async (req, res) => {
     }
 });
 
-
+/*Get all the files for a user and a scope */
 router.handle('/home/index/all', 'GET', async (req, res) => { 
     try{
-        console.log("Am primit request de GET al tuturor fisierelor..");
         let result=await fileHandler.getUserFiles(req);
         res.statusCode=200;
         res.end(JSON.stringify(result));

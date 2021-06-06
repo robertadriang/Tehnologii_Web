@@ -3,7 +3,6 @@ var database=require('../Models/DBHandler');
 async function uploadFile(req){
     return new Promise((resolve,reject)=>{
         let fileName=req.headers['x-filename'];
-        console.log("Filename:",fileName);
         const fs=require('fs');
         const writeStream=fs.createWriteStream(`./user_files/${fileName}`);
         req.on('data',chunk=>{
@@ -11,7 +10,6 @@ async function uploadFile(req){
         });
         req.on('end',async ()=>{
             writeStream.end();
-            console.log("Am scris fisierul");
             let size=0;
             let extension=fileName.split('.').pop();
             try{
