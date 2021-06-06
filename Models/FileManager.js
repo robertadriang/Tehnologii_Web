@@ -1,3 +1,4 @@
+var database=require('../Models/DBHandler');
 
 async function uploadFile(req){
     return new Promise((resolve,reject)=>{
@@ -8,14 +9,19 @@ async function uploadFile(req){
         req.on('data',chunk=>{
             writeStream.write(chunk);
         });
-        req.on('end',()=>{
+        req.on('end',async ()=>{
             writeStream.end();
-            resolve(true);
+            try{
+                let result=await database.uploadFile({user_id:req.headers['x-user'],filename:fileName,scope:req.headers['x-scope']});
+                resolve(result);
+            }catch(error){
+                reject(error);
+            }
+           
         });
         req.on('error',err=>{
             writeStream.end();
-            console.log(err);
-            resolve(false);
+            reject(err);
         })
     });
 }

@@ -127,14 +127,15 @@ router.handle('/home/index/upload', 'POST', async (req, res) => {
     try{
         console.log("Am primit request de POST al unui fisier...");
         let result=await fileHandler.uploadFile(req);
-        console.log(result);
-
     }
     catch (error){
-        console.log("Hmmmm... ",error)
+        console.log("Hmmmm... ",error);
+        res.statusCode=400;
+        return res.end('fail');
     }
    // console.log("in router:",aux);
-    return res.end('salut');
+    res.statusCode=200;
+    res.end("OK");
 });
 
 //setup router and routing to local files

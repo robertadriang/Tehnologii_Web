@@ -149,6 +149,20 @@ async function deleteBothTokens(object){
     })
 }
 
+async function uploadFile(object){
+    return new Promise((resolve,reject)=>{
+        console.log("Incercam sa inseram:",object.filename);
+        connection.query('INSERT INTO files (user_id,filename,scope) VALUES (?,?,?)',[object.user_id,object.filename,object.scope],function(error,results,fields){
+            if(error) {
+                console.log("Erorare la insert de file");
+                reject(error);
+            }else{
+                resolve("OK");
+            }
+        })
+    })
+}
+
 module.exports = {
     createPoll: createPoll,
     getRefreshToken:getRefreshToken,
@@ -156,5 +170,6 @@ module.exports = {
     addBothTokens:addBothTokens,
     addSessionToken:addSessionToken,
     isConnected:isConnected,
-    deleteBothTokens:deleteBothTokens
+    deleteBothTokens:deleteBothTokens,
+    uploadFile:uploadFile
 };
