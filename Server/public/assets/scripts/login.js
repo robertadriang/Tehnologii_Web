@@ -25,17 +25,20 @@ async function loginRequest()
         if(response.status == 200)
         {
             
-            response = response.text().then(token=>{
-                
-                let responseGET = fetch('http://localhost:4200/home/index',{
+            response = response.text().then(async (token)=> {
+                console.log(token);
+                let responseGET = await fetch('http://localhost:4200/home/index?validated',{
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + token
                     }
-                }).then(responseGET=>{
-                    alert(responseGET.status);
                 })
+                
+                if(responseGET.status == 200)
+                    //  window.location.replace("http://localhost:4200/home/index");
+                    alert(token);
+
     
                 
             });
