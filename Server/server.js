@@ -79,7 +79,6 @@ router.handle('/config/config_cloud', 'GET', async (req, res) => {
 
  /// TODO: ROUTERUL NU ACCEPTA GET/POST/DELETE PENTRU ACELASI LINK!!!!!!!!!!!!!!!!
 router.handle('/config/config_cloud', 'POST', async (req, res) => {
-    console.log("SALUT DIN POST");
     let token=req.headers['storage-code'];
     let token_type=req.headers['token-type'];
     console.log("Access token:",token,"for the drive:",token_type);
@@ -126,16 +125,31 @@ router.handle('/home/index', 'get', async (req, res) => {
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
     try{
         console.log("Am primit request de POST al unui fisier...");
-        let result=await fileHandler.uploadFile(req);
+        await fileHandler.uploadFile(req);
+        let result=await fileHandler.getUserFiles(req);
+        res.statusCode=200;
+        res.end(JSON.stringify(result));
     }
     catch (error){
         console.log("Hmmmm... ",error);
         res.statusCode=400;
         return res.end('fail');
     }
-   // console.log("in router:",aux);
-    res.statusCode=200;
-    res.end("OK");
+});
+
+
+router.handle('/home/index/all', 'GET', async (req, res) => { 
+    try{
+        console.log("Am primit request de GET al tuturor fisierelor..");
+        let result=await fileHandler.getUserFiles(req);
+        res.statusCode=200;
+        res.end(JSON.stringify(result));
+    }
+    catch (error){
+        console.log("Hmmmm... ",error);
+        res.statusCode=400;
+        return res.end('fail');
+    }
 });
 
 //setup router and routing to local files

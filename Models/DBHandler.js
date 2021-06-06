@@ -152,7 +152,11 @@ async function deleteBothTokens(object){
 async function uploadFile(object){
     return new Promise((resolve,reject)=>{
         console.log("Incercam sa inseram:",object.filename);
-        connection.query('INSERT INTO files (user_id,filename,scope) VALUES (?,?,?)',[object.user_id,object.filename,object.scope],function(error,results,fields){
+        // console.log("UserId:",object.user_id);
+        // console.log("Scope:",object.scope);
+
+        /// TODO: SOLVE SIZE IS 0 
+        connection.query('INSERT INTO files (user_id,filename,scope,extension,size) VALUES (?,?,?,?,?)',[object.user_id,object.filename,object.scope,object.extension,object.size],function(error,results,fields){
             if(error) {
                 console.log("Erorare la insert de file");
                 reject(error);
@@ -163,13 +167,32 @@ async function uploadFile(object){
     })
 }
 
+async function getUserFiles(object){
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT * FROM files WHERE user_id=? AND scope=?',[object.user_id,object.scope],function(error,results,fields){
+            if(error) {
+                console.log("Eroare la get user files");
+                reject(error);
+            }else{
+                let resObj=JSON.parse(JSON.stringify(results));;
+                resolve(resObj);
+            }
+        })
+    });
+}
+
 module.exports = {
     createPoll: createPoll,
+
     getRefreshToken:getRefreshToken,
     getSessionToken:getSessionToken,
     addBothTokens:addBothTokens,
     addSessionToken:addSessionToken,
+
     isConnected:isConnected,
+
     deleteBothTokens:deleteBothTokens,
-    uploadFile:uploadFile
+
+    uploadFile:uploadFile,
+    getUserFiles:getUserFiles
 };

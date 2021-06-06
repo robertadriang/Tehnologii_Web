@@ -11,13 +11,24 @@ async function uploadFile(req){
         });
         req.on('end',async ()=>{
             writeStream.end();
+            console.log("Am scris fisierul");
+            let size=0;
+            let extension=fileName.split('.').pop();
             try{
-                let result=await database.uploadFile({user_id:req.headers['x-user'],filename:fileName,scope:req.headers['x-scope']});
+                // stats=fs.stat(`./user_files/${fileName}`,async (err,stats)=>{
+                //         if(err){
+                //             console.log(err)
+                //         }else{
+                //             console.log(stats)
+                //         }
+                // });
+                // console.log("stats:",stats);
+                ///TODO: solve the size not being
+                let result=await database.uploadFile({user_id:req.headers['x-user'],filename:fileName,scope:req.headers['x-scope'],size:size,extension:extension});
                 resolve(result);
             }catch(error){
                 reject(error);
             }
-           
         });
         req.on('error',err=>{
             writeStream.end();
@@ -26,6 +37,18 @@ async function uploadFile(req){
     });
 }
 
+async function getUserFiles(req){
+    return new Promise(async (resolve, reject) =>{
+        try{
+            let result=await database.getUserFiles({user_id:req.headers['x-user'],scope:req.headers['x-scope']});
+            resolve(result);
+        }catch(err){
+            reject(err);
+        }
+    });
+}
+
 module.exports = {
-    uploadFile:uploadFile
+    uploadFile:uploadFile,
+    getUserFiles:getUserFiles
 }
