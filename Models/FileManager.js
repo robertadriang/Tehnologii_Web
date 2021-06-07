@@ -1,5 +1,6 @@
 var database = require('../Models/DBHandler');
 var https = require('https');
+const { request } = require('http');
 
 async function uploadFile(req) {
     return new Promise((resolve, reject) => {
@@ -76,6 +77,111 @@ async function uploadToDropbox(req) {
     await database.addShard({idUser:1,filename:fileName,shardname:fileName,location:'dropbox'});
 }
 
+async function uploadToGoogle(req){
+    let fileName = req.headers['x-filename'];
+    const fs = require('fs');
+    let fileId="";
+    let sessionToken=await database.getSessionToken({ cloud: 'gd', idUser: 1 });
+    fs.readFile(`./user_files/${fileName}`, function read(err, data) {
+        let metadata={
+            mimeType:'text/plain',
+            name:fileName,
+            title:fileName
+        };
+        const boundary='@@@@###@@@@';
+        const innerDelimiter="\r\n--"+boundary+"\r\n";
+        const closeDelimiter="\r\n--"+boundary+"--";
+        let options={
+            'method':'POST',
+            'hostname':'www.googleapis.com',
+            'path':'/upload/drive/v3/files?uploadType=multipart',
+            'headers':{
+                'uploadType':'multipart',
+                'Authorization': `Bearer ${sessionToken}`,
+                'Content-Type':`multipart/form-data; boundary=${boundary}`
+            }
+        }
+        let body=innerDelimiter+
+                "Content-Disposition: form-data; name=\"resource\"\r\n" +
+                "Content-Type: application/json\r\n" +
+                "\r\n"+
+                JSON.stringify(metadata)+"\r\n"+
+                innerDelimiter+
+                "Content-Disposition: form-data; name=\"media\"\r\n"+
+                "Content-Type:text/plain\r\n"+
+                "\r\n"+
+                data+
+                "\r\n"+
+                closeDelimiter;
+
+        const request=https.request(options,function (res){
+            res.on("data",function(d){
+                process.stdout.write(d);
+                fileId=JSON.parse(d.toString()).id;
+                database.addShard({idUser:1,filename:fileName,shardname:fileId,location:'google'});
+            });
+        });
+        request.write(body);
+        request.end(); 
+    }); 
+}
+
+async function uploadToOneDrive(req){
+    let fileName = req.headers['x-filename'];
+    const fs = require('fs');
+    let sessionToken=await database.getSessionToken({ cloud: 'od', idUser: 1 });
+    let options={
+        method: 'POST',
+        hostname: 'graph.microsoft.com',
+        path:`/v1.0/drive/root:/UNST/${fileName}:/createUploadSession`,
+        headers:{
+            'Authorization': `Bearer ${sessionToken}`,
+            'Content-Type': 'application/json'
+        }
+    };
+    let body=JSON.stringify(`{
+        "item":
+            {
+                "name":${fileName}
+            }
+        }`);
+
+    let data="";
+    let uploadUrl="";
+    const request=https.request(options,function(res){
+        res.on("data",function (d){
+            data+=d;
+        });
+        res.on('end',()=>{
+            console.log(data);
+            uploadUrl=JSON.parse(data).uploadUrl;
+            console.log("URL",uploadUrl);
+            let stat=fs.statSync(`./user_files/${fileName}`);
+            fs.readFile(`./user_files/${fileName}`, function read(err, data) {
+                console.log("URL PART:",uploadUrl.substring(uploadUrl.indexOf("/rup/")))
+                let options2={
+                    method:'PUT',
+                    hostname:'api.onedrive.com',
+                    headers:{
+                        'Content-Length':stat.size
+                    },
+                    path:uploadUrl.substring(uploadUrl.indexOf("/rup/"))
+                    }
+                    const request = https.request(options2, function (res) {
+                        res.on('data', function (d) {
+                            process.stdout.write(d);
+                        });
+                    });
+                request.write(data);
+                request.end();
+                database.addShard({idUser:1,filename:fileName,shardname:fileName,location:'onedrive'});
+                });
+        })
+    });
+     request.write(body);
+     request.end(); 
+}
+
 async function getUserFiles(req) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -90,5 +196,7 @@ async function getUserFiles(req) {
 module.exports = {
     uploadFile: uploadFile,
     uploadToDropbox: uploadToDropbox,
+    uploadToGoogle:uploadToGoogle,
+    uploadToOneDrive:uploadToOneDrive,
     getUserFiles: getUserFiles
 }

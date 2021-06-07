@@ -172,6 +172,7 @@ async function addShard(object){
     return new Promise((resolve,reject)=>{
         connection.query('INSERT INTO file_shards (id,filename,shardname,location) VALUES (?,?,?,?)',[object.idUser,object.filename,object.shardname,object.location],function(error,results,fields){
             if(error) {
+                console.log(error);
                 reject(error);
             }else{
                 console.log("Shard was added to:",object.location);
