@@ -65,8 +65,8 @@ async function downloadFromDropbox(req){
     let sessionToken=await database.getSessionToken({ cloud: 'db', idUser: userId });
     let shardId=await database.getShard({id:userId,filename:fileName});
     const fs = require('fs');
-    let downloadName=`${decodeURIComponent(req.params.fileName)}-db-downlod.${req.headers['file-extension']}`;
-    const writeStream = fs.createWriteStream(`./user_files/${downloadName}`);
+    let downloadName=`${decodeURIComponent(req.params.fileName)}-db-donlod.${req.headers['file-extension']}`;
+    const writeStream = fs.createWriteStream(`./user_files/${downloadName}`,'binary');
     let options={
         method:'POST',
         hostname: 'content.dropboxapi.com',
@@ -81,12 +81,13 @@ async function downloadFromDropbox(req){
     let response={};
     console.log('Starting request');
     const request=https.request(options,function(res){
+        res.setEncoding('binary');
         res.on('data',function(d){
             data+=d;
         });
         res.on('end',()=>{
             try{
-                response = JSON.parse(data).error;
+                response = JSON.parse(data).error; 
             }catch (e) {
                writeStream.write(data);
                writeStream.end();
