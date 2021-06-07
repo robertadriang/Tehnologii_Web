@@ -182,6 +182,26 @@ async function addShard(object){
     });
 }
 
+async function getShard(object){
+    console.log("Filename:",object.filename);
+    console.log("id:",object.id);
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT shardname FROM file_shards WHERE id=? AND filename=?',[object.id,object.filename],function(error,results,fields){
+            if(error) {
+                console.log(error);
+                reject(error);
+            }else{
+                let resObjs=JSON.parse(JSON.stringify(results));
+                if(resObjs.length===0){
+                    resolve("NO");
+                }else{
+                    resolve(resObjs[0].shardname);
+                }    
+            }   
+        })
+    });
+}
+
 async function checkFileExistence(object){
     return new Promise((resolve,reject)=>{
         connection.query('SELECT * from files WHERE user_id=? AND filename=? AND scope=? ',[object.user_id,object.filename,object.scope], function(error,results,fields){
@@ -213,5 +233,6 @@ module.exports = {
     uploadFile:uploadFile,
     getUserFiles:getUserFiles,
     addShard:addShard,
+    getShard:getShard,
     checkFileExistence:checkFileExistence
 };

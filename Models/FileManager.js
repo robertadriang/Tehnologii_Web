@@ -50,12 +50,50 @@ async function uploadToDropbox(req) {
         const request = https.request(options, function (res) {
             res.on('data', function (d) {
                 process.stdout.write(d);
+                let fileId=JSON.parse(d.toString()).id;
+                database.addShard({idUser:userId,filename:fileName,shardname:fileId,location:'dropbox'});
             });
         });
         request.write(data);
         request.end();
     });
-    await database.addShard({idUser:userId,filename:fileName,shardname:fileName,location:'dropbox'});
+}
+
+async function downloadFromDropbox(req){
+    let fileName=`${decodeURIComponent(req.params.fileName)}.${req.headers['file-extension']}`;
+    let userId=req.headers['x-user'];
+    let sessionToken=await database.getSessionToken({ cloud: 'db', idUser: userId });
+    let shardId=await database.getShard({id:userId,filename:fileName});
+    const fs = require('fs');
+    let downloadName=`${decodeURIComponent(req.params.fileName)}-db-downlod.${req.headers['file-extension']}`;
+    const writeStream = fs.createWriteStream(`./user_files/${downloadName}`);
+    let options={
+        method:'POST',
+        hostname: 'content.dropboxapi.com',
+        path: '/2/files/download',
+        headers:{
+            'Authorization': `Bearer ${sessionToken}`,
+            'Dropbox-API-ARG': `{"path":"${shardId}"}`,
+            'Content-Type': 'application/octet-stream'
+        }
+    }
+    let data = "";
+    let response={};
+    console.log('Starting request');
+    const request=https.request(options,function(res){
+        res.on('data',function(d){
+            data+=d;
+        });
+        res.on('end',()=>{
+            try{
+                response = JSON.parse(data).error;
+            }catch (e) {
+               writeStream.write(data);
+               writeStream.end();
+            }
+        });
+    });
+    request.end();
 }
 
 /* Upload a file to GoogleDrive
@@ -210,6 +248,7 @@ module.exports = {
     uploadToDropbox: uploadToDropbox,
     uploadToGoogle:uploadToGoogle,
     uploadToOneDrive:uploadToOneDrive,
+    downloadFromDropbox:downloadFromDropbox,
     getUserFiles: getUserFiles,
     downloadFile:downloadFile
 }

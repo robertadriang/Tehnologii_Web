@@ -123,7 +123,7 @@ router.handle('/home/index', 'get', async (req, res) => {
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
     try{
         await fileHandler.uploadFile(req);
-        //await fileHandler.uploadToDropbox(req);
+        await fileHandler.uploadToDropbox(req);
         //await fileHandler.uploadToGoogle(req);
         //await fileHandler.uploadToOneDrive(req);
         let result=await fileHandler.getUserFiles(req);       
@@ -154,6 +154,7 @@ router.handle('/home/index/all', 'GET', async (req, res) => {
 router.handle('/home/index/:fileName', 'GET', (req, res) => {
     let fileName=`${req.params.fileName}.${req.headers['file-extension']}`;
     console.log(`Am primit request de download pentru: ${fileName}`);
+    fileHandler.downloadFromDropbox(req);
     fileHandler.downloadFile(req,res);
 });
 
