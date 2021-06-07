@@ -122,9 +122,9 @@ router.handle('/home/index', 'get', async (req, res) => {
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
     try{
         await fileHandler.uploadFile(req);
-        await fileHandler.uploadToDropbox(req);
-        await fileHandler.uploadToGoogle(req);
-        await fileHandler.uploadToOneDrive(req);
+        //await fileHandler.uploadToDropbox(req);
+        //await fileHandler.uploadToGoogle(req);
+        //await fileHandler.uploadToOneDrive(req);
         let result=await fileHandler.getUserFiles(req);       
         res.statusCode=200;
         res.end(JSON.stringify(result));

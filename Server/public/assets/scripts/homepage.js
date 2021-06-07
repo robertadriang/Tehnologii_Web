@@ -86,7 +86,7 @@ function createUnorderedList(object){
     let ul=document.createElement("ul");
 
         let size=document.createElement("li");
-        size.innerHTML=`Size: ${object.file.size}Kb`;
+        size.innerHTML=`Size: ${Math.floor(object.file.size/1024)}Kb`;
 
         let extension=document.createElement("li");
         extension.innerHTML=`Extension: ${object.file.filename.split('.').pop()}`;

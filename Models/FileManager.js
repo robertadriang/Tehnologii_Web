@@ -2,6 +2,7 @@ var database = require('../Models/DBHandler');
 var https = require('https');
 const { request } = require('http');
 
+/* Upload a file into a temporary storage room until the split is complete */
 async function uploadFile(req) {
     return new Promise((resolve, reject) => {
         let fileName = req.headers['x-filename'];
@@ -15,16 +16,8 @@ async function uploadFile(req) {
             let size = 0;
             let extension = fileName.split('.').pop();
             try {
-                // stats=fs.stat(`./user_files/${fileName}`,async (err,stats)=>{
-                //         if(err){
-                //             console.log(err)
-                //         }else{
-                //             console.log(stats)
-                //         }
-                // });
-                // console.log("stats:",stats);
-                ///TODO: solve the size not being
-                let result = await database.uploadFile({ user_id: req.headers['x-user'], filename: fileName, scope: req.headers['x-scope'], size: size, extension: extension });
+                let stat=fs.statSync(`./user_files/${fileName}`);
+                let result = await database.uploadFile({ user_id: req.headers['x-user'], filename: fileName, scope: req.headers['x-scope'], size: stat.size, extension: extension });
                 resolve(result);
             } catch (error) {
                 reject(error);
@@ -37,24 +30,12 @@ async function uploadFile(req) {
     });
 }
 
-// async function uploadToDrives(req) {
-//     return new Promise((resolve, reject) => {
-//         let fileName = req.headers['x-filename'];
-//         const fs = require('fs');
-//         fs.readFile(`./user_files/${fileName}`, function read(err, data) {
-//             if (err) {
-//                 throw err;
-//             }
-//             uploadToDropbox(data);
-//             resolve("OK");
-//         });
-//     });
-// }
-
+/* Upload a file to Dropbox */
 async function uploadToDropbox(req) {
     let fileName = req.headers['x-filename'];
+    let userId=req.headers['x-user'];/// TODO: GET USER DINAMICALLY 
     const fs = require('fs');
-    let sessionToken=await database.getSessionToken({ cloud: 'db', idUser: 1 }); /// TODO: GET USER DINAMICALLY 
+    let sessionToken=await database.getSessionToken({ cloud: 'db', idUser: userId }); 
     fs.readFile(`./user_files/${fileName}`, function read(err, data) {
         let options = {
             method: 'POST',
@@ -74,14 +55,19 @@ async function uploadToDropbox(req) {
         request.write(data);
         request.end();
     });
-    await database.addShard({idUser:1,filename:fileName,shardname:fileName,location:'dropbox'});
+    await database.addShard({idUser:userId,filename:fileName,shardname:fileName,location:'dropbox'});
 }
 
+/* Upload a file to GoogleDrive
+    This process requires a JSON that contains file details like name or type AND the actual file.
+    Both are send in the body and should be formatted according to the RFC2387 standard
+    Look here for the body formatting explanation: https://datatracker.ietf.org/doc/html/rfc2387 */
 async function uploadToGoogle(req){
     let fileName = req.headers['x-filename'];
+    let userId=req.headers['x-user'];
     const fs = require('fs');
     let fileId="";
-    let sessionToken=await database.getSessionToken({ cloud: 'gd', idUser: 1 });
+    let sessionToken=await database.getSessionToken({ cloud: 'gd', idUser: userId });
     fs.readFile(`./user_files/${fileName}`, function read(err, data) {
         let metadata={
             mimeType:'text/plain',
@@ -118,7 +104,7 @@ async function uploadToGoogle(req){
             res.on("data",function(d){
                 process.stdout.write(d);
                 fileId=JSON.parse(d.toString()).id;
-                database.addShard({idUser:1,filename:fileName,shardname:fileId,location:'google'});
+                database.addShard({idUser:userId,filename:fileName,shardname:fileId,location:'google'});
             });
         });
         request.write(body);
@@ -126,10 +112,16 @@ async function uploadToGoogle(req){
     }); 
 }
 
+/* Upload a file to OneDrive 
+    This is a 2-step process 
+    1. Create a upload session (Because in theory we are handling big files)
+    2. Upload chunks of the file
+    3. If the upload fails during the transferr we should reinitiate the process from where we started
+*/
 async function uploadToOneDrive(req){
     let fileName = req.headers['x-filename'];
     const fs = require('fs');
-    let sessionToken=await database.getSessionToken({ cloud: 'od', idUser: 1 });
+    let sessionToken=await database.getSessionToken({ cloud: 'od', idUser: userId });
     let options={
         method: 'POST',
         hostname: 'graph.microsoft.com',
@@ -145,7 +137,6 @@ async function uploadToOneDrive(req){
                 "name":${fileName}
             }
         }`);
-
     let data="";
     let uploadUrl="";
     const request=https.request(options,function(res){
@@ -153,9 +144,7 @@ async function uploadToOneDrive(req){
             data+=d;
         });
         res.on('end',()=>{
-            console.log(data);
             uploadUrl=JSON.parse(data).uploadUrl;
-            console.log("URL",uploadUrl);
             let stat=fs.statSync(`./user_files/${fileName}`);
             fs.readFile(`./user_files/${fileName}`, function read(err, data) {
                 console.log("URL PART:",uploadUrl.substring(uploadUrl.indexOf("/rup/")))
@@ -174,7 +163,7 @@ async function uploadToOneDrive(req){
                     });
                 request.write(data);
                 request.end();
-                database.addShard({idUser:1,filename:fileName,shardname:fileName,location:'onedrive'});
+                database.addShard({idUser:userId,filename:fileName,shardname:fileName,location:'onedrive'});
                 });
         })
     });
@@ -182,6 +171,7 @@ async function uploadToOneDrive(req){
      request.end(); 
 }
 
+/* Get the files of a user for the scope provided (folder provided) */
 async function getUserFiles(req) {
     return new Promise(async (resolve, reject) => {
         try {
