@@ -122,7 +122,8 @@ router.handle('/home/index', 'get', async (req, res) => {
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
     try{
         await fileHandler.uploadFile(req);
-        let result=await fileHandler.getUserFiles(req);
+        let uploadresult=await fileHandler.uploadToDropbox(req);
+        let result=await fileHandler.getUserFiles(req);       
         res.statusCode=200;
         res.end(JSON.stringify(result));
     }
@@ -136,7 +137,7 @@ router.handle('/home/index/upload', 'POST', async (req, res) => {
 /*Get all the files for a user and a scope */
 router.handle('/home/index/all', 'GET', async (req, res) => { 
     try{
-        let result=await fileHandler.getUserFiles(req);
+        let result=await fileHandler.getUserFiles(req)
         res.statusCode=200;
         res.end(JSON.stringify(result));
     }

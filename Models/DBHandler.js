@@ -168,6 +168,19 @@ async function getUserFiles(object){
     });
 }
 
+async function addShard(object){
+    return new Promise((resolve,reject)=>{
+        connection.query('INSERT INTO file_shards (id,filename,shardname,location) VALUES (?,?,?,?)',[object.idUser,object.filename,object.shardname,object.location],function(error,results,fields){
+            if(error) {
+                reject(error);
+            }else{
+                console.log("Shard was added to:",object.location);
+                resolve("OK");
+            }
+        })
+    });
+}
+
 module.exports = {
     /* Connection Related */
     createPoll: createPoll,
@@ -180,5 +193,6 @@ module.exports = {
     isConnected:isConnected,
     /* File Related */
     uploadFile:uploadFile,
-    getUserFiles:getUserFiles
+    getUserFiles:getUserFiles,
+    addShard:addShard
 };
