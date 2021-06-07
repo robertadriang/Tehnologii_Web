@@ -44,6 +44,7 @@ router.handle('/test', 'POST', (req, res) => {
 router.handle('/test/:testId', 'get', (req, res) => {
     return res.end(`test something ${req.params.testId}`);
 });
+
 router.handle('/test/:testId', 'post', (req, res) => {
     var postData = '';
     req.on('data', (chunk) => {
@@ -148,6 +149,12 @@ router.handle('/home/index/all', 'GET', async (req, res) => {
         res.statusCode=400;
         return res.end('fail');
     }
+});
+
+router.handle('/home/index/:fileName', 'GET', (req, res) => {
+    let fileName=`${req.params.fileName}.${req.headers['file-extension']}`;
+    console.log(`Am primit request de download pentru: ${fileName}`);
+    fileHandler.downloadFile(req,res);
 });
 
 //setup router and routing to local files

@@ -85,7 +85,7 @@ function generateButton(object){
                     'Accept': 'application/json',
                     'token-type': token_type
                 }
-            })
+            });
             let sessionToken=await response.text();
             console.log("Session token:",sessionToken);
             if(token_type==='od'){ /* OneDrive can't be invalidated from the backend it needs user permission. However an error can't be thrown so it is ok to delete it from the database first and then send the request to OneDrive */

@@ -182,6 +182,23 @@ async function addShard(object){
     });
 }
 
+async function checkFileExistence(object){
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT * from files WHERE user_id=? AND filename=? AND scope=? ',[object.user_id,object.filename,object.scope], function(error,results,fields){
+            if(error) {
+                reject(error);
+            }else{
+                let resObjs=JSON.parse(JSON.stringify(results));
+                if(resObjs.length===0){
+                    resolve("NO");
+                }else{
+                    resolve("OK");
+                }    
+            }   
+        });
+    });
+}
+
 module.exports = {
     /* Connection Related */
     createPoll: createPoll,
@@ -195,5 +212,6 @@ module.exports = {
     /* File Related */
     uploadFile:uploadFile,
     getUserFiles:getUserFiles,
-    addShard:addShard
+    addShard:addShard,
+    checkFileExistence:checkFileExistence
 };

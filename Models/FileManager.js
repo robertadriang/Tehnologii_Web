@@ -183,10 +183,33 @@ async function getUserFiles(req) {
     });
 }
 
+async function downloadFile(req, res){
+    let fileName=`${decodeURIComponent(req.params.fileName)}.${req.headers['file-extension']}`;
+    let url=req.url;
+    console.log("Filename:",fileName);
+    let scope=url.substring(0,url.lastIndexOf('/')).split('/').pop();
+    console.log("URL:",url);
+    if(scope==='index'){
+        scope='root';
+    }
+    let result=await database.checkFileExistence({user_id:req.headers['x-user'],filename:fileName,scope:scope});
+    if(result==='OK'){
+        res.setHeader('Content-Type', 'application/json');
+        const fs = require('fs');
+        try{
+            let readStream=fs.createReadStream(`./user_files/${fileName}`);
+            readStream.pipe(res);
+        }catch(error){
+            res.end(error);
+        }
+    }
+}
+
 module.exports = {
     uploadFile: uploadFile,
     uploadToDropbox: uploadToDropbox,
     uploadToGoogle:uploadToGoogle,
     uploadToOneDrive:uploadToOneDrive,
-    getUserFiles: getUserFiles
+    getUserFiles: getUserFiles,
+    downloadFile:downloadFile
 }

@@ -96,7 +96,28 @@ function createUnorderedList(object){
         let downloadButton=document.createElement("button");
         downloadButton.classList.add("backCardDownloadButton");
         downloadButton.innerHTML="Download";
-
+        downloadButton.onclick=async()=>{
+            let response=await fetch(`http://localhost:4200/home/index/${object.file.filename.substring(0,object.file.filename.lastIndexOf('.'))}`,{
+                method:'GET',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'File-Extension':`${object.file.filename.split('.').pop()}`,
+                    'x-user':1
+                }
+            }).then(response => response.blob())    /// -> Read the whole response body (Body.blob())
+            .then(blob=>{
+                const url=window.URL.createObjectURL(blob);
+                const a=document.createElement('a');
+                a.style.display='none';
+                a.href=url;
+                a.download=object.file.filename;
+                document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url); 
+            }).catch((error)=>console.log(error));
+        }
+            
     ul.appendChild(size);
     ul.appendChild(extension);
     ul.appendChild(sharedChunks);
