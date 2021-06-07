@@ -13,7 +13,7 @@ async function registerUser(userData)
         if(foundUsers.length == 0){
             let insertResult = await database.insertUserInDB(userData);
             console.log(insertResult);
-            message = 'User inserted succesfuly';
+            message = 'User inserted successfuly';
         }
         else{
             message = 'User already in DB!';
@@ -43,10 +43,11 @@ async function loginUser(userData)
         let aux = await database.createPoll();
         let foundUsers = await database.findUserInDBLogin(userData);
         if(foundUsers.length == 1){
+            const foundIdUser = foundUsers[0].iduser;
             const foundUsername = foundUsers[0].username;
             const foundPassword = foundUsers[0].password;
             if(userData.password == foundPassword) 
-                message = 'Login successful. Welcome \"' + foundUsername + '\"!';
+                message = 'Login successful. Welcome \"' + foundUsername + '-' + foundIdUser + '\"!';
             else
                 message = 'Incorrect password...'
         }

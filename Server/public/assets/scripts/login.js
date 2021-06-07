@@ -13,6 +13,7 @@ async function loginRequest()
     else{
         let response = await fetch('http://localhost:4200/login',{
             method: 'POST',
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -25,26 +26,26 @@ async function loginRequest()
         if(response.status == 200)
         {
             
-            response = response.text().then(async (token)=> {
-                console.log(token);
-                let responseGET = await fetch('http://localhost:4200/home/index?validated',{
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    }
-                })
+            // response = response.text().then(async (token)=> {
+            //     console.log(token);
+            //     let responseGET = await fetch('http://localhost:4200/home/index?validated',{
+            //         method: 'GET',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'Authorization': 'Bearer ' + token
+            //         }
+            //     })
                 
-                if(responseGET.status == 200)
-                    //  window.location.replace("http://localhost:4200/home/index");
-                    alert(token);
-
-    
+            window.location.href = "http://localhost:4200/home/index.html";
                 
-            });
         
 
-        }     
+        } 
+        else if (response.status == 404 || response.status == 403){
+            response = response.text().then(message =>{
+                alert(message);
+            });
+        }    
 
     }
 

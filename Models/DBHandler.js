@@ -46,7 +46,7 @@ async function findUserInDB(userData){
 
 async function findUserInDBLogin(userData){
     return new Promise((resolve,reject)=>{
-        connection.query('SELECT username, password FROM user WHERE email = ? OR username = ?',[userData.id, userData.id], function(error, queryResult, fields){
+        connection.query('SELECT iduser ,username, password FROM user WHERE email = ? OR username = ?',[userData.id, userData.id], function(error, queryResult, fields){
             if(error){
                 console.log("findUserInDBLogin - Error: ", error);
                 reject(error);
