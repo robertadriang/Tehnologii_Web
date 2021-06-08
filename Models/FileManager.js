@@ -1,6 +1,7 @@
 var database = require('../Models/DBHandler');
 var https = require('https');
 const { request } = require('http');
+const cm=require('../Models/CloudManager');
 
 /* Upload a file into a temporary storage room until the split is complete */
 async function uploadFile(req) {
@@ -18,6 +19,18 @@ async function uploadFile(req) {
             try {
                 let stat=fs.statSync(`./user_files/${fileName}`);
                 let result = await database.uploadFile({ user_id: req.headers['x-user'], filename: fileName, scope: req.headers['x-scope'], size: stat.size, extension: extension });
+                let connectedDrives=await cm.getClouds(req.headers['x-user']);
+                if(connectedDrives.dropbox==='Connected'){
+                    console.log('Inseram fisierul in dropbox');
+                    uploadToDropbox(req);
+                }
+                if(connectedDrives.google==='Connected'){
+                    console.log('Inseram fisierul in google drive');
+                    uploadToGoogle(req);
+                }if(connectedDrives.onedrive==='Connected'){
+                    console.log('Inseram fisierul in onedrive');
+                    uploadToOneDrive(req);
+                }
                 resolve(result);
             } catch (error) {
                 reject(error);
@@ -232,7 +245,6 @@ async function uploadToOneDrive(req){
                     }
                     const request = https.request(options2, function (res) {
                         res.on('data', function (d) {
-                            process.stdout.write(d);
                             fileId=JSON.parse(d.toString()).id;
                             database.addShard({idUser:userId,filename:fileName,shardname:fileId,location:'onedrive'});
                         });
@@ -325,7 +337,20 @@ async function downloadFile(req, res){
         const fs = require('fs');
         try{
             let readStream=fs.createReadStream(`./user_files/${fileName}`);
-            readStream.pipe(res);
+            // let connectedDrives=await cm.getClouds(req.headers['x-user']);
+            //     if(connectedDrives.dropbox==='Connected'){
+            //         console.log('Descarcam din dropbox');
+            //         downloadFromDropbox(req);
+            //     }
+            //     if(connectedDrives.google==='Connected'){
+            //         console.log('Descarcam din google drive');
+            //         downloadFromgoogleDrive(req);
+            //     }if(connectedDrives.onedrive==='Connected'){
+            //         console.log('Descarcam din onedrive');
+            //         downloadFromOnedrive(req);
+            //     }
+            // readStream.pipe(res);
+            
         }catch(error){
             res.end(error);
         }

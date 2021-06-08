@@ -123,9 +123,9 @@ router.handle('/home/index', 'get', async (req, res) => {
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
     try{
         await fileHandler.uploadFile(req);
-        await fileHandler.uploadToDropbox(req);
-        await fileHandler.uploadToGoogle(req);
-        await fileHandler.uploadToOneDrive(req);
+        //await fileHandler.uploadToDropbox(req);
+        //await fileHandler.uploadToGoogle(req);
+        //await fileHandler.uploadToOneDrive(req);
         let result=await fileHandler.getUserFiles(req);       
         res.statusCode=200;
         res.end(JSON.stringify(result));
@@ -154,9 +154,9 @@ router.handle('/home/index/all', 'GET', async (req, res) => {
 router.handle('/home/index/:fileName', 'GET', async (req, res) => {
     let fileName=`${req.params.fileName}.${req.headers['file-extension']}`;
     console.log(`Am primit request de download pentru: ${fileName}`);
-    await fileHandler.downloadFromDropbox(req);
-    await fileHandler.downloadFromGoogle(req);
-    await fileHandler.downloadFromOnedrive(req);
+    //await fileHandler.downloadFromDropbox(req);
+    //await fileHandler.downloadFromGoogle(req);
+    //await fileHandler.downloadFromOnedrive(req);
     await fileHandler.downloadFile(req,res);
 });
 
