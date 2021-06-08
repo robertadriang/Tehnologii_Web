@@ -30,15 +30,25 @@ window.onload = async function () {
         window.location.replace('http://localhost:4200/config/config_cloud.html');
     } else {
         /* Generate the connection buttons based on the JSON from the server */
-        fetch('http://localhost:4200/config/config_cloud', {
+        let response = await fetch('http://localhost:4200/config/config_cloud', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             }
-        }).then(response => response.json()).then(data => {
+        })
+
+        if(response.status == 302)
+        {
+            redirectUrl = await response.text();
+            alert("Authorization error. You will be redirected to login page.");
+            window.location.href = (redirectUrl);
+        }
+        else if(response.status == 200)
+        {
+            data = await response.json();
             generateButtons(data);
-        });
+        }
     }
     if(currentURL.indexOf("?lc")!==-1){   //// Onedrive revoking is made from the frontEnd and returns this lc param that we don't need
         window.location.replace('http://localhost:4200/config/config_cloud.html');

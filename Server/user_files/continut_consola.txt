@@ -1,0 +1,72 @@
+Prelude> :l lab14.hs 
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex02 
+App (Lam "x" TyBool (Var "x")) LamTrue
+*Main> :R
+unknown command ':R'
+use :? for help.
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> :R
+unknown command ':R'
+use :? for help.
+*Main> ex02 
+App (Lam "x" TyBool (Var "x")) LamTrue
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex03
+Just TyNat
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> t1
+App (Lam "x" TyBool (Var "x")) LamTrue
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex0
+ex02  ex03  ex04
+*Main> ex04
+Just TyBool
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex05
+Just (Arrow (Arrow TyBool TyBool) (Arrow TyBool TyBool))
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex
+ex02      ex03      ex04      ex05      ex05'     exp       exponent
+*Main> ex05
+ex05   ex05'
+*Main> ex05'
+Nothing
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex05''
+Nothing
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex05''
+Nothing
+*Main> :r     
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex05'''
+Nothing
+*Main> :r
+[1 of 1] Compiling Main             ( lab14.hs, interpreted )
+Ok, one module loaded.
+*Main> ex05'''
+Just (Arrow (Arrow TyBool TyBool) (Arrow TyBool TyBool))
+*Main> ex05'' 
+Nothing
+*Main> ex05'''
+Just (Arrow (Arrow TyBool TyBool) (Arrow TyBool TyBool))
+*Main>

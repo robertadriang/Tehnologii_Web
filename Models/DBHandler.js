@@ -3,6 +3,7 @@ var connection;
 
 /* This can't throw an error because the connection is marked as failed only when we accually make a query */
 async function createPoll(){
+    console.log("VREAU SA MERGI")
     return new Promise((resolve,reject)=>{
         connection = mysql.createPool({
           connectionLimit: 5,

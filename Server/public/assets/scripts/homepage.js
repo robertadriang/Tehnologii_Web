@@ -1,20 +1,7 @@
 const currentURL=window.location.href;
 
-/* Initialize Thread Pool ///TODO move this somewhere more suitable mby */
-if(currentURL.indexOf("index")!==-1){
-    fetch('http://localhost:4200/home/index',{
-        method:'GET',
-        headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    }).then(response=>{
-        if(response.status == 302)
-            window.location.href = "http://localhost:4200/login/login.html";
-    })
-}
-
 window.onload = async function () {
+    var redirectUrl = '';
     /* Request all files of the user for the current scope (scope===folder) */
     let getFilesResponse=await fetch('http://localhost:4200/home/index/all',{
         method:"GET",
@@ -23,7 +10,18 @@ window.onload = async function () {
             'x-scope':'root'
         }
     });
+
+    if(getFilesResponse.status == 302)
+    {
+        redirectUrl = await getFilesResponse.text();
+        alert("Authorization error. You will be redirected to login page.");
+        window.location.href = redirectUrl;
+    }
+
     let fileArray=await getFilesResponse.json();
+
+
+
     clearFileCards();
     fileArray.forEach(file=>{
         generateFileCard(file);
@@ -55,9 +53,15 @@ window.onload = async function () {
             fileArray.forEach(file=>{
                 generateFileCard(file);
             });
-        }else{
-            alert('The file could not be uploaded. Probably duplicate?');
+        }else if (response.status == 302){
+            redirectUrl = await response.text();
+            alert("Authorization error. You will be redirected to login page.");
+            window.location.href = (redirectUrl);
         }  
+        else
+        {
+            alert('The file could not be uploaded. Probably duplicate?');
+        }
         this.value=null;  /* Without this you won't be able to add the same file consecutive times. Because the onchange treats the upload of the same file as the previous one as the same event */
     };
 };
@@ -108,17 +112,33 @@ function createUnorderedList(object){
                     'File-Extension':`${object.file.filename.split('.').pop()}`,
                     'x-user':1
                 }
-            }).then(response => response.blob())    /// -> Read the whole response body (Body.blob())
-            .then(blob=>{
-                const url=window.URL.createObjectURL(blob);
-                const a=document.createElement('a');
-                a.style.display='none';
-                a.href=url;
-                a.download=object.file.filename;
-                document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url); 
-            }).catch((error)=>console.log(error));
+            })
+
+            if(response.status == 302)
+            {
+                redirectUrl = await response.text();
+                alert("Authorization error. You will be redirected to login page.");
+                window.location.href = (redirectUrl);
+            }
+            else if (response.status == 200)
+            {
+                let blob = await response.blob()   /// -> Read the whole response body (Body.blob())
+                try{
+                    const url=window.URL.createObjectURL(blob);
+                    const a=document.createElement('a');
+                    a.style.display='none';
+                    a.href=url;
+                    a.download=object.file.filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url); 
+                }
+                catch(error){
+                    console.log(error)
+                }
+            }
+
+
         }
             
     ul.appendChild(size);

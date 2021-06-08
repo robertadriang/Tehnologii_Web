@@ -1,0 +1,975 @@
+Prelude> :l lab7.hs 
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+Hello, World!
+Hello
+World
+*Main> :info >>
+type Monad :: (* -> *) -> Constraint
+class Applicative m => Monad m where
+  ...
+  (>>) :: m a -> m b -> m b
+  ...
+        -- Defined in `GHC.Base'
+infixl 1 >>
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your name?
+vlad
+Hello, vlad!
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your name?
+vlad
+enia
+Hello vlad enia!
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your first name?
+vlad
+What is your last name?
+enia
+Hello vlad enia!
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your first name?ghc.exe: user interrupt
+Interrupted.
+*Main>
+*Main> :r  
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your first name? vlad
+What is your last name? enia
+Hello vlad enia!
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your name?
+vlad
+Hello, vlad!
+What is your name?
+vlad
+Hello, vlad!
+What is your name?
+vlad
+Hello, vlad!
+What is your name?
+**Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+First name: ***Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your name?
+vlad
+Hello, vlad!
+What is your name?
+vlad
+Hello, vlad!
+What is your name?
+vlad
+Hello, vlad!
+What is your name?
+vlad
+Hello, vlad!
+What is your name?
+***Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your name?
+Hello, Victor!
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+What is your name?
+vlad
+Hello, vlad!
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+First name:
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+
+First name:   
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+
+First name: vlad
+Last name: enia
+Hello, vlad enia!
+
+First name:
+*Main> main
+First name: vlad
+Last name:
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+
+lab7.hs:132:10: error: Empty 'do' block
+    |
+132 |     else do
+    |          ^^
+Failed, no modules loaded.
+Prelude> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+
+lab7.hs:121:24: error:
+    Variable not in scope: toUpper :: Char -> [Char]
+    |
+121 | toUpperString (x:xs) = toUpper x ++ (toUpperString xs)
+    |                        ^^^^^^^
+Failed, no modules loaded.
+Prelude> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+
+lab7.hs:129:19: error:
+    Variable not in scope: stringToUpper :: String -> String
+    |
+129 |         putStrLn (stringToUpper sir)
+    |                   ^^^^^^^^^^^^^
+Failed, no modules loaded.
+Prelude> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+
+lab7.hs:129:19: error:
+    Variable not in scope: stringToUpper :: String -> String
+    |
+129 |         putStrLn (stringToUpper sir)
+    |                   ^^^^^^^^^^^^^
+Failed, no modules loaded.
+Prelude> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> stringToUpper vlad
+
+<interactive>:44:15: error: Variable not in scope: vlad :: String
+*Main> stringToUpper "vlad"
+"VLAD"
+*Main> stringToUpper "vlad0"
+"VLAD0"
+*Main> main
+Scrie string-ul: vlad
+VLAD
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> main
+Scrie string-ul: vlad
+String-ul uppercase: VLAD
+
+Scrie string-ul: enia
+String-ul uppercase: ENIA
+
+Scrie string-ul: vlad0
+String-ul uppercase: VLAD0
+
+Scrie string-ul:
+*Main> :t openFile 
+openFile :: FilePath -> IOMode -> IO Handle
+*Main> :t hGetContents
+hGetContents :: Handle -> IO String
+*Main> :t hGetLine 
+hGetLine :: Handle -> IO String
+*Main> :t hClose
+hClose :: Handle -> IO ()
+*Main> :t getArgs
+
+<interactive>:1:1: error: Variable not in scope: getArgs
+*Main> :m + System.Environment
+*Main System.Environment> :t getArgs
+getArgs :: IO [String]
+*Main System.Environment> :t getProgName
+getProgName :: IO String
+*Main System.Environment> :t hPutStr
+hPutStr :: Handle -> String -> IO ()
+*Main System.Environment>
+
+*Main System.Environment> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main System.Environment> citireFisier 
+acesta este un exemplu
+*Main System.Environment> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main System.Environment> citireFisier 
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+*Main System.Environment> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main System.Environment> citireFisier
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+(i-search)`':
+*Main System.Environment> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+
+lab7.hs:182:1: error: parse error on input `import'
+    |
+182 | import System.Environment
+    | ^^^^^^
+Failed, no modules loaded.
+Prelude System.Environment> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main System.Environment> main exemplu.txt
+
+<interactive>:67:6: error: Variable not in scope: exemplu
+
+<interactive>:67:14: error: Variable not in scope: txt :: a -> b0
+*Main System.Environment> main "exemplu.txt"
+
+<interactive>:68:1: error:
+    * Couldn't match expected type `[Char] -> t'
+                  with actual type `IO ()'
+    * The function `main' is applied to one argument,
+      but its type `IO ()' has none
+      In the expression: main "exemplu.txt"
+      In an equation for `it': it = main "exemplu.txt"
+    * Relevant bindings include it :: t (bound at <interactive>:68:1)
+*Main System.Environment> main .\exemplu.txt
+
+<interactive>:69:6: error:
+    * Variable not in scope: (.\) :: IO () -> (a0 -> c0) -> t
+    * Perhaps you meant `.' (imported from Prelude)
+
+<interactive>:69:8: error:
+    Variable not in scope: exemplu :: b0 -> c0
+
+<interactive>:69:16: error: Variable not in scope: txt :: a0 -> b0
+*Main System.Environment> main              
+*** Exception: Prelude.!!: index too large
+*Main System.Environment> main ".\exemplu.txt"
+
+<interactive>:71:9: error:
+    lexical error in string/character literal at character 'e'
+*Main System.Environment> ghc lab7.hs -o lab7.exe
+
+<interactive>:72:1: error:
+    Variable not in scope: ghc :: t0 -> b0 -> c
+
+<interactive>:72:5: error: Variable not in scope: lab7
+
+<interactive>:72:10: error: Variable not in scope: hs :: a -> b0
+<interactive>:72:14: error:
+    Variable not in scope: o :: t1 -> b1 -> c
+<interactive>:72:16: error: Variable not in scope: lab7
+
+    * Variable not in scope: exe :: a -> b1
+    * Perhaps you meant `exp' (imported from Prelude)
+*Main System.Environment>
+*Main System.Environment> :q
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> ghc .\lab7.hs 
+[1 of 1] Compiling Main             ( lab7.hs, lab7.o )
+Linking lab7.exe ...
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> .\curs7.exe exemplu.txdt
+Hello, World!
+Hello, class!
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> .\lab7.exe exemplu.txt  
+un exemplu chiar simpatic
+si
+foarte frumos
+:r : The term ':r' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ ~~
+    + CategoryInfo          : ObjectNotFound: (:r:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+GHCi, version 8.10.4: https://www.haskell.org/ghc/  :? for help
+Leaving GHCi.
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> ghc .\lab7.hs
+Linking lab7.exe ...
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> .\lab7.exe exemplu.txt
+acesta este un exemplu
+si
+foarte frumos
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> .\lab7.exe exemplu    
+lab7.exe
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> ghc .\lab7.hs
+[1 of 1] Compiling Main             ( lab7.hs, lab7.o )
+Linking lab7.exe ...
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> .\lab7.exe exemplu    
+
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> .\lab7.exe exemplu.txt
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> ghc .\lab7.hs \       
+target `\' is not a module name or a source file
+[1 of 1] Compiling Main             ( lab7.hs, lab7.o )
+Linking lab7.exe ...
+
+
+ACESTA ESTE UN EXEMPLU
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+[1 of 1] Compiling Main             ( lab7.hs, lab7.o )
+Linking lab7.exe ...
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> .\lab7.exe exemplu.txt
+
+ACESTA ESTE UN EXEMPLU
+UN EXEMPLU CHIAR SIMPATIC
+SI
+FOARTE FRUMOS
+
+
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> .\lab7.exe exemplu    
+
+
+lab7.exe
+PS D:\Vlad\Facultate An II Sem II\PF\Sapt_7> ghci
+GHCi, version 8.10.4: https://www.haskell.org/ghc/  :? for help
+Prelude> :l lab7.hs
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> binSearch 1 100 37 
+Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> binSearch 1 100 37
+Interrupted.
+*Main> binSearch 1 100 50
+True
+*Main> binSearch 1 100 30
+True
+*Main> binSearch 1 100 37
+Interrupted.
+*Main> binSearch 1 100 35
+Interrupted.
+*Main> binSearch 1 100 40
+True
+*Main> binSearch 1 100 200
+Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> binSearch 1 100 37 
+Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> binSearch 1 100 37
+True
+*Main> binSearch 1 100 200
+Interrupted.
+*Main> binSearch 1 100 27 
+True
+*Main> binSearch 1 100 15
+True
+*Main> binSearch 1 100 116
+Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> binSearch 1 100 116
+Interrupted.
+*Main> LR
+
+<interactive>:21:1: error:
+    * Data constructor not in scope: LR
+    * Perhaps you meant one of these:
+        `LT' (imported from Prelude), `LF' (imported from System.IO)
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> binSearch 1 100 15 
+True
+*Main> binSearch 1 100 37
+True
+*Main> binSearch 1 100 99
+True
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> binSearch 1 100 99
+True
+*Main> binSearch 1 100 101
+False
+*Main> binSearch 1 100 120
+False
+*Main> binSearch 1 100 0  
+False
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> binSearch 1 100 100
+True
+*Main> binSearch 1 100 101
+False
+*Main> binSearch 1 100 0  
+False
+*Main> binSearch 1 100 37
+True
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+
+lab7.hs:265:9: error:
+    parse error (possibly incorrect indentation or mismatched brackets)
+    |
+265 |         (
+    |         ^
+Failed, no modules loaded.
+Prelude>      
+Prelude> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+
+lab7.hs:273:1: error:
+    parse error (possibly incorrect indentation or mismatched brackets)
+Failed, no modules loaded.
+Prelude> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+
+lab7.hs:267:9: error:
+    parse error (possibly incorrect indentation or mismatched brackets)
+    |
+267 |         (
+    |         ^
+Failed, no modules loaded.
+Prelude> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> ghiceste 1 100
+numarul de ghicit este >=50
+nu
+numarul de ghicit este >=25
+da
+numarul de ghicit este >=37
+nu
+numarul de ghicit este >=31
+nu
+numarul de ghicit este >=28
+da
+numarul de ghicit este >=29
+da
+numarul de ghicit este >=30
+da
+Atunci numarul este 30
+*Main> ghiceste 1 100
+numarul de ghicit este >=50
+da
+numarul de ghicit este >=75
+da
+numarul de ghicit este >=88
+nu
+numarul de ghicit este >=81
+nu
+numarul de ghicit este >=78
+da
+numarul de ghicit este >=79
+da
+numarul de ghicit este >=80
+nu
+Atunci numarul este 79
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> ghiceste 1 100
+numarul de ghicit este >=50
+da
+numarul de ghicit este >=75
+da
+numarul de ghicit este >=88
+nu
+numarul de ghicit este >=81
+nu
+numarul de ghicit este >=78
+da
+numarul de ghicit este >=79
+nu
+Atunci numarul este 78
+*Main> ghiceste 1 100
+numarul de ghicit este >=50
+asda
+numarul de ghicit este >=75
+afsfasf
+numarul de ghicit este >=88
+ ghc.exe: user interrupt
+Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> :r
+Ok, one module loaded.
+*Main> ghiceste 1 100
+asfaSDGA
+Nu am inteles.
+***Interrupted.
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> :r
+Ok, one module loaded.
+*Main> ghiceste 1 100
+numarul de ghicit este >=50
+ASFA
+Nu am inteles.
+numarul de ghicit este >=50
+AFASAGWR
+Nu am inteles.
+numarul de ghicit este >=50
+da      
+numarul de ghicit este >=75
+agwrger
+Nu am inteles.
+numarul de ghicit este >=75
+nu     
+numarul de ghicit este >=62
+da
+numarul de ghicit este >=68
+da
+numarul de ghicit este >=71
+da
+numarul de ghicit este >=73
+nu
+numarul de ghicit este >=72
+nu
+Atunci numarul este 71
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> ghiceste 1 100
+numarul de ghicit este >=50
+1100 
+Nu am inteles.
+numarul de ghicit este >=50
+DA
+Nu am inteles.
+numarul de ghicit este >=50
+da
+numarul de ghicit este >=75
+da
+numarul de ghicit este >=88
+da
+numarul de ghicit este >=94
+da
+numarul de ghicit este >=97
+da
+numarul de ghicit este >=99
+da
+numarul de ghicit este >=100
+nu
+Atunci numarul este 99
+*Main> :r
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+*Main> ghiceste 
+numarul de ghicit este >=50
+nu
+numarul de ghicit este >=25
+da
+numarul de ghicit este >=37
+nu
+numarul de ghicit este >=31
+da
+numarul de ghicit este >=34
+nu
+numarul de ghicit este >=32
+nu
+Atunci numarul este 31
+*Main>
+
+Prelude> :l lab7.
+target `lab7.' is not a module name or a source file
+Prelude> :l lab7.hs
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+(0.20 secs,)
+*Main> main
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+v
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+
+(0.09 secs, 1,509,808 bytes)
+*Main> :l lab7.hs
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+(0.03 secs,)
+*Main> main      
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+v
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+
+acesta este un exemplu
+un exemplu chiar simpatic
+si
+foarte frumos
+
+(0.09 secs, 1,239,712 bytes)
+*Main> :l lab7.hs
+[1 of 1] Compiling Main             ( lab7.hs, interpreted )
+Ok, one module loaded.
+(0.02 secs,)
+*Main> main
+(0.00 secs, 69,336 bytes)
+*Main>

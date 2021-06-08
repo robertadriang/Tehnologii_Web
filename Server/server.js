@@ -4,21 +4,18 @@ var fs = require('fs');
 var path = require('path');
 var app = require('./routes.js');
 var cm=require('../Models/CloudManager')
-var database=require('../Models/DBHandler')
 var verifyJWT=require('./public/assets/scripts/verifyJWT')
 var fileHandler=require('../Models/FileManager')
-
+var databaseConnection = require('./init')
 var userManager=require('../Models/UserManager')
 var jwt=require('jsonwebtoken');
-const { restart } = require('nodemon');
+const { restart, reset } = require('nodemon');
 require('dotenv').config();
 // initialize router
 var router = app.Router();
 
-// const ACCES_TOKEN_SECRET = '31384bbbaace98d1a69aced97973ed3c0c958f13a1921ae7a650328ee3e586c66aa934156b5a117a14e0793989b7b4c8e5c4904a1afdea86308678ed5fc17e25';
-// const REFRESH_TOKEN_SECRET = '6f38b681bc49e8e9b8aa99041a4ef75127d12ebefd67f03730d422355f3d1b6f8b899ea1eaac9603fa5a5bdc776416ed2933d3a4e0412fc94411356e0ec33de2';
-
-
+//initialize database connection
+databaseConnection.init();  
 
 //add routes
 // http://localhost:4200/test
@@ -55,7 +52,6 @@ router.handle('/test', 'POST', (req, res) => {
 router.handle('/test/:testId', 'get', (req, res) => {
     return res.end(`test something ${req.params.testId}`);
 });
-
 router.handle('/test/:testId', 'post', (req, res) => {
     var postData = '';
     req.on('data', (chunk) => {
@@ -72,6 +68,7 @@ router.handle('/test/:testId', 'post', (req, res) => {
 router.handle('/test/query', 'get', (req, res) => {
     return res.end(`test something ${JSON.stringify(req.query)}`);
 });
+
 router.handle('/', 'get', (req, res) => {
     res.statusCode = 302;
     res.setHeader('Location', '/home/index.html');
@@ -82,156 +79,157 @@ router.handle('/', 'get', (req, res) => {
 /*Request connected drives*/
 router.handle('/config/config_cloud', 'GET', async (req, res) => {
     console.log("User-ul a cerut setarile pentru drive-uri");
-    try{
-        let user = await verifyJWT.authorize(req,res);
-        let connectedDrives=await cm.getClouds(user.id);/// TODO: Replace 1 with actual user ID or change it to send the jwt
-        console.log("Am trimis la client:",connectedDrives);
-        return res.end(JSON.stringify(connectedDrives)); 
-    }catch (error){
-     return res.end(JSON.stringify(error));     
-     }
+    let isOk = true;
+    let user = await verifyJWT.authorize(req,res).catch(e=>{
+        res.statusCode = 302;
+        isOk = false;
+        return res.end('http://localhost:4200/login/login.html');
+    });
+    if(isOk)
+    {
+        try{
+            res.statusCode = 200;
+            let connectedDrives=await cm.getClouds(user.id);
+            console.log("Am trimis la client:",connectedDrives);
+            return res.end(JSON.stringify(connectedDrives)); 
+        }catch (error){
+            return res.end(JSON.stringify(error));     
+        }
+    }
+
  });
 
  /*Connect a drive to your account*/
-
 router.handle('/config/config_cloud', 'POST', async (req, res) => {
-    let token=req.headers['storage-code'];
-    let token_type=req.headers['token-type'];
-    console.log("Access token:",token,"for the drive:",token_type);
-    let user = '';
-    try{
-        user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
-        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
-        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
+    let isOk = true;
+    user = await verifyJWT.authorize(req,res).catch(e=>{
+        res.statusCode = 302;
+        isOk = false;
+        return res.end('http://localhost:4200/login/login.html');
+    });  
+    if(isOk)
+    {
+        
+        let token=req.headers['storage-code'];
+        let token_type=req.headers['token-type'];
+        console.log("Access token:",token,"for the drive:",token_type);                                                
+        req.headers['x-user'] = user.id;                     
+        let object={cloud: token_type,token:token,idUser:user.id};
+        try{
+            
+            let sessionToken=await cm.setCloud(object);
+            res.statusCode = 200;
+            res.end(sessionToken);
+            console.log("Am returnat la client:",sessionToken,"pentru drive-ul:",token_type);
+            return;
+        }catch (error){
+            return res.end(JSON.stringify(error));     
+        }
     }
-    catch{
 
-    }
-    let object={cloud: token_type,token:token,idUser:user.id};/// TODO: Replace 1 with actual user ID or change it to send the jwt
-    try{
-        let sessionToken=await cm.setCloud(object);
-        res.end(sessionToken);
-        console.log("Am returnat la client:",sessionToken,"pentru drive-ul:",token_type);
-        return;
-    }catch (error){
-        return res.end(JSON.stringify(error));     
-    }
 });
-
 
 /*Delete a drive from your account */
 router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
+
+    let isOk = true;
+
     let token_type=req.headers['token-type'];
     let user = '';
-    try{
-        user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
+    
+    user = await verifyJWT.authorize(req,res).catch(e=>{
+        isOk = false;
+        res.statusCode = 302;
+        return res.end();
+    });      ///AUTORIZAM TOKENU 
+
+    if(isOk)
+    {
         req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
-        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE
+    
+        let object={cloud: token_type,idUser:user.id};
+        try{
+            let dboperation=await cm.deleteCloud(object);
+            return res.end(dboperation);
+        }catch (error){
+            return res.end(JSON.stringify(error));     
+        }
     }
-    catch{
 
-    }
-    let object={cloud: token_type,idUser:user.id};/// TODO: Replace 1 with actual user ID or change it to send the jwt
-    try{
-        let dboperation=await cm.deleteCloud(object);
-        return res.end(dboperation);
-    }catch (error){
-        return res.end(JSON.stringify(error));     
-    }
+
 });
 
-
-
-
-/*Create the connection pool*/   /// TODO: Move this to a better place? 
-router.handle('/home/index', 'get', async (req, res) => { 
-///TODO: set status code according to message (error, duplicate key, not found etc.)
-    let user = '';
-
-        let aux=await database.createPoll();
-        console.log("Connection pool created!");
-        user = await verifyJWT.authorize(req,res).catch(e=>{
-            res.statusCode = 302;
-            // res.setHeader('Location', '/login/login.html');     //NU MERGE SI NU INTELEG
-            res.end();
-        });
-        
-        // console.log("CATCH!!!!!!!!!!!! " + e)
-
-        // console.log("AUTH ERROR:" + res.statusCode)
-
-        // return res.end(JSON.stringify());
-
-    // console.log('USER_ID: ' + user.id);
-    // return await res.end('Connection pool created!');
-});
 
 /*Upload a file*/
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
-    try{
-        let user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
+    let isOk = true;
+    let user = await verifyJWT.authorize(req,res).catch(e=>{
+        res.statusCode = 302;
+        isOk = false;
+        return res.end('http://localhost:4200/login/login.html');
+    });                                                       ///AUTORIZAM TOKENU 
+    if(isOk){
         req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
-        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
-        await fileHandler.uploadFile(req);
-        //await fileHandler.uploadToDropbox(req);
-        //await fileHandler.uploadToGoogle(req);
-        //await fileHandler.uploadToOneDrive(req);
-        let result=await fileHandler.getUserFiles(req);       
-        res.statusCode=200;
-        res.end(JSON.stringify(result));
-    }
-    catch (error){
-        console.log("Hmmmm... ",error);
-        res.statusCode=400;
-        return res.end('fail');
+        try{
+            
+            ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
+            await fileHandler.uploadFile(req);
+            let result=await fileHandler.getUserFiles(req);       
+            res.statusCode=200;
+            res.end(JSON.stringify(result));
+        }
+        catch (error){
+            console.log("Hmmmm... ",error);
+            res.statusCode=400;
+            return res.end('fail');
+        }
     }
 });
 
 /*Get all the files for a user and a scope */
 router.handle('/home/index/all', 'GET', async (req, res) => { 
-    try{
-        let user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
-        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
-        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
-        let result=await fileHandler.getUserFiles(req)
-        res.statusCode=200;
-        res.end(JSON.stringify(result));
-    }
-    catch (error){
-        console.log("H<<<<mmmm... ",error);
+    let isOk = true;
+    let user = await verifyJWT.authorize(req,res).catch(e=>{
         res.statusCode = 302;
-        // res.setHeader('Location', '/login/login.html');     //NU MERGE SI NU INTELEG
-        return res.end('fail');
+        isOk = false;
+        return res.end('http://localhost:4200/login/login.html');
+    });                                                 ///AUTORIZAM TOKENU 
+    if(isOk){
+        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
+        try{
+            let result=await fileHandler.getUserFiles(req)
+            res.statusCode=200;
+            res.end(JSON.stringify(result));
+        }
+        catch (error){
+            console.log("Hmmmm... ",error);
+            return res.end('fail');
+        }
     }
+
 });
 
+/*Get a specific file to download it*/
 router.handle('/home/index/:fileName', 'GET', async (req, res) => {
 
-    try{
-        let user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
-        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
-        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
+    let isOk = true;
+    let user = await verifyJWT.authorize(req,res).catch(e=>{
+        res.statusCode = 302;
+        isOk = false;
+        return res.end('http://localhost:4200/login/login.html');
+    });                                                   ///AUTORIZAM TOKENU 
+    if(isOk)
+    {
+        res.statusCode = 200;
+         req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
+        let fileName=`${req.params.fileName}.${req.headers['file-extension']}`;
+        console.log(`Am primit request de download pentru: ${fileName}`);
+        await fileHandler.downloadFile(req,res);
     }
-    catch{
-
-    }
-    let fileName=`${req.params.fileName}.${req.headers['file-extension']}`;
-    console.log(`Am primit request de download pentru: ${fileName}`);
-    //await fileHandler.downloadFromDropbox(req);
-    //await fileHandler.downloadFromGoogle(req);
-    //await fileHandler.downloadFromOnedrive(req);
-    await fileHandler.downloadFile(req,res);
-
-    // console.log("AUTH NO ERROR:" + res.statusCode)
-    // res.end();
-
 });
 
 router.handle('/register','post', (req,res)=>{
     console.log("Register request received!");
-    
-    ///TODO: set status code according to message (error, duplicate key, not found etc.)
-
     let data = '';
     req.on('data', chunk => {
         data += chunk;
@@ -288,11 +286,6 @@ router.handle('/login','post', (req,res)=>{
 
 });
 
-router.handle('/login','get', (req,res)=>{
-    
-    console.log("hallo");
-    res.end();
-});
 
 //setup router and routing to local files
 app.Use(router);
