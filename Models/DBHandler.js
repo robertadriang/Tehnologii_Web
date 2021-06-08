@@ -44,6 +44,7 @@ async function getSessionToken(object){
         let tableName=getTableName(object);
         connection.query('SELECT session_token from ?? WHERE user_id=?',[tableName,object.idUser],function(error,results,fields){
             if(error) {
+                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 reject(error);
             }else{
                 let resObjs=JSON.parse(JSON.stringify(results));

@@ -5,7 +5,7 @@ var path = require('path');
 var app = require('./routes.js');
 var cm=require('../Models/CloudManager')
 var database=require('../Models/DBHandler')
-
+var verifyJWT=require('./public/assets/scripts/verifyJWT')
 var fileHandler=require('../Models/FileManager')
 
 var userManager=require('../Models/UserManager')
@@ -83,7 +83,8 @@ router.handle('/', 'get', (req, res) => {
 router.handle('/config/config_cloud', 'GET', async (req, res) => {
     console.log("User-ul a cerut setarile pentru drive-uri");
     try{
-        let connectedDrives=await cm.getClouds(1);/// TODO: Replace 1 with actual user ID or change it to send the jwt
+        let user = await verifyJWT.authorize(req,res);
+        let connectedDrives=await cm.getClouds(user.id);/// TODO: Replace 1 with actual user ID or change it to send the jwt
         console.log("Am trimis la client:",connectedDrives);
         return res.end(JSON.stringify(connectedDrives)); 
     }catch (error){
@@ -97,7 +98,16 @@ router.handle('/config/config_cloud', 'POST', async (req, res) => {
     let token=req.headers['storage-code'];
     let token_type=req.headers['token-type'];
     console.log("Access token:",token,"for the drive:",token_type);
-    let object={cloud: token_type,token:token,idUser:1};/// TODO: Replace 1 with actual user ID or change it to send the jwt
+    let user = '';
+    try{
+        user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
+        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
+        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
+    }
+    catch{
+
+    }
+    let object={cloud: token_type,token:token,idUser:user.id};/// TODO: Replace 1 with actual user ID or change it to send the jwt
     try{
         let sessionToken=await cm.setCloud(object);
         res.end(sessionToken);
@@ -112,7 +122,16 @@ router.handle('/config/config_cloud', 'POST', async (req, res) => {
 /*Delete a drive from your account */
 router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
     let token_type=req.headers['token-type'];
-    let object={cloud: token_type,idUser:1};/// TODO: Replace 1 with actual user ID or change it to send the jwt
+    let user = '';
+    try{
+        user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
+        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
+        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE
+    }
+    catch{
+
+    }
+    let object={cloud: token_type,idUser:user.id};/// TODO: Replace 1 with actual user ID or change it to send the jwt
     try{
         let dboperation=await cm.deleteCloud(object);
         return res.end(dboperation);
@@ -121,62 +140,38 @@ router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
     }
 });
 
-function verifyJWT (req, res){
-    const token = req.headers.cookie.split(" ")[1].split("=")[1];
-    return new Promise((resolve, reject) =>{
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,user) =>{
-            if(err){
-                reject();
-            }
-            else{
-                resolve(user);
-            }
-        })
-    })
-} 
 
-function authorize (req,res){
-    let user = null;
-
-    return new Promise((resolve, reject)=>{
-        try{
-            verifyJWT(req,res).then((user)=>resolve(user))
-        }
-        catch{
-            reject();
-        }
-    })
-}
 
 
 /*Create the connection pool*/   /// TODO: Move this to a better place? 
 router.handle('/home/index', 'get', async (req, res) => { 
 ///TODO: set status code according to message (error, duplicate key, not found etc.)
+    let user = '';
     try{
-
         let aux=await database.createPoll();
         console.log("Connection pool created!");
-
-        let user = await authorize(req,res);
-
+        user = await verifyJWT.authorize(req,res);
     }
     catch{
-        res.statusCode = 302;
-        res.setHeader('Location', '/login/login.html');     //NU MERGE SI NU INTELEG
-        console.log("AUTH ERROR:" + res.statusCode)
-        res.end();
+        // res.statusCode = 302;
+        // res.setHeader('Location', '/login/login.html');     //NU MERGE SI NU INTELEG
+        // console.log("AUTH ERROR:" + res.statusCode)
+        // res.end();
     }
-
+    console.log('USER_ID: ' + user.id);
     return res.end('Connection pool created!');
 });
 
 /*Upload a file*/
 router.handle('/home/index/upload', 'POST', async (req, res) => { 
     try{
+        let user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
+        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
+        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
         await fileHandler.uploadFile(req);
         await fileHandler.uploadToDropbox(req);
         await fileHandler.uploadToGoogle(req);
-        await fileHandler.uploadToOneDrive(req);
+        // await fileHandler.uploadToOneDrive(req);
         let result=await fileHandler.getUserFiles(req);       
         res.statusCode=200;
         res.end(JSON.stringify(result));
@@ -191,6 +186,9 @@ router.handle('/home/index/upload', 'POST', async (req, res) => {
 /*Get all the files for a user and a scope */
 router.handle('/home/index/all', 'GET', async (req, res) => { 
     try{
+        let user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
+        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
+        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
         let result=await fileHandler.getUserFiles(req)
         res.statusCode=200;
         res.end(JSON.stringify(result));
@@ -203,11 +201,20 @@ router.handle('/home/index/all', 'GET', async (req, res) => {
 });
 
 router.handle('/home/index/:fileName', 'GET', async (req, res) => {
+
+    try{
+        let user = await verifyJWT.authorize(req,res);      ///AUTORIZAM TOKENU 
+        req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
+        ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
+    }
+    catch{
+
+    }
     let fileName=`${req.params.fileName}.${req.headers['file-extension']}`;
     console.log(`Am primit request de download pentru: ${fileName}`);
     await fileHandler.downloadFromDropbox(req);
     await fileHandler.downloadFromGoogle(req);
-    await fileHandler.downloadFromOnedrive(req);
+    // await fileHandler.downloadFromOnedrive(req);
     await fileHandler.downloadFile(req,res);
 
     // console.log("AUTH NO ERROR:" + res.statusCode)
@@ -257,8 +264,8 @@ router.handle('/login','post', (req,res)=>{
             user.id = foundUserId;
             user.username = foundUsername;
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-            ///TODO: need to find a way to save JWT on client side;
-            res.setHeader('Set-Cookie', `accessToken=${accessToken}; HttpOnly`);
+            
+            res.setHeader('Set-Cookie', `accessToken=${accessToken}; HttpOnly`);        //we save the jwt in a HttpOnly cookie
             res.end(accessToken);
         }
         else if(message.includes("not found")){
