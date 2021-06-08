@@ -8,5 +8,7 @@ if(currentURL.indexOf("index")!==-1){
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-    }).then(response=>response.text()).then(data=>console.log(data));
+    }).then(response=>{
+        console.log(response.status);
+    })
 }

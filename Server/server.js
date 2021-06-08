@@ -79,10 +79,7 @@ function authorize (req,res){
             verifyJWT(req,res).then((user)=>resolve(user))
         }
         catch{
-            //refresh token 
             res.statusCode = 302;
-            res.setHeader('Location','/login');
-            res.end();
             reject();
         }
     })
@@ -90,12 +87,16 @@ function authorize (req,res){
 
 router.handle('/home/index', 'get', async (req, res) => { 
 ///TODO: set status code according to message (error, duplicate key, not found etc.)
-    
-    let user = await authorize(req,res);
-    console.log(user);
-    
+    try{
+        let user = await authorize(req,res);
+    }
+    catch{
+        console.log("AUTH ERROR:" + res.statusCode)
+        res.end();
+    }
+    // console.log("AUTH NO ERROR:" + res.statusCode)
+    // res.end();
 
-    res.end();
 });
 
 router.handle('/register','post', (req,res)=>{
