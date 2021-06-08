@@ -186,7 +186,7 @@ async function getShard(object){
     console.log("Filename:",object.filename);
     console.log("id:",object.id);
     return new Promise((resolve,reject)=>{
-        connection.query('SELECT shardname FROM file_shards WHERE id=? AND filename=?',[object.id,object.filename],function(error,results,fields){
+        connection.query('SELECT shardname FROM file_shards WHERE id=? AND filename=? AND location=?',[object.id,object.filename,object.location],function(error,results,fields){
             if(error) {
                 console.log(error);
                 reject(error);

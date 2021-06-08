@@ -63,9 +63,9 @@ async function downloadFromDropbox(req){
     let fileName=`${decodeURIComponent(req.params.fileName)}.${req.headers['file-extension']}`;
     let userId=req.headers['x-user'];
     let sessionToken=await database.getSessionToken({ cloud: 'db', idUser: userId });
-    let shardId=await database.getShard({id:userId,filename:fileName});
+    let shardId=await database.getShard({id:userId,filename:fileName,location:'dropbox'});
     const fs = require('fs');
-    let downloadName=`${decodeURIComponent(req.params.fileName)}-db-donlod.${req.headers['file-extension']}`;
+    let downloadName=`${decodeURIComponent(req.params.fileName)}-db-d.${req.headers['file-extension']}`;
     const writeStream = fs.createWriteStream(`./user_files/${downloadName}`,'binary');
     let options={
         method:'POST',
@@ -107,7 +107,7 @@ async function uploadToGoogle(req){
     const fs = require('fs');
     let fileId="";
     let sessionToken=await database.getSessionToken({ cloud: 'gd', idUser: userId });
-    fs.readFile(`./user_files/${fileName}`, function read(err, data) {
+    fs.readFile(`./user_files/${fileName}`,'binary', function read(err, data) {
         let metadata={
             mimeType:'text/plain',
             name:fileName,
@@ -151,6 +151,41 @@ async function uploadToGoogle(req){
     }); 
 }
 
+async function downloadFromGoogle(req){
+    let fileName=`${decodeURIComponent(req.params.fileName)}.${req.headers['file-extension']}`;
+    let userId=req.headers['x-user'];
+    let sessionToken=await database.getSessionToken({ cloud: 'gd', idUser: userId });
+    let shardId=await database.getShard({id:userId,filename:fileName,location:'google'});
+    const fs = require('fs');
+    let downloadName=`${decodeURIComponent(req.params.fileName)}-gd-d.${req.headers['file-extension']}`;
+    const writeStream = fs.createWriteStream(`./user_files/${downloadName}`,'binary');
+    let options={
+        method:'GET',
+        hostname:'www.googleapis.com',
+        path:`/drive/v3/files/${shardId}?alt=media`,
+        headers:{
+            'Authorization':`Bearer ${sessionToken}`
+        }
+    };
+    let data = "";
+    let response={};
+    const request=https.request(options,function(res){
+        res.setEncoding('binary');
+        res.on('data',function(d){
+            data+=d;
+        });
+        res.on('end',()=>{
+            try{
+                response = JSON.parse(data).error; 
+            }catch (e) {
+               writeStream.write(data);
+               writeStream.end();
+            }
+        });
+    });
+    request.end();
+}
+
 /* Upload a file to OneDrive 
     This is a 2-step process 
     1. Create a upload session (Because in theory we are handling big files)
@@ -159,6 +194,7 @@ async function uploadToGoogle(req){
 */
 async function uploadToOneDrive(req){
     let fileName = req.headers['x-filename'];
+    let userId=req.headers['x-user'];
     const fs = require('fs');
     let sessionToken=await database.getSessionToken({ cloud: 'od', idUser: userId });
     let options={
@@ -186,7 +222,6 @@ async function uploadToOneDrive(req){
             uploadUrl=JSON.parse(data).uploadUrl;
             let stat=fs.statSync(`./user_files/${fileName}`);
             fs.readFile(`./user_files/${fileName}`, function read(err, data) {
-                console.log("URL PART:",uploadUrl.substring(uploadUrl.indexOf("/rup/")))
                 let options2={
                     method:'PUT',
                     hostname:'api.onedrive.com',
@@ -198,16 +233,69 @@ async function uploadToOneDrive(req){
                     const request = https.request(options2, function (res) {
                         res.on('data', function (d) {
                             process.stdout.write(d);
+                            fileId=JSON.parse(d.toString()).id;
+                            database.addShard({idUser:userId,filename:fileName,shardname:fileId,location:'onedrive'});
                         });
+                        
                     });
                 request.write(data);
                 request.end();
-                database.addShard({idUser:userId,filename:fileName,shardname:fileName,location:'onedrive'});
                 });
         })
     });
      request.write(body);
      request.end(); 
+}
+
+async function downloadFromOnedrive(req){
+    let fileName=`${decodeURIComponent(req.params.fileName)}.${req.headers['file-extension']}`;
+    let userId=req.headers['x-user'];
+    let sessionToken=await database.getSessionToken({ cloud: 'od', idUser: userId });
+    let shardId=await database.getShard({id:userId,filename:fileName,location:'onedrive'});
+    const fs = require('fs');
+    console.log("SHARD ID:",shardId);
+    let downloadName=`${decodeURIComponent(req.params.fileName)}-od-d.${req.headers['file-extension']}`;
+    const writeStream = fs.createWriteStream(`./user_files/${downloadName}`,'binary');
+    let options={
+        method:'GET',
+        hostname: 'graph.microsoft.com',
+        path: `/v1.0/me/drive/items/${shardId}/content`,
+        headers:{
+            'Authorization': `Bearer ${sessionToken}`,
+        }
+    }
+    let data = "";
+    let response={};
+    const request=https.request(options,function(res){
+        let downloadLink=res.headers['location'];
+        console.log(res.statusCode);
+        console.log("HEADERS:", res.headers);
+        let hostname=downloadLink.substr(8).split('/')[0];
+        let path=downloadLink.substr(8).substr(downloadLink.substr(8).indexOf('/'));
+        console.log("Host:",hostname);
+        console.log("Path:",path);
+        let downloadOptions={
+            method:'GET',
+            hostname: hostname,
+            path: path
+        }
+        const downloadrequest=https.request(downloadOptions,function(res){
+            res.setEncoding('binary');
+            res.on('data',function(d){
+                data+=d;
+            });
+            res.on('end',()=>{
+                try{
+                    response = JSON.parse(data).error; 
+                }catch (e) {
+                   writeStream.write(data);
+                   writeStream.end();
+                }
+            });
+        });
+        downloadrequest.end();
+    });
+    request.end();
 }
 
 /* Get the files of a user for the scope provided (folder provided) */
@@ -250,6 +338,8 @@ module.exports = {
     uploadToGoogle:uploadToGoogle,
     uploadToOneDrive:uploadToOneDrive,
     downloadFromDropbox:downloadFromDropbox,
+    downloadFromGoogle:downloadFromGoogle,
+    downloadFromOnedrive:downloadFromOnedrive,
     getUserFiles: getUserFiles,
     downloadFile:downloadFile
 }
