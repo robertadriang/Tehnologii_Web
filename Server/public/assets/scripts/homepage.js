@@ -9,7 +9,7 @@ if(currentURL.indexOf("index")!==-1){
             'Accept': 'application/json'
         }
     }).then(response=>{
-        console.log(response.status);
+        console.log(response);
     })
 }
 
