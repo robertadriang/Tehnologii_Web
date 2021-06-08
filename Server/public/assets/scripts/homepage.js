@@ -9,7 +9,8 @@ if(currentURL.indexOf("index")!==-1){
             'Accept': 'application/json'
         }
     }).then(response=>{
-        console.log(response);
+        if(response.status == 302)
+            window.location.href = "http://localhost:4200/login/login.html";
     })
 }
 

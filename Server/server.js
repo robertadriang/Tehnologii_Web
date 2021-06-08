@@ -147,19 +147,23 @@ router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
 router.handle('/home/index', 'get', async (req, res) => { 
 ///TODO: set status code according to message (error, duplicate key, not found etc.)
     let user = '';
-    try{
+
         let aux=await database.createPoll();
         console.log("Connection pool created!");
-        user = await verifyJWT.authorize(req,res);
-    }
-    catch{
-        // res.statusCode = 302;
-        // res.setHeader('Location', '/login/login.html');     //NU MERGE SI NU INTELEG
+        user = await verifyJWT.authorize(req,res).catch(e=>{
+            res.statusCode = 302;
+            // res.setHeader('Location', '/login/login.html');     //NU MERGE SI NU INTELEG
+            res.end();
+        });
+        
+        // console.log("CATCH!!!!!!!!!!!! " + e)
+
         // console.log("AUTH ERROR:" + res.statusCode)
-        // res.end();
-    }
-    console.log('USER_ID: ' + user.id);
-    return res.end('Connection pool created!');
+
+        // return res.end(JSON.stringify());
+
+    // console.log('USER_ID: ' + user.id);
+    // return await res.end('Connection pool created!');
 });
 
 /*Upload a file*/
@@ -194,8 +198,9 @@ router.handle('/home/index/all', 'GET', async (req, res) => {
         res.end(JSON.stringify(result));
     }
     catch (error){
-        console.log("Hmmmm... ",error);
-        res.statusCode=400;
+        console.log("H<<<<mmmm... ",error);
+        res.statusCode = 302;
+        // res.setHeader('Location', '/login/login.html');     //NU MERGE SI NU INTELEG
         return res.end('fail');
     }
 });

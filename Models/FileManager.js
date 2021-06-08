@@ -14,9 +14,11 @@ async function uploadFile(req) {
         });
         req.on('end', async () => {
             writeStream.end();
+            // console.log("writestream")
             let size = 0;
             let extension = fileName.split('.').pop();
             try {
+                // console.log('stat')
                 let stat=fs.statSync(`./user_files/${fileName}`);
                 let result = await database.uploadFile({ user_id: req.headers['x-user'], filename: fileName, scope: req.headers['x-scope'], size: stat.size, extension: extension });
                 let connectedDrives=await cm.getClouds(req.headers['x-user']);
@@ -349,7 +351,7 @@ async function downloadFile(req, res){
             //         console.log('Descarcam din onedrive');
             //         downloadFromOnedrive(req);
             //     }
-            // readStream.pipe(res);
+            readStream.pipe(res);
             
         }catch(error){
             res.end(error);
