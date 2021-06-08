@@ -115,7 +115,6 @@ function authorize (req,res){
             verifyJWT(req,res).then((user)=>resolve(user))
         }
         catch{
-            res.statusCode = 302;
             reject();
         }
     })
@@ -127,6 +126,8 @@ router.handle('/home/index', 'get', async (req, res) => {
         let user = await authorize(req,res);
     }
     catch{
+        res.statusCode = 302;
+        res.setHeader('Location', '/login/login.html');     //NU MERGE SI NU INTELEG
         console.log("AUTH ERROR:" + res.statusCode)
         res.end();
     }
@@ -193,6 +194,12 @@ router.handle('/login','post', (req,res)=>{
 
 
     })
+});
+
+router.handle('/login','get', (req,res)=>{
+    
+    console.log("hallo");
+    res.end();
 });
 
 //setup router and routing to local files
