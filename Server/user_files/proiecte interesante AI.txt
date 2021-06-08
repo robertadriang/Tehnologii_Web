@@ -1,0 +1,9 @@
+- Self Drive
+- Framework pentru modelarea și simularea unui joc
+- Interfață în limbaj natural pentru un motor de căutare
+- Rezumarea unei povesti
+- Jocuri (Elena Dragoi)
+- Bomberman 2
+
+http://www.lrec-conf.org/proceedings/lrec2020/index.html - prelucrare text
+https://www.imageclef.org/ - prelucrare imagini

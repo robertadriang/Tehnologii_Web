@@ -44,6 +44,7 @@ async function getSessionToken(object){
         let tableName=getTableName(object);
         connection.query('SELECT session_token from ?? WHERE user_id=?',[tableName,object.idUser],function(error,results,fields){
             if(error) {
+                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 reject(error);
             }else{
                 let resObjs=JSON.parse(JSON.stringify(results));
@@ -219,9 +220,54 @@ async function checkFileExistence(object){
     });
 }
 
+async function findUserInDB(userData){
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT iduser FROM user WHERE email = ? AND username = ? AND password = ?',[userData.email, userData.username, userData.password], function(error, queryResult, fields){
+            if(error){
+                console.log("FindUserInDB - Error: ", error);
+                reject(error);
+            }else{
+                
+                let result = JSON.parse(JSON.stringify(queryResult));
+                resolve(result);
+            }
+        });
+    });
+}
+
+async function findUserInDBLogin(userData){
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT iduser ,username, password FROM user WHERE email = ? OR username = ?',[userData.id, userData.id], function(error, queryResult, fields){
+            if(error){
+                console.log("findUserInDBLogin - Error: ", error);
+                reject(error);
+            }else{
+                
+                let result = JSON.parse(JSON.stringify(queryResult));
+                resolve(result);
+            }
+        });
+    });
+}
+
+async function insertUserInDB(userData){
+    return new Promise((resolve,reject)=>{
+        connection.query('INSERT INTO user VALUES(NULL,?,?,?)',[userData.email, userData.username, userData.password], function(error, queryResult, fields){
+            if(error){
+                console.log("insertUserInDB - Error: ", error);
+                reject(error);
+            }else{
+                let result = JSON.parse(JSON.stringify(queryResult));
+                resolve(result);
+            }
+        });
+    });
+}
+
 module.exports = {
     /* Connection Related */
     createPoll: createPoll,
+
     /* oAuth tokens related */
     getRefreshToken:getRefreshToken,
     getSessionToken:getSessionToken,
@@ -229,10 +275,20 @@ module.exports = {
     addSessionToken:addSessionToken,
     deleteBothTokens:deleteBothTokens,
     isConnected:isConnected,
+  
     /* File Related */
     uploadFile:uploadFile,
     getUserFiles:getUserFiles,
     addShard:addShard,
     getShard:getShard,
-    checkFileExistence:checkFileExistence
+    checkFileExistence:checkFileExistence,
+  
+    /* User Related */
+    findUserInDB: findUserInDB,
+    insertUserInDB: insertUserInDB,
+    findUserInDBLogin: findUserInDBLogin
 };
+
+
+
+
