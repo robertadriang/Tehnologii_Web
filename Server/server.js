@@ -5,6 +5,9 @@ var path = require('path');
 var app = require('./routes.js');
 var cm=require('../Models/CloudManager')
 var database=require('../Models/DBHandler')
+
+var fileHandler=require('../Models/FileManager')
+
 var userManager=require('../Models/UserManager')
 var jwt=require('jsonwebtoken');
 const { restart } = require('nodemon');
@@ -52,6 +55,7 @@ router.handle('/test', 'POST', (req, res) => {
 router.handle('/test/:testId', 'get', (req, res) => {
     return res.end(`test something ${req.params.testId}`);
 });
+
 router.handle('/test/:testId', 'post', (req, res) => {
     var postData = '';
     req.on('data', (chunk) => {
@@ -66,7 +70,6 @@ router.handle('/test/:testId', 'post', (req, res) => {
 // format for querystring
 // http://localhost:4200/test?q=100&a=1000
 router.handle('/test/query', 'get', (req, res) => {
-
     return res.end(`test something ${JSON.stringify(req.query)}`);
 });
 router.handle('/', 'get', (req, res) => {
@@ -76,21 +79,46 @@ router.handle('/', 'get', (req, res) => {
 });
 
 
+/*Request connected drives*/
+router.handle('/config/config_cloud', 'GET', async (req, res) => {
+    console.log("User-ul a cerut setarile pentru drive-uri");
+    try{
+        let connectedDrives=await cm.getClouds(1);/// TODO: Replace 1 with actual user ID or change it to send the jwt
+        console.log("Am trimis la client:",connectedDrives);
+        return res.end(JSON.stringify(connectedDrives)); 
+    }catch (error){
+     return res.end(JSON.stringify(error));     
+     }
+ });
+
+ /*Connect a drive to your account*/
+
 router.handle('/config/config_cloud', 'POST', async (req, res) => {
     let token=req.headers['storage-code'];
-    console.log("Token1:",token);
-    let aux={cloud:'db',token:token};
-
+    let token_type=req.headers['token-type'];
+    console.log("Access token:",token,"for the drive:",token_type);
+    let object={cloud: token_type,token:token,idUser:1};/// TODO: Replace 1 with actual user ID or change it to send the jwt
     try{
-        let sessionToken=await cm.setCloud(aux);
-        return res.end(sessionToken);
+        let sessionToken=await cm.setCloud(object);
+        res.end(sessionToken);
+        console.log("Am returnat la client:",sessionToken,"pentru drive-ul:",token_type);
+        return;
     }catch (error){
-       // console.log("salutmaomor");
-        return res.end(JSON.stringify(error));
-      
+        return res.end(JSON.stringify(error));     
     }
-    //else
-      //  return res.end(JSON.stringify(sessionToken));
+});
+
+
+/*Delete a drive from your account */
+router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
+    let token_type=req.headers['token-type'];
+    let object={cloud: token_type,idUser:1};/// TODO: Replace 1 with actual user ID or change it to send the jwt
+    try{
+        let dboperation=await cm.deleteCloud(object);
+        return res.end(dboperation);
+    }catch (error){
+        return res.end(JSON.stringify(error));     
+    }
 });
 
 function verifyJWT (req, res){
@@ -121,15 +149,66 @@ function authorize (req,res){
     })
 }
 
+
+/*Create the connection pool*/   /// TODO: Move this to a better place? 
 router.handle('/home/index', 'get', async (req, res) => { 
 ///TODO: set status code according to message (error, duplicate key, not found etc.)
     try{
+
+        let aux=await database.createPoll();
+        console.log("Connection pool created!");
+
         let user = await authorize(req,res);
+
     }
     catch{
         console.log("AUTH ERROR:" + res.statusCode)
         res.end();
     }
+
+    return res.end('Connection pool created!');
+});
+
+/*Upload a file*/
+router.handle('/home/index/upload', 'POST', async (req, res) => { 
+    try{
+        await fileHandler.uploadFile(req);
+        await fileHandler.uploadToDropbox(req);
+        await fileHandler.uploadToGoogle(req);
+        await fileHandler.uploadToOneDrive(req);
+        let result=await fileHandler.getUserFiles(req);       
+        res.statusCode=200;
+        res.end(JSON.stringify(result));
+    }
+    catch (error){
+        console.log("Hmmmm... ",error);
+        res.statusCode=400;
+        return res.end('fail');
+    }
+});
+
+/*Get all the files for a user and a scope */
+router.handle('/home/index/all', 'GET', async (req, res) => { 
+    try{
+        let result=await fileHandler.getUserFiles(req)
+        res.statusCode=200;
+        res.end(JSON.stringify(result));
+    }
+    catch (error){
+        console.log("Hmmmm... ",error);
+        res.statusCode=400;
+        return res.end('fail');
+    }
+});
+
+router.handle('/home/index/:fileName', 'GET', async (req, res) => {
+    let fileName=`${req.params.fileName}.${req.headers['file-extension']}`;
+    console.log(`Am primit request de download pentru: ${fileName}`);
+    await fileHandler.downloadFromDropbox(req);
+    await fileHandler.downloadFromGoogle(req);
+    await fileHandler.downloadFromOnedrive(req);
+    await fileHandler.downloadFile(req,res);
+
     // console.log("AUTH NO ERROR:" + res.statusCode)
     // res.end();
 
@@ -193,6 +272,7 @@ router.handle('/login','post', (req,res)=>{
 
 
     })
+
 });
 
 //setup router and routing to local files
