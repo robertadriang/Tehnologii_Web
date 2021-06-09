@@ -61,3 +61,36 @@ a:webkit-any-link{
 a:visited{
     color:#4b0061;
 }
+
+#diagram{
+    position:relative;
+    left:-17%;
+    width: 140%;
+    height: auto;
+}
+
+img{
+    position:relative;
+    width: 100%;
+    height: auto;
+}
+
+.vertical{
+    padding-left: 10px;
+    position:relative;
+    width: 25%;
+    height: auto;
+}
+
+.landscape{
+    position:relative;
+    padding-right: 10px;
+    width: 70%;
+    height: auto;
+}
+
+.gif{
+    position:relative;
+    width: 100%;
+    height: auto;
+}

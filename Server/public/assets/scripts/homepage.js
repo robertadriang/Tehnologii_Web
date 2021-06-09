@@ -36,7 +36,7 @@ window.onload = async function () {
     };
     fileupload.onchange = async function () {
         var fileName = fileupload.value.split('\\')[fileupload.value.split('\\').length - 1];
-        filePath.innerHTML = "<b>Selected File: </b>" + fileName;
+        // filePath.innerHTML = "<b>Selected File: </b>" + fileName;
         /* The file upload will return the new fileArray */
         let response=await fetch('http://localhost:4200/home/index/upload',{
             method:"POST",

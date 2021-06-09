@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UNST - Progress</title>
+        <link rel="stylesheet" href="./IEEE_Software_Req_Spec/style.css">
+        <link rel="icon" href="logo5.png" icon="image/png">
+    </head>
+</html>
+<body>
+    <header>
+        <h1>UNST - Progress Report</h1>
+    </header>
+    <div role="contentinfo">
+        <ol role="directory">
+            <li>
+                <a href="#introduction">
+                    <span>1.</span>
+                    Introduction
+                </a>
+                <ol role = "directory">
+                    <li>
+                        <a href="#presentation">
+                            <span>1.1.</span>
+                            Presentation
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#architecture">
+                            <span>1.2.</span>
+                            Architecture
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#technologies">
+                            <span>1.3.</span>
+                            Technologies
+                        </a>
+                    </li>
+
+                </ol>
+            </li>
+            <li>
+                <a href="#evolution">
+                    <span>2.</span>
+                    Evolution
+                </a>
+                <ol>
+                    <li>
+                        <a href="#genesis">
+                            <span>2.1.</span>
+                            Genesis
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#frontend">
+                            <span>2.2.</span>
+                            UI Design 
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#backend">
+                            <span>2.3.</span>
+                            Server and Router
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#login/register">
+                            <span>2.4.</span>
+                            Login, Register and Security
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#database">
+                            <span>2.6.</span>
+                            Database
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#clouds">
+                            <span>2.7.</span>
+                            Cloud APIs
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#config">
+                            <span>2.8.</span>
+                            Config and Statistics Pages
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#download/upload">
+                            <span>2.9.</span>
+                            File Download and Upload
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#mainpage">
+                            <span>2.10.</span>
+                            Main Page
+                        </a>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+    <section role="doc-introduction" id="introduction">
+        <h2>
+            <span>1. </span>
+            Introduction
+        </h2>
+        <p>
+            Nowadays, our digital storage focus has shifted from local storage, like HDD's, SSD's, USB Flash Storage, CD's, DVD's and so on, to cloud storage solutions. 
+            Why? Because it is much easier to share, our data from the cloud is accessible from anywhere with internet connection and benefits go on. But what if we need to store large files, with sizes
+            that take up considerable space from our free storage plans provided by Google Drive, DropBox or OneDrive? Well, our application aims to combine those 3 all together, by splitting
+            large files into smaller chunks and distributing them across the mentioned cloud services.
+        </p>
+        <section id="presentation">
+            <h3>
+                <span>1.1</span>
+                Presentation
+            </h3>
+            <p>
+                Our main goal was take one of the main advantages of cloud - shared storage, and take it a step further: sharing files between different cloud services, in order to save space.
+                This is what drove us to establish these core functionalities of our app:
+                <ul>
+                    <li>
+                        <b>Cloud Storage Linking</b> - the user can link his accounts of cloud storage solutions, namely Google Drive, DropBox and OneDrive;
+                    </li>
+                    <li>
+                        <b>File Upload</b> - files are first uploaded to our server;
+                    </li>
+                    <li>
+                        <b>File Splitting</b> - after they are uploaded to our servers, files are split in smaller parts we like to call "shards"; even though each file is split, the user can still see his/her uploaded files as whole;
+                    </li>
+                    <li>
+                        <b>Compression</b> - each shard is then compressed;
+                    </li>
+                    <li>
+                        <b>Cloud Upload</b> - each shard is uploaded to one cloud storage service;
+                    </li>
+                    <li>
+                        <b>Download</b> - for each file, the shards are downloaded from cloud and decompressed; the file is then merged back together in our server and then it is downloaded to the client side;
+                    </li>
+                </ul>
+                Apart from those, there are still some secondary but still essential functionalities, like:
+                <ul>
+                    <li>
+                        <b>Register</b>;
+                    </li>
+                    <li>
+                        <b>Login</b>;
+                    </li>
+                    <li>
+                        <b>Password Reset</b> - "Forgot your password?";
+                    </li>
+                    <li>
+                        <b>User Account Settings</b> - change user account information such as email, username or password;
+                    </li>
+                    <li>
+                        <b>Cloud Settings</b> - change settings related to cloud storage, such as allocated size for each cloud service, file splitting method or more;
+                    </li>
+                    <li>
+                        <b>Cloud Statistics</b> - see generated cloud related statistics, such as used space for each cloud, file distribution and so on;
+                    </li>
+                    
+                </ul>
+            </p>
+        </section>
+        <section id="architecture">
+            <h3>
+                <span>1.2</span>
+                Architecture
+            </h3>
+            Our app relies on a (micro)service architecture, described in the diagram below:
+            <p>
+                <img id="diagram" src="./Media/UNST_1.svg" alt="">
+            </p>
+        </section>
+        <section id="technologies">
+            <h3>
+                <span>1.3</span>
+                Technologies
+            </h3>
+            <p>
+                For developing the User Interface for our app, we used:
+                <ul>
+                    <li>
+                        <b>HTML5</b>;
+                    </li>
+                    <li>
+                        <b>CSS</b>;
+                    </li>
+                    <li>
+                        <b>JavaScript</b>.
+                    </li>
+                </ul>
+                As for the back-end we used:
+                <ul>
+                    <li>
+                        <b>NodeJS</b>;
+                    </li>
+                    <li>
+                        <b>OAuth 2.0</b> - for cloud service authentication;
+                    </li>
+                    <li>
+                        <b>JWT</b>;
+                    </li>
+                    <li>
+                        NodeJS built-in <b>crypto</b> module - for password encryption using <b>SHA256</b>;
+                    </li>
+                    <li>
+                        <b>MySQL</b>;
+                    </li>
+                    <li>
+                        <b>nodemon</b> - for fast and seamless server restarts;
+                    </li>
+                </ul>
+            </p>
+        </section>
+    </section>
+    <section id="Evolution">
+        <h2>
+            <span>2.</span>
+            Evolution
+        </h2>
+        <section id="genesis">
+            <h3>
+                <span>2.1</span>
+                Genesis
+            </h3>
+            <p>
+                This "genesis" section is added as a reminder for us of how our UI design has evolved. We knew from start what pages we need to have and that hasn't changed, but we can't say the same for the actual page design.
+                Below you can see how some of our first pages and mocks looked like:
+                <p>
+                    <img id="green-page" src="./Media/green page.png" alt="">
+                    <img id="green_login" src="./Media/green_login.png" alt="">
+                    <img id="stats_mock" src="./Media/stats_mock_1.png" alt="">
+                    
+                </p>
+                <p>
+                    <img id="purple_page" src="./Media/purple_page_1.png" alt="">
+                </p>
+                <p>
+                    As you can see, much has changed in our app in terms of UI design and for some pages there were literally several iterations until the final form was reached.
+                </p>
+            </p>
+        </section>
+        <section id="frontend">
+            <h3>
+                <span>2.2</span>
+                UI Design
+            </h3>
+            <p>
+                When we were designing the UI, we intended to make our app available for mobile use as well. This is why, all of our pages are responsive. As for the colors, we went with a simple, consistent, modern-looking color palette.
+            </p>
+            <p>
+                <img class="landscape" id="main_page" src="./Media/main_page.png" alt="">
+                <img class="vertical" id="main_page_mobile" src="./Media/main_page_mobile.png" alt="">
+            </p>
+            <p>
+                <img class="vertical" id="login_page_mobile" src="./Media/login_page_mobile.png" alt="">
+                <img class="landscape" id="login_page" src="./Media/login.png" alt="">
+                
+            </p>
+            <p>
+                <img class="landscape" id="cloud_page" src="./Media/cloud_page.png" alt="">
+                <img class="vertical" id="cloud_page_mobile" src="./Media/cloud_page_mobile.png" alt="">
+            </p>
+            <p>
+                We also wanted to implement interactive animations, such as:
+            </p>
+            <p>
+                <img class="gif" id="main_page_gif" src="./Media/main_page .gif" alt="">
+            </p>
+            <p>
+                <img class="gif" id="login_gif" src="./Media/login.gif" alt="">
+            </p>
+        </section>
+        <section id=""
+    </section>
+</body>
