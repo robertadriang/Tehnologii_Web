@@ -268,7 +268,7 @@ router.handle('/login','post', (req,res)=>{
             user.username = foundUsername;
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
             
-            res.setHeader('Set-Cookie', `accessToken=${accessToken}; HttpOnly`);        //we save the jwt in a HttpOnly cookie
+            res.setHeader('Set-Cookie', `accessToken=${accessToken}; HttpOnly; Max-Age=300`);        //we save the jwt in a HttpOnly cookie
             res.end(accessToken);
         }
         else if(message.includes("not found")){
@@ -285,6 +285,7 @@ router.handle('/login','post', (req,res)=>{
     })
 
 });
+
 
 
 //setup router and routing to local files
