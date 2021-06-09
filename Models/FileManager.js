@@ -1,5 +1,6 @@
 var database = require('../Models/DBHandler');
 var https = require('https');
+var splitter = require('./splitter')
 const { request } = require('http');
 const cm=require('../Models/CloudManager');
 
@@ -14,51 +15,69 @@ async function uploadFile(req) {
         });
         req.on('end', async () => {
             writeStream.end();
-            // console.log("writestream")
-            let size = 0;
-            let extension = fileName.split('.').pop();
-            try {
-                // console.log('stat')
-                let stat=fs.statSync(`./user_files/${fileName}`);
-                let result = await database.uploadFile({ user_id: req.headers['x-user'], filename: fileName, scope: req.headers['x-scope'], size: stat.size, extension: extension });
-                let connectedDrives=await cm.getClouds(req.headers['x-user']);
-                if(connectedDrives.dropbox==='Connected'){
-                    console.log('Inseram fisierul in dropbox');
-                    uploadToDropbox(req);
+            writeStream.on('finish', async () => {
+                var fileNames = await splitter.splitFile(`./user_files/${fileName}`, 3);
+                console.log(fileNames);
+                let size = 0;
+                let extension = fileName.split('.').pop();
+                try {
+                    let stat=fs.statSync(`./user_files/${fileName}`);
+                    let result = await database.uploadFile({ user_id: req.headers['x-user'], filename: fileName, scope: req.headers['x-scope'], size: stat.size, extension: extension });
+                    let connectedDrives=await cm.getClouds(req.headers['x-user']);
+                    if(connectedDrives.dropbox==='Connected'){
+                        var dropboxUploadData = {}
+                        dropboxUploadData.splitFileName = fileNames[0];
+                        dropboxUploadData.FileName = fileName;
+                        dropboxUploadData.UserId = req.headers['x-user'];
+                        dropboxUploadData.scope = req.headers['x-scope'];
+                        console.log('Inseram fisierul in dropbox');
+                        uploadToDropbox(dropboxUploadData);
+                    }
+                    if(connectedDrives.google==='Connected'){
+                        var googleUploadData = {}
+                        googleUploadData.splitFileName = fileNames[1];
+                        googleUploadData.FileName = fileName;
+                        googleUploadData.UserId = req.headers['x-user'];
+                        console.log('Inseram fisierul in google drive');
+                        uploadToGoogle(googleUploadData);
+                    }
+                    if(connectedDrives.onedrive==='Connected'){
+                        var oneDriveUploadData = {}
+                        oneDriveUploadData.splitFileName = fileNames[2];
+                        oneDriveUploadData.FileName = fileName;
+                        oneDriveUploadData.UserId = req.headers['x-user'];
+                        console.log('Inseram fisierul in onedrive');
+                        uploadToOneDrive(oneDriveUploadData);
+                    }
+                    resolve(result);
+                } catch (error) {
+                    reject(error);
                 }
-                if(connectedDrives.google==='Connected'){
-                    console.log('Inseram fisierul in google drive');
-                    uploadToGoogle(req);
-                }if(connectedDrives.onedrive==='Connected'){
-                    console.log('Inseram fisierul in onedrive');
-                    uploadToOneDrive(req);
-                }
-                resolve(result);
-            } catch (error) {
-                reject(error);
-            }
+            });
         });
         req.on('error', err => {
             writeStream.end();
             reject(err);
-        })
+        });
     });
 }
 
 /* Upload a file to Dropbox */
-async function uploadToDropbox(req) {
-    let fileName = req.headers['x-filename'];
-    let userId=req.headers['x-user'];/// TODO: GET USER DINAMICALLY 
+async function uploadToDropbox(requestData) {
+    console.log(requestData);
+    let fileName = requestData.FileName;
+    let splitFileName = requestData.splitFileName;
+    let userId = requestData.UserId;/// TODO: GET USER DINAMICALLY 
     const fs = require('fs');
     let sessionToken=await database.getSessionToken({ cloud: 'db', idUser: userId }); 
-    fs.readFile(`./user_files/${fileName}`, function read(err, data) {
+    fs.readFile(`${splitFileName}`, function read(err, data) {
         let options = {
             method: 'POST',
             hostname: 'content.dropboxapi.com',
             path: '/2/files/upload',
             headers: {
                 'Authorization': `Bearer ${sessionToken}`,
-                'Dropbox-API-ARG': `{"path":"/${req.headers['x-scope']}/${fileName}","mode":"add","autorename":true,"mute":false}`,
+                'Dropbox-API-ARG': `{"path":"/${requestData.scope}/${fileName}","mode":"add","autorename":true,"mute":false}`,
                 'Content-Type': 'application/octet-stream'
             }
         }
@@ -95,34 +114,39 @@ async function downloadFromDropbox(req){
     let data = "";
     let response={};
     console.log('Starting request');
-    const request=https.request(options,function(res){
-        res.setEncoding('binary');
-        res.on('data',function(d){
-            data+=d;
+    return new Promise((resolve, reject) => {
+        const request=https.request(options,function(res){
+            res.setEncoding('binary');
+            res.on('data',function(d){
+                data+=d;
+            });
+            res.on('end',()=>{
+                try{
+                    response = JSON.parse(data).error; 
+                }catch (e) {
+                    writeStream.write(data);
+                    writeStream.end();
+                    resolve(downloadName);
+                }
+            });
         });
-        res.on('end',()=>{
-            try{
-                response = JSON.parse(data).error; 
-            }catch (e) {
-               writeStream.write(data);
-               writeStream.end();
-            }
-        });
+        request.end();
     });
-    request.end();
 }
 
 /* Upload a file to GoogleDrive
     This process requires a JSON that contains file details like name or type AND the actual file.
     Both are send in the body and should be formatted according to the RFC2387 standard
     Look here for the body formatting explanation: https://datatracker.ietf.org/doc/html/rfc2387 */
-async function uploadToGoogle(req){
-    let fileName = req.headers['x-filename'];
-    let userId=req.headers['x-user'];
+async function uploadToGoogle(requestData){
+    console.log(requestData);
+    let splitFileName = requestData.splitFileName;
+    let fileName = requestData.FileName;
+    let userId= requestData.UserId;
     const fs = require('fs');
     let fileId="";
     let sessionToken=await database.getSessionToken({ cloud: 'gd', idUser: userId });
-    fs.readFile(`./user_files/${fileName}`,'binary', function read(err, data) {
+    fs.readFile(`${splitFileName}`,'binary', function read(err, data) {
         let metadata={
             mimeType:'text/plain',
             name:fileName,
@@ -158,7 +182,12 @@ async function uploadToGoogle(req){
             res.on("data",function(d){
                 process.stdout.write(d);
                 fileId=JSON.parse(d.toString()).id;
+                console.log(d);
+                console.log(fileId);
                 database.addShard({idUser:userId,filename:fileName,shardname:fileId,location:'google'});
+            });
+            res.on('error', (err) => {
+                console.log(err);
             });
         });
         request.write(body);
@@ -184,21 +213,24 @@ async function downloadFromGoogle(req){
     };
     let data = "";
     let response={};
-    const request=https.request(options,function(res){
-        res.setEncoding('binary');
-        res.on('data',function(d){
-            data+=d;
+    return new Promise((resolve, reject) => {
+        const request=https.request(options,function(res){
+            res.setEncoding('binary');
+            res.on('data',function(d){
+                data+=d;
+            });
+            res.on('end',()=>{
+                try{
+                    response = JSON.parse(data).error; 
+                }catch (e) {
+                   writeStream.write(data);
+                   writeStream.end();
+                   resolve(downloadName);
+                }
+            });
         });
-        res.on('end',()=>{
-            try{
-                response = JSON.parse(data).error; 
-            }catch (e) {
-               writeStream.write(data);
-               writeStream.end();
-            }
-        });
+        request.end();
     });
-    request.end();
 }
 
 /* Upload a file to OneDrive 
@@ -207,9 +239,11 @@ async function downloadFromGoogle(req){
     2. Upload chunks of the file
     3. If the upload fails during the transferr we should reinitiate the process from where we started
 */
-async function uploadToOneDrive(req){
-    let fileName = req.headers['x-filename'];
-    let userId=req.headers['x-user'];
+async function uploadToOneDrive(requestData){
+    console.log(requestData);
+    let fileName = requestData.FileName;
+    let splitFileName = requestData.splitFileName;
+    let userId = requestData.UserId;
     const fs = require('fs');
     let sessionToken=await database.getSessionToken({ cloud: 'od', idUser: userId });
     let options={
@@ -235,8 +269,10 @@ async function uploadToOneDrive(req){
         });
         res.on('end',()=>{
             uploadUrl=JSON.parse(data).uploadUrl;
-            let stat=fs.statSync(`./user_files/${fileName}`);
-            fs.readFile(`./user_files/${fileName}`, function read(err, data) {
+            console.log(data);
+            console.log(uploadUrl);
+            let stat=fs.statSync(`${splitFileName}`);
+            fs.readFile(`${splitFileName}`, function read(err, data) {
                 let options2={
                     method:'PUT',
                     hostname:'api.onedrive.com',
@@ -246,8 +282,12 @@ async function uploadToOneDrive(req){
                     path:uploadUrl.substring(uploadUrl.indexOf("/rup/"))
                     }
                     const request = https.request(options2, function (res) {
+                        sumData = '';
                         res.on('data', function (d) {
-                            fileId=JSON.parse(d.toString()).id;
+                            sumData += d;
+                        });
+                        res.on('end', function (d) {
+                            fileId=JSON.parse(sumData.toString()).id;
                             database.addShard({idUser:userId,filename:fileName,shardname:fileId,location:'onedrive'});
                         });
                         
@@ -280,36 +320,39 @@ async function downloadFromOnedrive(req){
     }
     let data = "";
     let response={};
-    const request=https.request(options,function(res){
-        let downloadLink=res.headers['location'];
-        console.log(res.statusCode);
-        console.log("HEADERS:", res.headers);
-        let hostname=downloadLink.substr(8).split('/')[0];
-        let path=downloadLink.substr(8).substr(downloadLink.substr(8).indexOf('/'));
-        console.log("Host:",hostname);
-        console.log("Path:",path);
-        let downloadOptions={
-            method:'GET',
-            hostname: hostname,
-            path: path
-        }
-        const downloadrequest=https.request(downloadOptions,function(res){
-            res.setEncoding('binary');
-            res.on('data',function(d){
-                data+=d;
+    return new Promise((resolve, reject) => {
+        const request=https.request(options,function(res){
+            let downloadLink=res.headers['location'];
+            console.log(res.statusCode);
+            console.log("HEADERS:", res.headers);
+            let hostname=downloadLink.substr(8).split('/')[0];
+            let path=downloadLink.substr(8).substr(downloadLink.substr(8).indexOf('/'));
+            console.log("Host:",hostname);
+            console.log("Path:",path);
+            let downloadOptions={
+                method:'GET',
+                hostname: hostname,
+                path: path
+            }
+            const downloadrequest=https.request(downloadOptions,function(res){
+                res.setEncoding('binary');
+                res.on('data',function(d){
+                    data+=d;
+                });
+                res.on('end',()=>{
+                    try{
+                        response = JSON.parse(data).error; 
+                    }catch (e) {
+                       writeStream.write(data);
+                       writeStream.end();
+                       resolve(downloadName); 
+                    }
+                });
             });
-            res.on('end',()=>{
-                try{
-                    response = JSON.parse(data).error; 
-                }catch (e) {
-                   writeStream.write(data);
-                   writeStream.end();
-                }
-            });
+            downloadrequest.end();
         });
-        downloadrequest.end();
+        request.end();
     });
-    request.end();
 }
 
 /* Get the files of a user for the scope provided (folder provided) */
@@ -338,23 +381,28 @@ async function downloadFile(req, res){
         res.setHeader('Content-Type', 'application/json');
         const fs = require('fs');
         try{
-            let readStream=fs.createReadStream(`./user_files/${fileName}`);
-            // let connectedDrives=await cm.getClouds(req.headers['x-user']);
-            //     if(connectedDrives.dropbox==='Connected'){
-            //         console.log('Descarcam din dropbox');
-            //         downloadFromDropbox(req);
-            //     }
-            //     if(connectedDrives.google==='Connected'){
-            //         console.log('Descarcam din google drive');
-            //         downloadFromgoogleDrive(req);
-            //     }if(connectedDrives.onedrive==='Connected'){
-            //         console.log('Descarcam din onedrive');
-            //         downloadFromOnedrive(req);
-            //     }
+            let connectedDrives=await cm.getClouds(req.headers['x-user']);
+            var filesToMerge = [];
+            if(connectedDrives.dropbox==='Connected'){
+                console.log('Descarcam din dropbox');
+                filesToMerge.push(await downloadFromDropbox(req));
+            }
+            if(connectedDrives.google==='Connected'){
+                console.log('Descarcam din google drive');
+                filesToMerge.push(await downloadFromGoogle(req));
+            }if(connectedDrives.onedrive==='Connected'){
+                console.log('Descarcam din onedrive');
+                filesToMerge.push(await downloadFromOnedrive(req));
+            }
+            filesToMerge = filesToMerge.map(x => './user_files/' + x);
+            console.log(filesToMerge);
+            await splitter.mergeFiles(filesToMerge, './user_files/temp/' + fileName);
+            let readStream=fs.createReadStream('./user_files/temp/' + fileName);
             readStream.pipe(res);
             
         }catch(error){
-            res.end(error);
+            console.log(error);
+            res.end();
         }
     }
 }

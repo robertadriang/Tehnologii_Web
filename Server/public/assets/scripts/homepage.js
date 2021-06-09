@@ -112,33 +112,17 @@ function createUnorderedList(object){
                     'File-Extension':`${object.file.filename.split('.').pop()}`,
                     'x-user':1
                 }
-            })
-
-            if(response.status == 302)
-            {
-                redirectUrl = await response.text();
-                alert("Authorization error. You will be redirected to login page.");
-                window.location.href = (redirectUrl);
-            }
-            else if (response.status == 200)
-            {
-                let blob = await response.blob()   /// -> Read the whole response body (Body.blob())
-                try{
-                    const url=window.URL.createObjectURL(blob);
-                    const a=document.createElement('a');
-                    a.style.display='none';
-                    a.href=url;
-                    a.download=object.file.filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url); 
-                }
-                catch(error){
-                    console.log(error)
-                }
-            }
-
-
+            }).then(response => response.blob())    /// -> Read the whole response body (Body.blob())
+            .then(blob=>{
+                const url=window.URL.createObjectURL(blob);
+                const a=document.createElement('a');
+                a.style.display='none';
+                a.href=url;
+                a.download=object.file.filename;
+                document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url); 
+            }).catch((error)=>console.log(error));
         }
             
     ul.appendChild(size);

@@ -1,6 +1,7 @@
 var jwt=require('jsonwebtoken');
 function verifyJWT (req, res){
     const token = req.headers.cookie.split(" ")[1].split("=")[1];
+    console.log("COOKIES: " + req.headers.cookie)
     return new Promise((resolve, reject) =>{
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,user) =>{
             if(err){
