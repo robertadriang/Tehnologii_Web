@@ -62,7 +62,7 @@ a:visited{
     color:#4b0061;
 }
 
-#diagram{
+.diagram{
     position:relative;
     left:-17%;
     width: 140%;
@@ -93,4 +93,8 @@ img{
     position:relative;
     width: 100%;
     height: auto;
+}
+
+section{
+    margin-top:50px;
 }
