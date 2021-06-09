@@ -155,8 +155,6 @@ router.handle('/config/config_cloud', 'DELETE', async (req, res) => {
             return res.end(JSON.stringify(error));     
         }
     }
-
-
 });
 
 
@@ -171,7 +169,7 @@ router.handle('/home/index/upload', 'POST', async (req, res) => {
     if(isOk){
         req.headers['x-user'] = user.id;                    ///PUNEM ID-UL EXTRAS DIN TOKEN IN HEADER
         try{
-            
+            console.log('test');
             ///TODO: TRATEAZA CAZURILE IN CARE verifyJWT.authorize DA EROARE;
             await fileHandler.uploadFile(req);
             let result=await fileHandler.getUserFiles(req);       
