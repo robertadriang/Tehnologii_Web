@@ -3,11 +3,11 @@ var https = require('https');
 var fs = require('fs');
 var path = require('path');
 var app = require('./routes.js');
-var cm=require('../Models/CloudManager')
-var verifyJWT=require('./public/assets/scripts/verifyJWT')
-var fileHandler=require('../Models/FileManager')
-var databaseConnection = require('./init')
-var userManager=require('../Models/UserManager')
+var cm=require('../Models/CloudHandlers/CloudManager')
+var verifyJWT=require('../Models/UserHandlers/verifyJWT')
+var fileHandler=require('../Models/FileHandlers/FileManager')
+var databaseConnection = require('../Models/DBHandlers/init')
+var userManager=require('../Models/UserHandlers/UserManager')
 var jwt=require('jsonwebtoken');
 const { restart, reset } = require('nodemon');
 require('dotenv').config();
@@ -265,7 +265,7 @@ router.handle('/login','post', (req,res)=>{
             user.id = foundUserId;
             user.username = foundUsername;
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-            
+            console.log("Status code to be sent:",res.statusCode);
             res.setHeader('Set-Cookie', `accessToken=${accessToken}; HttpOnly; Max-Age=300`);        //we save the jwt in a HttpOnly cookie
             res.end(accessToken);
         }
