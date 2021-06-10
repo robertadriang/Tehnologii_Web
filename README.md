@@ -1,7 +1,13 @@
-# Tehnologii_Web 
-Repo pentru proiectul UnSt (Universal Storage Tool)
----------------------------------------------------------------------------
+# Tehnologii Web - UnST (Universal Storage Tool)
+Members:
+  - Găină Robert-Adrian
+  - Enia Vlad Ieftimie
+  - Iurea Marius
 
+Presentation video:
+https://www.youtube.com/watch?v=qSNkz7WhqCI
+
+---------------------------------------------------------------------------
 Requirements for UnSt (Universal Storage Tool)
 `````````````````````````````````````````````````````
 Pe baza unui API REST ori GraphQL propriu, să se realizeze un instrument care abstractizează operațiile uzuale cu fișiere de mari dimensiuni, stocându-le – eventual,
